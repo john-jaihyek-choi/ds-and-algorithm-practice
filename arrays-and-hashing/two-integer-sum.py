@@ -20,7 +20,6 @@ def twoSum(nums: List[int], target: int) -> List[int]:
         
         compliment_map[num] = i
 
-    print(compliment_map)
 
 
 print(twoSum([3,4,5,6], 7))
