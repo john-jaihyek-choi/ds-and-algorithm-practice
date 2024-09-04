@@ -10,19 +10,50 @@ def productExceptSelf(nums: List[int]) -> List[int]:
         # set prev_product to product of itself and value of nums[i-1]
         # compute the product of prev_product and right_products[i], then append the value to the response arr
     
-    num_length = len(nums)
-    res_arr = []
-    l_product = 1
+    # solution 1
+    # num_length = len(nums)
+    # res_arr = []
+    # l_product = 1
 
-    for i in range(num_length):
-        l_product *= 1 if i <= 0 else nums[i-1]
-        res_arr.append(l_product)
+    # for i in range(num_length):
+    #     l_product *= 1 if i <= 0 else nums[i-1]
+    #     res_arr.append(l_product)
 
-    # right_products = []
+    # # right_products = []
+    # r_product = 1
+    # for i in range(num_length-1, -1, -1):
+    #     r_product *= 1 if i >= num_length - 1 else nums[i+1]
+    #     res_arr[i] *= r_product
+
+    # return res_arr
+
+    # solution 2
+    # res_arr = []
+
+    # l_product = 1
+    # for i in range(len(nums)):
+    #     res_arr.append(l_product)
+    #     l_product *= nums[i]
+
+    # r_product = 1
+    # for i in range(len(nums) - 1, -1, -1):
+    #     res_arr[i] = res_arr[i] * r_product
+    #     r_product *= nums[i]
+
+    # return res_arr 
+
+    # solution 3
+    res_arr = [1] * len(nums)
+    
+    for i in range(1, len(nums)):
+        res_arr[i] = res_arr[i-1] * nums[i-1]
+
+    print(f"left_prod: {res_arr}")
+    
     r_product = 1
-    for i in range(num_length-1, -1, -1):
-        r_product *= 1 if i >= num_length - 1 else nums[i+1]
-        res_arr[i] *= r_product
+    for i in range(len(nums) - 1, -1, -1):
+        res_arr[i] = res_arr[i] * r_product
+        r_product *= nums[i]
 
     return res_arr
 
