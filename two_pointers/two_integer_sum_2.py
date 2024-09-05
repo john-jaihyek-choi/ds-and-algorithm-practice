@@ -23,7 +23,7 @@ def twoSum(numbers: List[int], target: int) -> List[int]:
     l, r = 0, len(numbers) - 1
 
     # Solution 1:
-    # while l <= r:
+    # while l < r:
     #     if numbers[l] + numbers[r] > target:
     #         r -= 1
     #     elif numbers[l] + numbers[r] < target:
@@ -46,5 +46,5 @@ def twoSum(numbers: List[int], target: int) -> List[int]:
     
 
 start_time = time.time()
-print(twoSum([1,4,4,4,5,6,], 8))
+print(twoSum([1,3,4,4,5,6,], 8))
 print("--- %s seconds ---" % (time.time() - start_time))
