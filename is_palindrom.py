@@ -24,8 +24,7 @@ def isPalindrome(s: str) -> bool:
     #     if c.isalnum():
     #         formatted_s += c.lower()
 
-    # l = 0
-    # r = len(formatted_s) - 1
+    # l, r = 0, len(formatted_s) - 1 
 
     # while l < r:
     #     if formatted_s[l] != formatted_s[r]:
@@ -36,15 +35,37 @@ def isPalindrome(s: str) -> bool:
     # return True
 
     # Solution 2:
-    formatted_s = ''
+    # formatted_s = ''
 
-    for c in s:
-        if c.isalnum():
-            formatted_s += c.lower()
+    # for c in s:
+    #     if c.isalnum():
+    #         formatted_s += c.lower()
 
-    return formatted_s == formatted_s[::-1]
+    # return formatted_s == formatted_s[::-1]
 
     # Solution 3:
+    l, r = 0, len(s) - 1
+
+    while l < r:
+        # check if alpha numeric
+        # check if lower vs upper
+        while l < r and not is_alphanumeric(s[l]):
+            l += 1
+        while l < r and not is_alphanumeric(s[r]):
+            r -= 1
+        if s[l].lower() != s[r].lower():
+            return False
+        l, r = l + 1, r - 1
+    
+    return True
+
+def is_alphanumeric(c: str) -> bool:
+
+    return (
+        ord('A') <= ord(c) <= ord('Z')
+        or ord('a') <= ord(c) <= ord('z')
+        or ord('0') <= ord(c) <= ord('9')
+    )
 
 start_time = time.time()
 print(isPalindrome("Was it a car or a cat I saw?"))
