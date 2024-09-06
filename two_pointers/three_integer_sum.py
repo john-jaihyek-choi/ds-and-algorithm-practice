@@ -49,7 +49,9 @@ def threeSum(nums: List[int]) -> List[List[int]]:
                     # evaluate if the sum of num[i], num[l], and num[r] can sum to 0
                     # if sum is > than 0, decrement the r pointer by 1
                     # if sum is < than 0, increment the l pointer by 1
-                    # if sum is = to 0, store the triplet to an empty array, then append it to the res_arr
+                    # if sum is = to 0, store the triplet to an empty array, then append it to the res_arr, then increment l by 1
+                        # compare the new num[l] with num[l-1] to check for identical num[l] with the previous value
+                            # if it's identical, it means it's will create a duplicate
         # Solution 2 (Search and check duplicate using hashmap and set)
             # initialize an empty list to store the triplet sum match (res_arr)
             # create an empty hashmap with a default value of set to store the visited number at i, l, r index repectively (repeat_map)
@@ -70,60 +72,6 @@ def threeSum(nums: List[int]) -> List[List[int]]:
                     # if sum is = to 0, store the triplet to an empty array, then append it to the res_arr
 
     # Solution 1:
-    res_arr = []
-    repeat_map = defaultdict(set)
-    nums.sort()
-
-    for i, a in enumerate(nums):
-        if a > 0:
-            break
-
-        if a in repeat_map['a']:
-            continue
-        
-        l, r = i + 1, len(nums) - 1
-
-        while l < r:
-            if(
-                i == 1 and
-                l == 5 and
-                r == 9
-            ):
-                print('bug')
-            b = nums[l]
-            c = nums[r]
-
-            abc_sum = sum((a, nums[l], nums[r]))
-
-            if abc_sum > 0:
-                r -= 1
-            elif abc_sum < 0:
-                l += 1
-            else:
-                while (
-                    nums[a] in repeat_map['a'] and
-                    nums[l] in repeat_map['b'] and
-                    nums[r] in repeat_map['c'] and
-                    l < r
-                ):
-                    l += 1
-
-                res_arr.append([a, nums[l], nums[r]])
-
-                repeat_map['a'].add(a)
-                repeat_map['b'].add(nums[l])
-                repeat_map['c'].add(nums[r])
-
-                l += 1
-                # r -= 1
-
-
-
-
-
-    return res_arr
-
-    # Solution 2:
     res_arr = []
     nums.sort()
 
@@ -152,6 +100,57 @@ def threeSum(nums: List[int]) -> List[List[int]]:
                     l += 1
 
     return res_arr
+
+    # Solution 2 (WIP)
+    # res_arr = []
+    # repeat_map = defaultdict(set)
+    # nums.sort()
+
+    # for i, a in enumerate(nums):
+    #     if a > 0:
+    #         break
+
+    #     if a in repeat_map['a']:
+    #         continue
+        
+    #     l, r = i + 1, len(nums) - 1
+
+    #     while l < r:
+    #         if(
+    #             i == 1 and
+    #             l == 5 and
+    #             r == 9
+    #         ):
+    #             print('bug')
+    #         b = nums[l]
+    #         c = nums[r]
+
+    #         abc_sum = sum((a, nums[l], nums[r]))
+
+    #         if abc_sum > 0:
+    #             r -= 1
+    #         elif abc_sum < 0:
+    #             l += 1
+    #         else:
+    #             while (
+    #                 nums[a] in repeat_map['a'] and
+    #                 nums[l] in repeat_map['b'] and
+    #                 nums[r] in repeat_map['c'] and
+    #                 l < r
+    #             ):
+    #                 l += 1
+
+    #             res_arr.append([a, nums[l], nums[r]])
+
+    #             repeat_map['a'].add(a)
+    #             repeat_map['b'].add(nums[l])
+    #             repeat_map['c'].add(nums[r])
+
+    #             l += 1
+    #             # r -= 1
+
+    # return res_arr
+
 
 #       1   2   3   4  5  6  7  8  9  10
 # [-4, -3, -2, -1, -1, 0, 0, 1, 2, 3, 4]
