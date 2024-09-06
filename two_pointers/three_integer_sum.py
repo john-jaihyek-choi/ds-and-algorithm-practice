@@ -148,10 +148,6 @@ def threeSum(nums: List[int]) -> List[List[int]]:
     # return res_arr
 
 
-#       1   2   3   4  5  6  7  8  9  10
-# [-4, -3, -2, -1, -1, 0, 0, 1, 2, 3, 4]
-1, 5, 9
 start_time = time.time()
-# print(threeSum([-1,0,1,2,-1,-4]))
 print(threeSum([0,0,0]))
 print("--- %s seconds ---" % (time.time() - start_time))
