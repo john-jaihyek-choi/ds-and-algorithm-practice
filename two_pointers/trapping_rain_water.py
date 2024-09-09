@@ -67,12 +67,14 @@ def trap(height: List[int]) -> int:
 
     area = 0
     while l < r:
-        area += min(height[l], height[r]) 
-
-        if l <= r:
+        if height[l] <= height[r]:
             l += 1
-
-        
+            max_left = max(max_left, height[l])
+            area += max(0, (max_left - height[l]))
+        else:
+            r -= 1
+            max_right = max(max_right, height[r])
+            area += max(0, (max_right - height[r]))
         
     return area
 
