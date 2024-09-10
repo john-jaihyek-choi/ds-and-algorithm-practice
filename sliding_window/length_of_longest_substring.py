@@ -41,31 +41,36 @@ def lengthOfLongestSubstring(s: str) -> int:
     # return max_length
 
 
-    # Psuedocode:
+    # Solution 1 Psuedocode:
     # initialize the 2 pointers:
         # l starting 0
-        # r starting 1
+        # r starting 0
     # initialize max length count (max_length_count)
+    # initialize a set to store the unique characters (repeat_map)
     # iterate the string while r less than the length of the string:
-        
+        # while s[r] is in repeat_map
+            # remove s[l] (left most of the current substring) from the repeat_map set
+            # then increment the l pointer by 1
+        # set the max_length_count to max of itself and r - l + 1 (+1 because 0 indexed)
+        # increment the r pointer by 1
+    # return the max_length_count
 
-    # Solution 1:
-    l, r = 0, 1
+    # Solution 1 (TC: O(n) / SC: O(n)):
+    l, r = 0, 0
     max_length_count = 0
     repeat_map = set()
 
     while r < len(s):
-        cur_sub_string = s[l:r]
-        if s[r] in repeat_map:
-            duplicate_index = s[l:r].index(s[r])
-            l = duplicate_index + 1
-
-        max_length_count = max(max_length_count, r - l)
+        while s[r] in repeat_map:
+            repeat_map.remove(s[l])
+            l += 1
+        max_length_count = max(max_length_count, r - l + 1)
         repeat_map.add(s[r])
         r += 1
-
         
     return max_length_count
+
+
 
 
 start_time = time.time()
