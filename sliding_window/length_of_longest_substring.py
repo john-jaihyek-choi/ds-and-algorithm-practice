@@ -78,7 +78,7 @@ def lengthOfLongestSubstring(s: str) -> int:
         while c in repeat_map:
             repeat_map.remove(s[l])
             l += 1
-        repeat_map.add(s[r])
+        repeat_map.add(c)
         max_length_count = max(max_length_count, r - l + 1)
 
     return max_length_count
