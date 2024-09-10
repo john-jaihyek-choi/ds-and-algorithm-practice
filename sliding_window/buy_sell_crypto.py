@@ -32,7 +32,7 @@ def maxProfit(prices: List[int]) -> int:
             
 
 
-    # Solution 1 (Bruteforce):
+    # Solution 1 (Bruteforce - TC: O(n^2) SC: O(1)):
     # max_profit = 0
     # for i in range(len(prices)):
     #     for j in range(i+1, len(prices)):
@@ -53,23 +53,48 @@ def maxProfit(prices: List[int]) -> int:
 
     # return max(0, max_profit)
 
-    max_profit, lowest_price = 0, prices[0]
-    l, r = 0, 1
-    profit = 0
+    # Solution 2 (TC: O(n) SC: O(1))
+    # max_profit, lowest_price = 0, prices[0]
+    # l, r = 0, 1
+    # profit = 0
     
-    while(r < len(prices)):
-        if prices[r] <= lowest_price:
-            lowest_price = prices[r]
-            profit = 0
+    # while(r < len(prices)):
+    #     if prices[r] <= lowest_price:
+    #         lowest_price = prices[r]
+    #         profit = 0
             
-            l = r
-            r = l + 1
-        else:
-            profit += prices[r] - prices[r-1]
-            r += 1
+    #         l = r
+    #         r = l + 1
+    #     else:
+    #         profit += prices[r] - prices[r-1]
+    #         r += 1
 
-        max_profit = max(max_profit, profit)
+    #     max_profit = max(max_profit, profit)
 
+    # return max_profit
+
+    # Solution 3 (TC: O(n) SC: O(1) Cleaner Version)
+    # max_profit = 0
+    # l, r = 0, 1
+
+    # while r < len(prices):
+    #     if prices[l] <= prices[r]:
+    #         profit = prices[r] - prices[l]
+    #         max_profit = max(max_profit, profit)
+    #     else:
+    #         l = r
+    #     r += 1
+
+    # return max_profit
+
+    # Solution 4 (TC: O(n) SC: O(1) Cleaner Version)
+    max_profit = 0
+
+    lowest = 0
+    for price in prices:
+        if price <= lowest:
+            lowest = price
+        max_profit = max(max_profit, price - lowest)
     return max_profit
 
 start_time = time.time()
