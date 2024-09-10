@@ -34,6 +34,16 @@ def trap(height: List[int]) -> int:
                 # round any negative value to 0
                     # max(0, min(l,r) - height[i])
 
+    # Solution 2 (TC: O(n) / SC: O(1)):
+        # initialize l,r, max_left, max_right, and area
+        # iterate the height array while l < r
+            # if l <= r
+                # increment l by 1
+                # set new max_left 
+                # compute the area max(0, (max_left - height[l]))
+                # 
+            # 
+
     # Solution 1:
     # max_left_list, max_right_list = [0], [0]
     
