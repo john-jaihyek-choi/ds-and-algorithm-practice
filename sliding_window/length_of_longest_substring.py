@@ -56,23 +56,36 @@ def lengthOfLongestSubstring(s: str) -> int:
     # return the max_length_count
 
     # Solution 1 (TC: O(n) / SC: O(n)):
-    l, r = 0, 0
-    max_length_count = 0
+    # l, r = 0, 0
+    # max_length_count = 0
+    # repeat_map = set()
+
+    # while r < len(s):
+    #     while s[r] in repeat_map:
+    #         repeat_map.remove(s[l])
+    #         l += 1
+    #     max_length_count = max(max_length_count, r - l + 1)
+    #     repeat_map.add(s[r])
+    #     r += 1
+        
+    # return max_length_count
+
+    # Solution 2 (TC: O(n) / SC: O(n) Cleaner/More Readable):
+    l, max_length_count = 0, 0
     repeat_map = set()
 
-    while r < len(s):
-        while s[r] in repeat_map:
+    for r, c in enumerate(s):
+        while c in repeat_map:
             repeat_map.remove(s[l])
             l += 1
-        max_length_count = max(max_length_count, r - l + 1)
         repeat_map.add(s[r])
-        r += 1
-        
+        max_length_count = max(max_length_count, r - l + 1)
+
     return max_length_count
 
 
 
 
 start_time = time.time()
-print(lengthOfLongestSubstring("zxyzxyz"))
+print(lengthOfLongestSubstring("pwwkew"))
 print("--- %s seconds ---" % (time.time() - start_time))
