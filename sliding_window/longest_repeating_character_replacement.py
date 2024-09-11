@@ -62,7 +62,7 @@ def characterReplacement(s: str, k: int) -> int:
 
     # return max_length
 
-    # Solution 2 (TC: O(N) / SC: O(1) Cleaner version):
+    # Solution 3 (TC: O(N) / SC: O(1) Optimal version):
     char_count = dict()
     max_length, l = 0, 0
 
@@ -71,7 +71,7 @@ def characterReplacement(s: str, k: int) -> int:
 
         max_length = max(max_length, char_count[s[r]])
 
-        if (len(s[l:r+1])) - max_length > k:
+        if (r - l + 1) - max_length > k:
             char_count[s[l]] -= 1
             l += 1
 
