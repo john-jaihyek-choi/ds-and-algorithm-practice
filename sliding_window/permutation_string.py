@@ -8,12 +8,48 @@ def checkInclusion1(s1: str, s2: str) -> bool:
         # if s2 has permutation of s1, return true, otherwise false.
         # permutation - arrangement or ordering of elements of a set into specific sequence or order
 
-    # Solutions:
-        # 1. sort s1, then take each sorted s2 substring to compare (TC: O(n * m log(m)) / SC: O(m))
-        # 2 - 3. create a frequency array to store the frequency for s1 and s2, then compare (TC: O(n * m) / SC: O(1))
-        # 4. create s1 count map and s2 substring count map, and compare s1 map with s2 substring map
+    # Solution 7 ( Uses dictionary to store counts TC: O(m) / SC: O(26) == O(1) ):
+    s1_len, s2_len = len(s1), len(s2)
 
-    # Solution 6:
+    if s1_len > s2_len: # O(1)
+        return False
+
+    s1_count = [0] * 26
+    s2_substring_count = [0] * 26
+    matches = 0
+
+    for i in range(len(s1)): # O(n)
+        s1_count[ord(s1[i]) - ord('a')] += 1
+        s2_substring_count[ord(s2[i]) - ord('a')] += 1
+
+    for i in range(26):
+        matches += 1 if s1_count[i] == s2_substring_count[i] else 0
+
+    l = 0
+    for r in range(s1_len, s2_len): # O(m - n)
+        if matches == 26:
+            return True
+        # check for new right pointer index
+        r_index = ord(s2[r]) - ord('a')
+        s2_substring_count[r_index] += 1
+        if s1_count[r_index] == s2_substring_count[r_index]:
+            matches += 1
+        elif s1_count[r_index] + 1 == s2_substring_count[r_index]:
+            matches -= 1
+
+        # check for new left pointer index
+        l_index = ord(s2[l]) - ord('a')
+        s2_substring_count[l_index] -= 1
+        if s1_count[l_index] == s2_substring_count[l_index]:
+            matches += 1
+        elif s1_count[l_index] - 1 == s2_substring_count[l_index]:
+            matches -= 1
+
+        l += 1
+
+    return matches == 26
+
+    # Solution 6 ( Uses dictionary to store counts TC: O(m) / SC: O(26) == O(1) ):
     s1_len, s2_len = len(s1), len(s2)
 
     if s1_len > s2_len: # O(1)
@@ -34,11 +70,7 @@ def checkInclusion1(s1: str, s2: str) -> bool:
     for c in s1_count.keys():
         if s1_count[c] == s2_substring_count[c]:
             matches += 1
-        
-    if s1_count == s2_substring_count: # O(1)
-        return True
 
-    #  s1 = 'ab' s2 = 'lecabee'
     l = 0
     for r in range(s1_len, s2_len): # O(m - n)
         if matches == 26:
@@ -47,14 +79,14 @@ def checkInclusion1(s1: str, s2: str) -> bool:
         s2_substring_count[s2[r]] += 1
         if s1_count[s2[r]] == s2_substring_count[s2[r]]:
             matches += 1
-        elif s1_count[s2[r]] == s2_substring_count[s2[r]] - 1:
+        elif s1_count[s2[r]] + 1 == s2_substring_count[s2[r]]:
             matches -= 1
 
         # check for new left pointer index
         s2_substring_count[s2[l]] -= 1
         if s1_count[s2[l]] == s2_substring_count[s2[l]]:
             matches += 1
-        elif s1_count[s2[l]] == s2_substring_count[s2[l]] - 1:
+        elif s1_count[s2[l]] - 1 == s2_substring_count[s2[l]]:
             matches -= 1
 
         l += 1
