@@ -8,7 +8,7 @@ def checkInclusion1(s1: str, s2: str) -> bool:
         # if s2 has permutation of s1, return true, otherwise false.
         # permutation - arrangement or ordering of elements of a set into specific sequence or order
 
-    # Solution 7 ( Uses dictionary to store counts TC: O(m) / SC: O(26) == O(1) ):
+    # Solution 7 ( Uses list to store counts TC: O(m) / SC: O(26) == O(1) ):
     s1_len, s2_len = len(s1), len(s2)
 
     if s1_len > s2_len: # O(1)
