@@ -13,6 +13,54 @@ def checkInclusion1(s1: str, s2: str) -> bool:
         # 2 - 3. create a frequency array to store the frequency for s1 and s2, then compare (TC: O(n * m) / SC: O(1))
         # 4. create s1 count map and s2 substring count map, and compare s1 map with s2 substring map
 
+    # Solution 6:
+    s1_len, s2_len = len(s1), len(s2)
+
+    if s1_len > s2_len: # O(1)
+        return False
+
+    s1_count = dict()
+    s2_substring_count = dict()
+    matches = 0
+
+    for i in range(ord('a'), ord('z') + 1): # O(26)
+        s1_count[chr(i)] = 0
+        s2_substring_count[chr(i)] = 0
+
+    for i in range(len(s1)): # O(n)
+        s1_count[s1[i]] += 1
+        s2_substring_count[s2[i]] += 1
+
+    for c in s1_count.keys():
+        if s1_count[c] == s2_substring_count[c]:
+            matches += 1
+        
+    if s1_count == s2_substring_count: # O(1)
+        return True
+
+    #  s1 = 'ab' s2 = 'lecabee'
+    l = 0
+    for r in range(s1_len, s2_len): # O(m - n)
+        if matches == 26:
+            return True
+        # check for new right pointer index
+        s2_substring_count[s2[r]] += 1
+        if s1_count[s2[r]] == s2_substring_count[s2[r]]:
+            matches += 1
+        elif s1_count[s2[r]] == s2_substring_count[s2[r]] - 1:
+            matches -= 1
+
+        # check for new left pointer index
+        s2_substring_count[s2[l]] -= 1
+        if s1_count[s2[l]] == s2_substring_count[s2[l]]:
+            matches += 1
+        elif s1_count[s2[l]] == s2_substring_count[s2[l]] - 1:
+            matches -= 1
+
+        l += 1
+
+    return matches == 26
+
     # Solution 5 (Uses lists to store counts TC: O(26 * m) == O(m) / SC: O(26) == O(1) ):
     s1_len, s2_len = len(s1), len(s2)
 
