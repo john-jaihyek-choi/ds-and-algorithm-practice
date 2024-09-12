@@ -13,7 +13,40 @@ def checkInclusion1(s1: str, s2: str) -> bool:
         # 2 - 3. create a frequency array to store the frequency for s1 and s2, then compare (TC: O(n * m) / SC: O(1))
         # 4. create s1 count map and s2 substring count map, and compare s1 map with s2 substring map
 
-    # Solution 4 ( TC: O(26 * m) == O(m) / SC: O(26) == O(1) ):
+    # Solution 5 (Uses lists to store counts TC: O(26 * m) == O(m) / SC: O(26) == O(1) ):
+    s1_len, s2_len = len(s1), len(s2)
+
+    if s1_len > s2_len: # O(1)
+        return False
+
+    s1_count = [0] * 26
+    s2_substring_count = [0] * 26
+
+    for i, c in enumerate(s1): # O(n)
+        s1_count[ord(c) - ord('a')] += 1
+        s2_substring_count[ord(s2[i]) - ord('a')] += 1
+        
+    if s1_count == s2_substring_count: # O(1)
+        return True
+
+    l = 0
+    for r in range(s1_len, s2_len): # O(m - n)
+        if s1_count == s2_substring_count: # O(26)
+            return True
+        
+        r_index = ord(s2[r]) - ord('a')
+        l_index = ord(s2[l]) - ord('a')
+
+        s2_substring_count[r_index] += 1
+        s2_substring_count[l_index] -= 1
+        l += 1
+
+    if s1_count == s2_substring_count:
+        return True
+
+    return False
+
+    # Solution 4 (uses dictionary to store counts TC: O(26 * m) == O(m) / SC: O(26) == O(1) ):
         # Pseudocode:
             # if length of s1 > length of s2, return true
             # initialize s1 count map (s1_count)
@@ -140,5 +173,5 @@ def checkInclusion1(s1: str, s2: str) -> bool:
 
 
 start_time = time.time()
-print(checkInclusion1("adc", "dcda"))
+print(checkInclusion1("ab", "lecabee"))
 print("--- %s seconds ---" % (time.time() - start_time))
