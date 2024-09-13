@@ -1,14 +1,67 @@
-from collections import defaultdict
+from collections import defaultdict, deque
 from typing import List, Dict, DefaultDict, Set
 import time
 from functools import reduce
 
 def maxSlidingWindow(nums: List[int], k: int) -> List[int]:
+    # Solution 2:
+        # Brainstorm:
+            # Main problems of bruteforce solution that are causing O(k * (n - k))
+                # Max function - O(k) operation to find max of a substring
+                # Substring retrieval (ex: nums[l:r])
+            # What are some parts of a window within a loop we have O(1) access to?
+                # where:
+                    # l is the left edge of the window
+                    # r is the right edge of the window
+                # 1. nums[l] and nums[r] are O(1) access
+                # 2. l and r is directly accessible
+            # Summary:
+                # In order to search for a max value, the operation inside a loop would be O(k) repeatedly
+                # And this is expensive because we are potentially revisting the elements we've visited in the prior window
+            # Use of Deque:
+                #  Deque is a data structure which has the benefit of list, but with couple more advantages when it comes to accessing/removing an index:
+                    # append and appendleft - O(1) operation
+                    # pop and popleft - O(1) operation
+                # if Deque is used, I can keep the deque in an always decreasing order by popping the elements that are in the left most queue if smaller than the incoming number from the new window
+        # Pseudocode:
+            # if the length of the input nums list is less than input k, return the max of nums array
+            # initialize an empty deque (q)
+            # initialize the l pointer at 0
+            # iterate the nums array (r = index)
+                # if nums[r] is greater than q[0]
+                    # append the nums[r] to the q from the left
+                # if r < k
+                    # append nums[r] to the queue
+                    # 
+    if len(nums) < k:
+        return max(nums)
+    elif k == 1:
+        return nums
+    
+    output = []
+    q = deque()
+    l = 0
 
+    for r in range(len(nums)):
+        # if q is non-empty AND the value in q[-1] (current minimum) is greater than nums[r], pop the q, then append the nums[r]
+        while q and nums[q[-1]] < nums[r]:
+            q.pop()
+        q.append(r)
+        
+        # if the current max is out of bounds (less than l), pop the q from the left to remove the max
+        if l > q[0]:
+            q.popleft()
+
+        # if r - l + 1 (size of the window) has reached k, then start incrementing l pointer
+        if r - l + 1 >= k:
+            output.append(nums[q[0]])
+            l += 1
+        
+    return output
 
     # INVALID SOLUTION
         # Brainstorm:
-        # Main problems of bruteforce solution that are causing O(n^2)
+        # Main problems of bruteforce solution that are causing O(k * (n - k))
             # Max function - O(n) operation to find max of a substring
             # Substring retrieval (ex: nums[l:r])
         # What are some parts of a window within a loop we have O(1) access to?
@@ -91,12 +144,12 @@ def maxSlidingWindow(nums: List[int], k: int) -> List[int]:
 
     return output
     
-    # Solution 1 Bruteforce (TC: O(n^2) / SC: O(n)) 
+    # Solution 1 Bruteforce (TC: O(k * (n - k)) / SC: O(n)) 
     output = []
     l = 0
 
-    for r in range(k, len(nums) + 1): # O(n)
-        output.append(max(nums[l:r])) # O(n)
+    for r in range(k, len(nums) + 1): # O(n - k)
+        output.append(max(nums[l:r])) # O(k) + O(k)
         l+=1
 
     return output
