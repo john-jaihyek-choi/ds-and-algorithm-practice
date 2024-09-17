@@ -28,7 +28,7 @@ def minWindow(s: str, t: str) -> str:
     # Solution 1 (Bruteforce - TC: O(m * n^2) == O(n^2) SC: O(m); where n = len(s) and m = len(t)):
         # Pseudocode:
             # initialize length variable for shortest substring (shortest_substring_len)
-            # initialize a tuple to store the left and the right pointers (index) of the shortest substring length (shortest_substring_window)
+            # initialize an empty to store the shortest substring (shortest_substring)
             # initialize a hash map of the character counts in t (t_map)
             # iterate string s beginning length of s many times (l = index)
                 # initialize an hash map to store the characters and their total count of occurances in a given window (substring_map)
@@ -50,12 +50,6 @@ def minWindow(s: str, t: str) -> str:
     t_map = dict()
     for c in t:
         t_map[c] = t_map.get(c, 0) + 1
-
-    def contains_all_chars(substring_map): # O(m) where m = length of t - the duplicates
-        for char, count in t_map.items():
-            if substring_map.get(char, 0) < count:
-                return False
-        return True
     
     # Outer loop for the left index of the window
     for l in range(len(s)): # O(n)
@@ -63,10 +57,10 @@ def minWindow(s: str, t: str) -> str:
 
         # Only process if s[l] is part of t
         if s[l] in t: # O(1)
-            substring_map[s[l]] = substring_map.get(s[r], 0) + 1  # Initialize with the first character
+            substring_map[s[l]] = substring_map.get(s[l], 0) + 1  # Initialize with the first character
 
         # Check if a single character matches the entire t
-        if contains_all_chars(substring_map): # O(m)
+        if contains_all_chars(substring_map, t_map): # O(m)
             return s[l:l + 1]  # If it's a single character that satisfies t / O(1)
 
         # Inner loop for the right index of the window
@@ -75,7 +69,7 @@ def minWindow(s: str, t: str) -> str:
                 substring_map[s[r]] = substring_map.get(s[r], 0) + 1
 
             # Check if current substring contains all chars of t
-            if contains_all_chars(substring_map): # O(m)
+            if contains_all_chars(substring_map, t_map): # O(m)
                 # Update the shortest substring if a smaller one is found
                 if (r - l + 1) < shortest_substring_len: # O(1)
                     shortest_substring_len = r - l + 1
@@ -85,6 +79,12 @@ def minWindow(s: str, t: str) -> str:
                 break
 
     return shortest_substring
+
+def contains_all_chars(substring_map, t_map): # O(m) where m = length of t - the duplicates
+    for char, count in t_map.items():
+        if substring_map.get(char, 0) < count:
+            return False
+    return True
 
 
 start_time = time.time()
