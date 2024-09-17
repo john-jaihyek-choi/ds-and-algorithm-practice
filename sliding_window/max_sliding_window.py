@@ -4,6 +4,27 @@ import time
 from functools import reduce
 
 def maxSlidingWindow(nums: List[int], k: int) -> List[int]:
+    # Solution 3 (TC: O(n) / SC: O(k + n) if includes res_output):
+    res_output = [] # SC: O(n)
+    q = deque() # SC: O(k)
+    l = 0
+    
+    for r in range(len(nums)): # TC: O(n)
+        while q and nums[r] > nums[q[-1]]: # TC: O(k)
+            q.pop() # TC: O(1)
+        q.append(r) # TC: O(1)
+
+        # if new l we are shifting is bigger than the q[0] (index of the current max in the window)
+        if l > q[0]: # TC: O(1)
+            q.popleft() # TC: O(1)
+
+        if r + 1 >= k: # TC: O(1)
+            res_output.append(nums[q[0]]) # TC: O(1)
+            l += 1 # TC: O(1)
+
+    return res_output
+
+
     # Solution 2:
         # Brainstorm:
             # Main problems of bruteforce solution that are causing O(k * (n - k))
@@ -156,5 +177,5 @@ def maxSlidingWindow(nums: List[int], k: int) -> List[int]:
 
 
 start_time = time.time()
-print(maxSlidingWindow([1,2,1,0,4,2,6], 3))
+print(maxSlidingWindow([1,-1], 1))
 print("--- %s seconds ---" % (time.time() - start_time))
