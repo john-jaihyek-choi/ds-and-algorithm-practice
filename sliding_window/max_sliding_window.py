@@ -42,19 +42,19 @@ def maxSlidingWindow(nums: List[int], k: int) -> List[int]:
     q = deque()
     l = 0
 
-    for r in range(len(nums)):
+    for r in range(len(nums)): # O(n)
         # if q is non-empty AND the value in q[-1] (current minimum) is greater than nums[r], pop the q, then append the nums[r]
-        while q and nums[q[-1]] < nums[r]:
-            q.pop()
-        q.append(r)
+        while q and nums[q[-1]] < nums[r]: # O(1)
+            q.pop() # O(1)
+        q.append(r) # O(1)
         
         # if the current max is out of bounds (less than l), pop the q from the left to remove the max
-        if l > q[0]:
-            q.popleft()
+        if l > q[0]: # O(1)
+            q.popleft() # O(1)
 
         # if r - l + 1 (size of the window) has reached k, then start incrementing l pointer
         if r - l + 1 >= k:
-            output.append(nums[q[0]])
+            output.append(nums[q[0]]) # O(1)
             l += 1
         
     return output
@@ -156,5 +156,5 @@ def maxSlidingWindow(nums: List[int], k: int) -> List[int]:
 
 
 start_time = time.time()
-print(maxSlidingWindow([1,3,1,2,0,5], 3))
+print(maxSlidingWindow([1,2,1,0,4,2,6], 3))
 print("--- %s seconds ---" % (time.time() - start_time))
