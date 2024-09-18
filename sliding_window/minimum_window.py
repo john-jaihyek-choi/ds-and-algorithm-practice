@@ -40,7 +40,9 @@ def minWindow(s: str, t: str) -> str:
             if r - l + 1 < shortest_substring_len:
                 shortest_substring_len = r - l + 1 # O(1)
                 res = [l, r] # O(1)
+                output = s[l: r + 1]
             
+            substring_char_map[s[l]] -= 1
             if s[l] in t_char_map and substring_char_map[s[l]] < t_char_map[s[l]]: # O(1)
                 window_match_count -= 1 # O(1)
             
@@ -81,13 +83,6 @@ def minWindow(s: str, t: str) -> str:
     l, r = res
     return s[l: r + 1] if shortest_substring_len != float("infinity") else '' # O(k) where k is the size of the window but is bounded by n (k <= n)
 
-def matching_characters(t_char_map, substring_char_map):
-    for c, count in t_char_map.items(): # O(m) where m = len(t) - duplicate character
-        if substring_char_map.get(c, 0) < count:
-            return False
-        
-    return True
-
 
     #Solution 2 (TC: O(n * m) where m is len(t) - duplicate character):
         # Brainstorm:
@@ -120,7 +115,7 @@ def matching_characters(t_char_map, substring_char_map):
                             # decrement substring_char_map[s[l]] by 1
                         # increment the l pointer by 1
                 # return output
-def minWindow(s: str, t: str) -> str:
+
     output = ''
     if len(s) < len(t): # O(1)
         return output
@@ -150,13 +145,6 @@ def minWindow(s: str, t: str) -> str:
             l += 1 # O(1)
 
     return output
-
-def matching_characters(t_char_map, substring_char_map):
-    for c, count in t_char_map.items(): # O(m) where m = len(t) - duplicate character
-        if substring_char_map.get(c, 0) < count:
-            return False
-        
-    return True
 
 
 # Solution 1 (Bruteforce - TC: O(m * n^2) == O(n^2) SC: O(m); where n = len(s) and m = len(t)):
@@ -223,5 +211,5 @@ def matching_characters(t_char_map, substring_char_map):
 
 
 start_time = time.time()
-print(minWindow("aaaaaaaaaaaabbbbbcdd", "abcdd"))
+print(minWindow("aaabbbbbcdd", "abcdd"))
 print("--- %s seconds ---" % (time.time() - start_time))
