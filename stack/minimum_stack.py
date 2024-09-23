@@ -1,4 +1,23 @@
 from collections import deque
+from typing import List, Dict, DefaultDict, Set
+
+# Solution #2 Another way to approach the problem:
+class MinStack:
+    def __init__(self):
+        self.stack: List[tuple[int, int]] = []
+
+    def push(self, val: int) -> None:
+        min_val = min(val, self.stack[-1][1] if self.stack else val)
+        self.stack.append([val, min_val])
+
+    def pop(self) -> None:
+        self.stack.pop()
+
+    def top(self) -> int:
+        return self.stack[-1][0]
+
+    def getMin(self) -> int:
+        return self.stack[-1][1]
 
 # Solution #1:
     # Note:
@@ -21,27 +40,27 @@ from collections import deque
         # getMin:
             # return the item at the top of the min_stack
 
-class MinStack:
+# class MinStack:
 
-    def __init__(self):
-        self.stack = []
-        self.min_stack = []
+#     def __init__(self):
+#         self.stack = []
+#         self.min_stack = []
 
-    def push(self, val: int) -> None:
-        self.stack.append(val)
+#     def push(self, val: int) -> None:
+#         self.stack.append(val)
 
-        min_val = min(val, self.min_stack[-1] if self.min_stack else val)
-        self.min_stack.append(min_val)
+#         min_val = min(val, self.min_stack[-1] if self.min_stack else val)
+#         self.min_stack.append(min_val)
 
-    def pop(self) -> None:
-        self.stack.pop()
-        self.min_stack.pop()
+#     def pop(self) -> None:
+#         self.stack.pop()
+#         self.min_stack.pop()
 
-    def top(self) -> int:
-        return self.stack[-1]
+#     def top(self) -> int:
+#         return self.stack[-1]
 
-    def getMin(self) -> int:
-        return self.min_stack[-1]
+#     def getMin(self) -> int:
+#         return self.min_stack[-1]
 
 minStack = MinStack()
 
