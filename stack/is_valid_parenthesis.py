@@ -3,7 +3,26 @@ from typing import List, Dict, DefaultDict, Set
 import time
 
 
-# Solution 1:
+#Solution 2 - same approach different idea (TC: O(n) / SC: O(n)):
+def isValid(s: str) -> bool:
+    stack = []
+    braces_pair = {
+        "}": "{",
+        ")": "(",
+        "]": "["
+    }
+
+    for c in s: # O(n)
+        if c not in braces_pair: # check for opening braces 
+            stack.append(c)
+            continue
+        elif not stack or stack[-1] != braces_pair[c]: # check for closing braces pair
+            return False
+        stack.pop()
+        
+    return not stack
+
+# Solution 1 (TC: O(n) / SC: O(n)):
     # Note:
         # valid parenthesis are:
         # Every open bracket is closed by the same type of close bracket.
