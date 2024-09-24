@@ -30,8 +30,8 @@ class Solution3:
 
                 stack.append(result)
                 continue
-            
-            stack.append(token)
+
+            stack.append(int(token))
         
         return stack[-1]
 
@@ -62,7 +62,7 @@ class Solution2:
                 stack.pop()
                 stack.append(result)
             else:
-                stack.append(token)
+                stack.append(int(token))
         
         return stack[-1]
 
@@ -98,7 +98,7 @@ class Solution1: # (TC: O(n) / SC: O(n))
         valid_operands = ["+", "-", "/", "*"]
 
         if len(tokens) == 1: # O(1)
-            return tokens[0]
+            return int(tokens[0])
 
         for token in tokens: # O(n)
             if stack and token in valid_operands:
@@ -117,13 +117,14 @@ class Solution1: # (TC: O(n) / SC: O(n))
                 stack.pop() # O(1)
                 stack.append(left) # O(1)
             else:
-                stack.append(token) # O(1)
+                stack.append(int(token)) # O(1)
         
         return stack[-1]
     
 
 solution1 = Solution1()
 solution2 = Solution2()
+solution3 = Solution3()
 start_time = time.time()
-print(solution2.evalRPN(["4","13","5","/","+"]))
+print(solution3.evalRPN(["4","13","5","/","+"]))
 print("--- %s seconds ---" % (time.time() - start_time))
