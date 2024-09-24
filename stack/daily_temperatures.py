@@ -10,7 +10,18 @@ import time
                 # This way, I can compute and eliminate the indicies that are smaller than the current value while retaining the values in the past that are great
                     # if there's item left over in the temp_index, it would indicate that those items never had future temperature greater than itself
     # Pseudocode:
-        # 
+        # initialize a res stack to store the results
+            # initialize each index with a value of 0 expanding to length of the temperatures
+                # for easy access to the specific index of the past and current temperature
+        # initialize an empty temp_index stack to store the indicies of the temperatures
+        # iterate the temperatures array
+            # while temp_index has value AND the value off the last item in the temp_index stack is less than value of temperatures at i
+                # calculate the difference of days by subtracting i (current day) by last item in the temp_index
+                # set res at the value of last item in the temp_index to days
+                # pop the item from the temp_index stack
+            # append i to temp_index
+        # return res stack
+
 
 class Solution2:
     def dailyTemperatures(self, temperatures: List[int]) -> List[int]:
