@@ -25,6 +25,17 @@ import time
             # 3. goal:
                 # open_count == close_count
                     # This will mean that that the permutation is a valid parenthesis
+        # main challenges to solve:
+            # how am I going to check 2 different variations per decision tree?
+                # recurse the function by passing in ")" and "("
+            # counting the open_count and close_count
+                # initialize open_count at the beginning and pass the open_count to the recursing function
+                # initialize close_count at the beginning and pass the close_count to the recursing function
+            # where to check the constraints?
+                # check close_count < open_count and open_count < n after the base case
+            # where to check the goal case?
+                # check open_count == close_count as a base case for the function
+
     # Pseudocode:
         # 
 
