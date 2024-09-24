@@ -39,40 +39,51 @@ import time
     # Pseudocode:
         # initialize an empty list/stack to store a valid list of permutations (result)
         # initialize an empty list/stack to store an individual permutation (permutation)
-        # initialize variables to store the count of open and close parenthesis being visited
-        # check for base case:
-            # open_count == close_count && open_count != 0
-        # increment open_count by 1
-        # append "(" to the permutation stack/list
-        # check if:
-            # close_count < open_count
-            # AND
-            # open_count < n
-                # if true
-                    # repeat
-                # if false
-                    # decrement open_count by 1
-                    # pop the "(" from permutation stack/list
-        # append ")" to the permutation stack/list
-        # check if:
-            # close_count < open_count
-            # AND
-            # open_count < n
-                # if true
-                    # repeat
-                # if false
-                    # decrement close_count by 1
-                    # pop the ")" from permutation stack/list
+        # declare a function for backtracking recursion with 2 parameters:
+            # Parameters:
+                # open_count for total count of open brackets used
+                # close_count for total count of close brackets used
+            # check for base case:
+                # open_count == close_count == n
+                    # if true
+                        # append the letters (joined) to the result stack
+                        # then return
+            # check if open_count < n:
+                # append "(" to the permutation stack/list
+                # backtrack with open_count + 1
+                # pop the item from permutation
+                    # this is intended to backtrack to previous permutation
+            # check if close_count < open_count:
+                # append ")" to the permutation stack/list
+                # backtrack with close_count + 1
+                # pop the item from permutation
+                    # this is intended to backtrack to previous permutation
+        # call the backtrack function and start with value of 0 for open_count and 0 for close_count
+        # return the result stack
 
 
 class Solution:
-    def __init__(self) -> None:
-        self.result = []
-        
     def generateParenthesis(self, n: int) -> List[str]:
+        result = []
+        permutation = []
 
+        def backtrack(open_count: int, close_count: int) -> None:
+            if open_count == close_count == n:
+                result.append(''.join(permutation))
+                return
 
-        return self.result
+            if open_count < n:
+                permutation.append("(")
+                backtrack(open_count + 1, close_count)
+                permutation.pop()
+            if close_count < open_count:
+                permutation.append(")")
+                backtrack(open_count, close_count + 1)
+                permutation.pop()
+        
+        backtrack(0, 0)
+
+        return result
     
 
 solution = Solution()
