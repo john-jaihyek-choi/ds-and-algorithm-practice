@@ -1,7 +1,70 @@
 from collections import defaultdict, deque
 from typing import List, Dict, DefaultDict, Set
+from operator import add, sub, mul, truediv
 import time
 
+# Solution 3 - using the return value of the pop operation (TC: O(n) SC: O(n)):
+class Solution3:
+    def __init__(self) -> None:
+        pass
+
+    def evalRPN(self, tokens: List[str]) -> int:
+        stack = []
+        valid_operands = ["+", "-", "/", "*"]
+        operations = {
+            "+": add,
+            "-": sub,
+            "/": truediv,
+            "*": mul
+        }
+
+        if len(tokens) == 1:
+            return int(tokens[0])
+
+        for token in tokens:
+            if stack and token in valid_operands:
+                right_operand = stack.pop()
+                left_operand = stack.pop()
+
+                result = int(operations[token](left_operand, right_operand))
+
+                stack.append(result)
+                continue
+            
+            stack.append(token)
+        
+        return stack[-1]
+
+# Solution 2 - operator library approach for less line of code (TC: O(n) SC: O(n)):
+class Solution2:
+    def __init__(self) -> None:
+        pass
+
+    def evalRPN(self, tokens: List[str]) -> int:
+        stack = []
+        valid_operands = ["+", "-", "/", "*"]
+        operations = {
+            "+": add,
+            "-": sub,
+            "/": truediv,
+            "*": mul
+        }
+
+        if len(tokens) == 1:
+            return int(tokens[0])
+
+        for token in tokens:
+            if stack and token in valid_operands:
+                left_operand, right_operand = int(stack[-2]), int(stack[-1])
+                result = int(operations[token](left_operand,right_operand))
+
+                stack.pop()
+                stack.pop()
+                stack.append(result)
+            else:
+                stack.append(token)
+        
+        return stack[-1]
 
 # Solution 1:
     # Pseudocode:
@@ -26,7 +89,7 @@ import time
             # append token to stack
         # return the last item from the stack
 
-class Solution:
+class Solution1: # (TC: O(n) / SC: O(n))
     def __init__(self) -> None:
         pass
 
@@ -34,32 +97,33 @@ class Solution:
         stack = []
         valid_operands = ["+", "-", "/", "*"]
 
-        if len(tokens) == 1:
+        if len(tokens) == 1: # O(1)
             return tokens[0]
 
-        for token in tokens:
+        for token in tokens: # O(n)
             if stack and token in valid_operands:
-                left, right = int(stack[-2]), int(stack[-1])
+                left, right = int(stack[-2]), int(stack[-1]) # O(1)
 
-                if token == "+":
+                if token == "+": # O(1)
                     left += right
-                elif token == "-":
-                    left -= right
-                elif token == "*":
+                elif token == "-": # O(1)
+                    left -= right 
+                elif token == "*": # O(1)
                     left *= right
-                elif token == "/":
+                elif token == "/": # O(1)
                     left /= right
 
-                stack.pop()
-                stack.pop()
-                stack.append(left)
+                stack.pop() # O(1)
+                stack.pop() # O(1)
+                stack.append(left) # O(1)
             else:
-                stack.append(token)
+                stack.append(token) # O(1)
         
         return stack[-1]
     
 
-solution = Solution()
+solution1 = Solution1()
+solution2 = Solution2()
 start_time = time.time()
-print(solution.evalRPN(["4","13","5","/","+"]))
+print(solution2.evalRPN(["4","13","5","/","+"]))
 print("--- %s seconds ---" % (time.time() - start_time))
