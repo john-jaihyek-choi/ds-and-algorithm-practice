@@ -37,7 +37,33 @@ import time
                 # check open_count == close_count as a base case for the function
 
     # Pseudocode:
-        # 
+        # initialize an empty list/stack to store a valid list of permutations (result)
+        # initialize an empty list/stack to store an individual permutation (permutation)
+        # initialize variables to store the count of open and close parenthesis being visited
+        # check for base case:
+            # open_count == close_count && open_count != 0
+        # increment open_count by 1
+        # append "(" to the permutation stack/list
+        # check if:
+            # close_count < open_count
+            # AND
+            # open_count < n
+                # if true
+                    # repeat
+                # if false
+                    # decrement open_count by 1
+                    # pop the "(" from permutation stack/list
+        # append ")" to the permutation stack/list
+        # check if:
+            # close_count < open_count
+            # AND
+            # open_count < n
+                # if true
+                    # repeat
+                # if false
+                    # decrement close_count by 1
+                    # pop the ")" from permutation stack/list
+
 
 class Solution:
     def __init__(self) -> None:
