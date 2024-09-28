@@ -88,14 +88,23 @@ def maxProfit(prices: List[int]) -> int:
     # return max_profit
 
     # Solution 4 (TC: O(n) SC: O(1) Cleaner Version)
-    max_profit = 0
+    # max_profit = 0
 
-    lowest = 0
+    # lowest = 0
+    # for price in prices:
+    #     if price <= lowest:
+    #         lowest = price
+    #     max_profit = max(max_profit, price - lowest)
+    # return max_profit
+
+    # Solution 5 - Another variation of Solution 4 (TC: O(n) SC: O(1))
+    profit = 0
+    lowest = prices[0]
+
     for price in prices:
-        if price <= lowest:
-            lowest = price
-        max_profit = max(max_profit, price - lowest)
-    return max_profit
+        lowest = min(lowest, price)
+        profit = max(profit, price - lowest)
+    return profit
 
 start_time = time.time()
 print(maxProfit([7,1,5,3,6,4]))
