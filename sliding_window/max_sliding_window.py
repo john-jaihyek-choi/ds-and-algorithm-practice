@@ -4,6 +4,25 @@ import time
 from functools import reduce
 
 def maxSlidingWindow(nums: List[int], k: int) -> List[int]:
+    res = []
+    q = deque()
+    l, r = 0, 0
+    
+    while r < len(nums):
+        while q and nums[q[-1]] < nums[r]:
+            q.pop()
+        q.append(r)
+        r += 1
+
+        if q and q[0] < l:
+            q.popleft()
+
+        if r >= k:
+            l += 1
+            res.append(nums[q[0]])
+
+    return res
+
     # Solution 3 (TC: O(n) / SC: O(k + n) if includes res_output):
     res_output = [] # SC: O(n)
     q = deque() # SC: O(k)
@@ -177,5 +196,5 @@ def maxSlidingWindow(nums: List[int], k: int) -> List[int]:
 
 
 start_time = time.time()
-print(maxSlidingWindow([1,-1], 1))
+print(maxSlidingWindow([1,3,1,2,0,5], 3))
 print("--- %s seconds ---" % (time.time() - start_time))

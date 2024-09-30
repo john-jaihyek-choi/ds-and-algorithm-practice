@@ -75,7 +75,7 @@ def characterReplacement(s: str, k: int) -> int:
             char_count[s[l]] -= 1
             l += 1
 
-    return max_length
+    return r - l + 1
 
 start_time = time.time()
 print(characterReplacement("AAABABB", 1))
