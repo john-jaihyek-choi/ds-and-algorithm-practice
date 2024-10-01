@@ -16,6 +16,18 @@ import time
     # if car catches up to a car fleet the moment the fleet reaches the destination, then the car IS PART of the fleet
     # Return the number of different car fleets that will arrive at the destination
 
+# Solution 2: using stack append/pop TC: O(n log n) / SC: O(n)
+class Solution2:
+    def carFleet(self, target: int, position: List[int], speed: List[int]) -> int:
+        pair = [(p, s) for p, s in zip(position, speed)]
+        pair.sort(reverse=True)
+        stack = []
+        for p, s in pair:  # Reverse Sorted Order
+            stack.append((target - p) / s)
+            if len(stack) >= 2 and stack[-1] <= stack[-2]:
+                stack.pop()
+        return len(stack)
+
 # Solution 1:
     # brainstorm:
         # to calculate the time that the first (last in the position array) reaches the destination:
