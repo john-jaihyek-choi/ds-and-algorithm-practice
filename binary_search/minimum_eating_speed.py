@@ -28,26 +28,27 @@ import math
                 # set r to k - 1
     # return the min_k
 
+# TC: O(log n * p) SC: O(1)
 class Solution:
     def minEatingSpeed(self, piles: List[int], h: int) -> int:
-        l, r = 1, max(piles)
-        min_k = r
+        l, r = 1, max(piles) # O(n)
+        min_k = r # O(1)
 
-        while l <= r:
-            k = (r + l) // 2
+        while l <= r: # O(log n) where n is the max value in piles
+            k = (r + l) // 2 # O(1)
             
             hrs_to_finish = 0
-            for pile in piles:
-                hrs_to_finish += math.ceil(pile / k)
+            for pile in piles: # O(p) where p is length of piles
+                hrs_to_finish += math.ceil(pile / k) # O(1)
 
-            if hrs_to_finish > h:
-                l = k + 1
+            if hrs_to_finish > h: # O(1)
+                l = k + 1 # O(1)
             else:
-                min_k = k
-                r = k - 1
+                min_k = k # O(1)
+                r = k - 1 # O(1)
                 
 
-        return min_k
+        return min_k # O(1)
 
 solution = Solution()
 start_time = time.time()
