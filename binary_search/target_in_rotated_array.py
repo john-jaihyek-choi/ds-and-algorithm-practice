@@ -30,7 +30,7 @@ class Solution2:
 
             if nums[m] == target:
                 return m
-            elif nums[m] < nums[r]: # right is sorted
+            elif nums[m] < nums[r]: # right is sorted (<= is also a working solution)
                 if nums[m] < target <= nums[r]:
                     l = m + 1
                 else:
@@ -64,7 +64,7 @@ class Solution1:
 
         while l <= r:
             m = (r + l) // 2
-            
+
             if nums[m] == target:
                 return m
             elif nums[l] <= nums[m]: # left is sorted
