@@ -8,11 +8,14 @@ import math
     # 2. nums[i] are all unique
     # 3. array is in a ascending order (but rotated by x times)
 
-# TC: O(log n) / SC: O(1) Same logic, but with float('inf')
+# TC: O(log n) / SC: O(1) Same logic, but with float('inf') and with if statement to return immediately if the array is already in order
 class Solution2:
     def findMin(self, nums: List[int]) -> int:
         l, r = 0, len(nums) - 1 # O(1)
         min_val = float('inf') # O(1)
+
+        if nums[l] < nums[r]:
+            return nums[l]
 
         while l <= r: # O(log n)
             mid = (r+l) // 2 # O(1)
