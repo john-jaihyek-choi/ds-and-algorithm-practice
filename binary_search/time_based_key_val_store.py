@@ -72,36 +72,37 @@ class TimeMap1:
         # if prev_timestamp <= timestamp:
             # return prev_timestamp
 
+# TC: O(log n) / SC: O(n)
 class TimeMap1:
     def __init__(self):
         self.people = defaultdict(list[str, int])
     
     def set(self, key: str, value: str, timestamp: int) -> None:
-        self.people[key].append([value, timestamp])
+        self.people[key].append([value, timestamp]) # O(1)
         return 
 
     def get(self, key: str, timestamp: int) -> str:
-        timestamps = self.people[key]
+        timestamps = self.people[key] # O(1)
 
-        l, r = 0, len(timestamps) - 1
-        latest=''
-        while l <= r:
-            m = (r + l) // 2
-            val, time = timestamps[m]
+        l, r = 0, len(timestamps) - 1 # O(1)
+        latest='' # O(1)
+        while l <= r: # O(log n)
+            m = (r + l) // 2 # O(1)
+            val, time = timestamps[m] # O(1)
 
-            if time <= timestamp:
-                latest = val
+            if time <= timestamp: # O(1)
+                latest = val # O(1)
 
-            if time == timestamp:
-                return val
-            elif time < timestamp:
-                l = m + 1
-            else:
-                r = m - 1
+            if time == timestamp: # O(1)
+                return val # O(1)
+            elif time < timestamp: # O(1)
+                l = m + 1 # O(1)
+            else: # O(1)
+                r = m - 1 # O(1)
 
-        return latest
+        return latest # O(1)
 
-# Solution 2: Same concept, less code
+# Solution 2: Same concept, less code - TC: O(log n) / SC: O(n)
 class TimeMap2:
     def __init__(self):
         self.people = defaultdict(list[str, int])
