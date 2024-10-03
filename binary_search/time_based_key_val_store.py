@@ -58,7 +58,7 @@ class TimeMap1:
         
         return self.people[key][timestamp]
     
-# Brainstorm 1:
+# Solution 1:
     # the goal of the set method is to simply store the key value pair at a given time:
         # ex) each key/value pair looks like...
         # {            
@@ -100,6 +100,31 @@ class TimeMap1:
                 r = m - 1
 
         return latest
+
+# Solution 2: Same concept, less code
+class TimeMap2:
+    def __init__(self):
+        self.people = defaultdict(list[str, int])
+    
+    def set(self, key: str, value: str, timestamp: int) -> None:
+        self.people[key].append([value, timestamp])
+        return 
+
+    def get(self, key: str, timestamp: int) -> str:
+        res, timestamps = "", self.people[key]
+
+        l, r = 0, len(timestamps) - 1
+        while l <= r:
+            m = (r + l) // 2
+            val, time = timestamps[m]
+
+            if time <= timestamp:
+                res = val
+                l = m + 1
+            else:
+                r = m - 1
+
+        return res
 
 timeMap = TimeMap1()
 print(
