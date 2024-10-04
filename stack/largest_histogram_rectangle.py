@@ -2,6 +2,35 @@ from collections import defaultdict, deque
 from typing import List, Dict, DefaultDict, Set
 import time
 
+
+class Solution1:
+    def largestRectangleArea(self, heights: List[int]) -> int:
+        # stack to store individual bar in an increasing/ascending order
+            # when visiting the next bar, if the next bar is smaller, then pop the existing bars until we find a bar <= the current
+
+        stack = []
+        max_area = float('-inf')
+        for i, h in enumerate(heights):
+            pair = [i, h]
+            
+            while stack and h < stack[-1][1]:
+                j, prev_h = stack.pop()
+                pair[0] = j
+                max_area = max(max_area, (i - j) * prev_h)
+
+            stack.append(pair)
+
+        while stack:
+            i, h = stack.pop()
+            w = len(heights) - i
+            area = w * h
+            max_area = max(max_area, area)
+
+
+        return max_area
+
+            
+
 # Note:
     # a bar can can extend to the right if the height of bar in the right is greater than or equal to height of itself
     # bars to the left of itself can be popped until a bar with lower height is found
@@ -54,7 +83,7 @@ class Solution:
         return max_area # O(1)
     
 
-solution = Solution()
+solution = Solution1()
 start_time = time.time()
 print(solution.largestRectangleArea([2,1,5,6,2,3]))
 print("--- %s seconds ---" % (time.time() - start_time))
