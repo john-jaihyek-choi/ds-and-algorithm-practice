@@ -18,8 +18,8 @@ def to_list(head: ListNode):
     return result
 
 
-#   
-# [0, 3, 2, 1]
+#  h        nh
+# [1, 2, 3, 4]
 # Solution 2: Recursive (TC: O(n) / SC: O(n))
 class Solution2:
     def reverseList(self, head: Optional[ListNode]) -> Optional[ListNode]:
@@ -57,10 +57,10 @@ class Solution1:
         return new
             
 
-node4 = ListNode(3, None)
-node3 = ListNode(2, node4)
-node2 = ListNode(1, node3)
-node1 = ListNode(0, node2)
+node4 = ListNode(4, None)
+node3 = ListNode(3, node4)
+node2 = ListNode(2, node3)
+node1 = ListNode(1, node2)
 solution = Solution2()
 start_time = time.time()
 answer = solution.reverseList(node1)
