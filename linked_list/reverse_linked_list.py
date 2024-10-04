@@ -1,22 +1,8 @@
 import pprint
+import time
 from collections import defaultdict, deque
 from typing import List, Dict, DefaultDict, Set, Optional
-import time
-import math
-
-# Definition for singly-linked list.
-class ListNode:
-    def __init__(self, val=0, next=None):
-        self.val = val
-        self.next = next
-
-def to_list(head: ListNode):
-    result = []
-    while head:
-        result.append(head.val)
-        head = head.next
-    return result
-
+from helper.functions import LinkedList, ListNode, Utility
 
 #  h        nh
 # [1, 2, 3, 4]
@@ -57,12 +43,11 @@ class Solution1:
         return new
             
 
-node4 = ListNode(4, None)
-node3 = ListNode(3, node4)
-node2 = ListNode(2, node3)
-node1 = ListNode(1, node2)
-solution = Solution2()
+
+solution = Solution1()
+input = LinkedList([3, 2, 1, 0])
+Utility.print_linked_list(input.head)
+
 start_time = time.time()
-answer = solution.reverseList(node1)
-pprint.pprint(to_list(answer))
+answer: ListNode = solution.reverseList(input.head)
 print("--- %s seconds ---" % (time.time() - start_time))
