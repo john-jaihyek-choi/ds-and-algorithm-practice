@@ -1,9 +1,8 @@
-import pprint
+import time
+import math
 from collections import defaultdict, deque
 from typing import List, Dict, DefaultDict, Set, Optional
 from helper.functions import LinkedList, ListNode, Utility
-import time
-import math
 
 class Solution:
     def mergeTwoLists(self, list1: Optional[ListNode], list2: Optional[ListNode]) -> Optional[ListNode]:
