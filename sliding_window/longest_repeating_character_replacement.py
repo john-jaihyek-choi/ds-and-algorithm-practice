@@ -2,6 +2,43 @@ from collections import defaultdict
 from typing import List, Dict, DefaultDict, Set
 import time
 
+class Solution:
+    def characterReplacement(self, s: str, k: int) -> int:
+        # character at s can be replaced, at most, k many times
+            # doesn't matter which of the characters are replaced as long as the overall string forms a string with identical characters
+        # sliding window problem
+            # window isn't necessarily k, since we can extend window larger than k
+        # I want to keep the letter that appears most frequently
+        # count dictionary keep count of individual character counts as I iterate
+        # I'd keep max frequency count updated as going through iteration
+            # since the goal is to form the longest substring, we'll want to replace something other than the chracters with max frequency count
+        # if the length of the sliding window - the max frequency count <= k, then it's a valid substring
+
+        # variables to store
+            # count dictionary
+            # max frquency count
+            # 
+        
+        # when to move l and r pointers
+            # r + 1 as long as the the length of the window - max frequency <= k
+            # l + 1 otherwise
+                # when l pointer moves, the max frequency will change
+                    # since the goal of the problem is to search the max substring length, there's no need to recalculate the max frequency when decrementing
+    
+        count_dict = defaultdict(int)
+        l, max_freq = 0, 0
+        for r in range(len(s)):
+            count_dict[s[r]] += 1
+
+            max_freq = max(max_freq, count_dict[s[r]])
+
+            if (r - l + 1) - max_freq > k:
+                count_dict[s[l]] -= 1
+                l += 1
+
+        return r - l + 1
+        
+
 def characterReplacement(s: str, k: int) -> int:
     # Note:
         # input string will always be uppercase english characters (A-Z, 26 characters)
@@ -77,6 +114,7 @@ def characterReplacement(s: str, k: int) -> int:
 
     return r - l + 1
 
+solution = Solution()
 start_time = time.time()
-print(characterReplacement("AAABABB", 1))
+print(solution.characterReplacement("AAABABB", 1))
 print("--- %s seconds ---" % (time.time() - start_time))
