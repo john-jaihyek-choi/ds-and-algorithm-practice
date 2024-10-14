@@ -72,6 +72,67 @@ def threeSum(nums: List[int]) -> List[List[int]]:
                     # if sum is = to 0, store the triplet to an empty array, then append it to the res_arr
             # NOT A VALID SOLUTION
 
+
+    # Solution 3 - Retry:
+    # first:
+        # sort the nums array
+            # use the builtin sort() method on nums
+            # OR
+            # use the sorted() method
+
+    # second:
+        # single iterator to check the first number
+            # initialize an empty array to store the res output = res
+            # iterate the nums array from 0 (i = index)
+            # initialize the l and r pointer
+                # l = i + 1
+                # r = len(nums) - 1
+    
+    # third:
+        # two-pointer, 2 number sum, to check the remaining two combination
+            # while l < r:
+                # if nums[l] + nums[r] < target:
+                    # l += 1
+                # elif nums[l] + nums[r] > target:
+                    # r -= 1
+                # else:
+                    # return res.append([nums[i], nums[l], nums[r]])
+    # return the res
+
+    # TC: O(n^2) / SC: O(n)
+    nums.sort()
+    # with the trick skipping the duplicate triplets, the below logic can be replaced with empty res list
+    triplet_set = set()
+
+    for i, n in range(len(nums)): # O(n)
+        if i > 0 and n == nums[i - 1]:
+            continue
+
+        l = i + 1
+        r = len(nums) - 1
+
+        while l < r:
+            if nums[i] + nums[l] + nums[r] < 0:
+                l += 1
+            elif nums[i] + nums[l] + nums[r] > 0:
+                r -= 1
+            else:
+                triplet_set.add(tuple([nums[i], nums[l], nums[r]]))
+                l += 1
+                # Trick to skip the duplicate triplets
+                    # it guarantees that the same value won't be used multiple times
+                while nums[l] == nums[l - 1] and l < r:
+                    l += 1
+
+    # with the trick skipping the duplicate triplets, the below logic is not necessary
+    res = []
+    for triplet in triplet_set:
+        i, j, k = triplet
+        res.append([i, j, k])
+
+    return res
+
+
     # Solution 1:
     res_arr = []
     nums.sort()
