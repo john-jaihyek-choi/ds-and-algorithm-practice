@@ -10,6 +10,67 @@ from helper.functions import LinkedList, ListNode, Utility
 #         self.val = val
 #         self.next = next
 
+class Solution2:
+    def reorderList(self, head: Optional[ListNode]) -> None:
+        # 2. Find the mid point of the list, reverse the second half, then merge
+            # Find mid point:
+                # initialize a fast and slow pointer, both starting at the same position
+                    # fast, slow = head, head
+                # while fast and fast.next is valid:
+                    # fast = fast.next.next
+                    # slow = slow.next
+            # reverse the right half of the list
+                # initialize new and cur nodes
+                    # new = None
+                    # cur = slow.next
+                # while cur is valid
+                    # temp = cur.next
+                    # cur.next = new
+                    # new = cur
+                    # cur = temp
+                # return new
+            # store the reversed right list
+                # right head starts at new
+            # store left list
+                # left head starts at head
+            # (IMPORTANT) disconnect the end of the left from start of the right list
+                # since slow is the end of the left list, set slow.next to None
+                    # This operation can be done here since we are storing right list already
+            # merge the left and right list
+                # while left and right are valid
+                    # store the l_temp variable for left.next
+                    # store the r_temp variable for right.next
+                    # set left.next to right
+                    # set right.next to l_temp
+                    # set left to l_temp
+                    # set right to r_temp
+            # return the function with no value
+
+        fast, slow = head, head
+        while fast and fast.next:
+            fast = fast.next.next
+            slow = slow.next
+
+        new, cur = None, slow.next
+        while cur:
+            temp = cur.next
+            cur.next = new
+            new = cur
+            cur = temp
+
+        slow.next = None
+        left, right = head, new
+
+        while left and right:
+            l_temp, r_temp = left.next, right.next
+
+            left.next = right
+            right.next = l_temp
+
+            left, right = l_temp, r_temp
+        
+        return
+
 class Solution1:
     def reorderList(self, head: Optional[ListNode]) -> None:
         # Brainstorm:
