@@ -170,7 +170,7 @@ class Solution1:
 
         return r - l + 1
 
-solution = Solution()
+solution = Solution3()
 start_time = time.time()
 print(solution.characterReplacement("AAABABB", 1))
 print("--- %s seconds ---" % (time.time() - start_time))
