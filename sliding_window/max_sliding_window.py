@@ -1,49 +1,105 @@
 from collections import defaultdict, deque
 from typing import List, Dict, DefaultDict, Set
 import time
-from functools import reduce
 
-def maxSlidingWindow(nums: List[int], k: int) -> List[int]:
-    res = []
-    q = deque()
-    l, r = 0, 0
-    
-    while r < len(nums):
-        while q and nums[q[-1]] < nums[r]:
-            q.pop()
-        q.append(r)
-        r += 1
+class Solution4:
+    def maxSlidingWindow(self, nums: List[int], k: int) -> List[int]:
+        # input:
+            # nums: List[int]
+            # k: int
+                # size of the window
+        # goal: return a list that contains the maximum element in the window at each step
+        # Sliding window approach:
+            # main challenge of the problem:
+                # how to know the maximum within the window boundary
+            # l and r
+                # when to move l?
+                    # l moves when r has reached k
+                        # when r >= k, l moves
+                # when to move r?
+                    # every iteration
+            # how do I track max value within the boundary?
+                # as r and l moves, store the max within the boundary
+                    # how?
+                        # using stack or queue?
+                            # won't work since stack can't pop the bottom. It's one way pop
+                        # double ended queue?
+                            # double ended queue can pop and append from each end of the list O(1)
+                    # How can I properly store the max?
+                        # if we keep the deque in a strictly decreasing order, we can ensure we have access to max in O(1) tine
+                        # if value at the top of the deque is greater than the one appending, append.
+                        # if value at the top of the dque is less than the one appending, pop until top of the stack is greater, then append
+                    # But how do I keep track of max within boundary in each iteration?
+                        # since l pointer represents an index of the number
+                            # storing index to the number can ensure that we can pop the bottom of the stack (max) when out of bounds
+                                # when l > stack[0]
+                            # even if the bottom is popped, the next number will be guaranteed to be a max value
+            # return value?
+                # need to return a max value at each index in each slide
+            # Variables to track:
+                # res: List[int]
+                # l and r pointer
+                    # l: int
+                    # r: int
+                # q: Deque[]
+            
+            # Pseudocode:
+                # initialize an empty deque (deque)
+                # initialize an empty array for response (res)
+                # initialize an l pointer to 0
+                # loop nums (r = index, n = nums[r])
+                    # while q is valid and value of nums[q[-1]] < n:
+                        # pop the top of the q
+                    # append r to the q
+                    # if r >= k:
+                        # if l > q[0]:
+                            # q.popleft()
+                        # increment l by 1
+                        # res.append(nums[q[0]])
+            
+        q, res = deque(), []
+        l = 0
+        for r, n in enumerate(nums):
+            while q and nums[q[-1]] < n:
+                q.pop()
+            
+            q.append(r)
 
-        if q and q[0] < l:
-            q.popleft()
+            if r + 1 >= k:
+                if l > q[0]:
+                    q.popleft()
+                
+                l += 1
+                res.append(nums[q[0]])
+                
+            
+        return res
 
-        if r >= k:
-            l += 1
-            res.append(nums[q[0]])
+class Solution3:
+    def maxSlidingWindow(self, nums: List[int], k: int) -> List[int]:
+        # Solution 3 (TC: O(n) / SC: O(k + n) if includes res_output):
+        res_output = [] # SC: O(n)
+        q = deque() # SC: O(k)
+        l = 0
+        
+        for r in range(len(nums)): # TC: O(n)
+            while q and nums[r] > nums[q[-1]]: # TC: O(k)
+                q.pop() # TC: O(1)
+            q.append(r) # TC: O(1)
 
-    return res
+            # if new l we are shifting is bigger than the q[0] (index of the current max in the window)
+            if l > q[0]: # TC: O(1)
+                q.popleft() # TC: O(1)
 
-    # Solution 3 (TC: O(n) / SC: O(k + n) if includes res_output):
-    res_output = [] # SC: O(n)
-    q = deque() # SC: O(k)
-    l = 0
-    
-    for r in range(len(nums)): # TC: O(n)
-        while q and nums[r] > nums[q[-1]]: # TC: O(k)
-            q.pop() # TC: O(1)
-        q.append(r) # TC: O(1)
+            if r + 1 >= k: # TC: O(1)
+                res_output.append(nums[q[0]]) # TC: O(1)
+                l += 1 # TC: O(1)
 
-        # if new l we are shifting is bigger than the q[0] (index of the current max in the window)
-        if l > q[0]: # TC: O(1)
-            q.popleft() # TC: O(1)
-
-        if r + 1 >= k: # TC: O(1)
-            res_output.append(nums[q[0]]) # TC: O(1)
-            l += 1 # TC: O(1)
-
-    return res_output
+        return res_output
 
 
+class Solution2:
+    def maxSlidingWindow(self, nums: List[int], k: int) -> List[int]:
     # Solution 2:
         # Brainstorm:
             # Main problems of bruteforce solution that are causing O(k * (n - k))
@@ -73,32 +129,34 @@ def maxSlidingWindow(nums: List[int], k: int) -> List[int]:
                 # if r < k
                     # append nums[r] to the queue
                     # 
-    if len(nums) < k:
-        return max(nums)
-    elif k == 1:
-        return nums
-    
-    output = []
-    q = deque()
-    l = 0
-
-    for r in range(len(nums)): # O(n)
-        # if q is non-empty AND the value in q[-1] (current minimum) is greater than nums[r], pop the q, then append the nums[r]
-        while q and nums[q[-1]] < nums[r]: # O(1)
-            q.pop() # O(1)
-        q.append(r) # O(1)
+        if len(nums) < k:
+            return max(nums)
+        elif k == 1:
+            return nums
         
-        # if the current max is out of bounds (less than l), pop the q from the left to remove the max
-        if l > q[0]: # O(1)
-            q.popleft() # O(1)
+        output = []
+        q = deque()
+        l = 0
 
-        # if r - l + 1 (size of the window) has reached k, then start incrementing l pointer
-        if r - l + 1 >= k:
-            output.append(nums[q[0]]) # O(1)
-            l += 1
-        
-    return output
+        for r in range(len(nums)): # O(n)
+            # if q is non-empty AND the value in q[-1] (current minimum) is greater than nums[r], pop the q, then append the nums[r]
+            while q and nums[q[-1]] < nums[r]: # O(1)
+                q.pop() # O(1)
+            q.append(r) # O(1)
+            
+            # if the current max is out of bounds (less than l), pop the q from the left to remove the max
+            if l > q[0]: # O(1)
+                q.popleft() # O(1)
 
+            # if r - l + 1 (size of the window) has reached k, then start incrementing l pointer
+            if r - l + 1 >= k:
+                output.append(nums[q[0]]) # O(1)
+                l += 1
+            
+        return output
+
+class InvalidSolution:
+    def maxSlidingWindow(self, nums: List[int], k: int) -> List[int]:
     # INVALID SOLUTION
         # Brainstorm:
         # Main problems of bruteforce solution that are causing O(k * (n - k))
@@ -160,41 +218,44 @@ def maxSlidingWindow(nums: List[int], k: int) -> List[int]:
                 # append the smaller value between l_max[r] and r_max[l] to the output array
                 # increment the l by 1
 
-    # INVALID SOLUTION
-    if k == 1:
-        return nums
-    
-    output, l_max = [], []
-    r_max = [0] * len(nums)
+        # INVALID SOLUTION
+        if k == 1:
+            return nums
+        
+        output, l_max = [], []
+        r_max = [0] * len(nums)
 
-    maximum = 0
-    for num in nums:
-        maximum = max(maximum, num)
-        l_max.append(maximum)
+        maximum = 0
+        for num in nums:
+            maximum = max(maximum, num)
+            l_max.append(maximum)
 
-    maximum = nums[-1]
-    for i in range(len(nums) - 1, -1, -1):
-        maximum = max(maximum, nums[i])
-        r_max[i] = maximum
+        maximum = nums[-1]
+        for i in range(len(nums) - 1, -1, -1):
+            maximum = max(maximum, nums[i])
+            r_max[i] = maximum
 
-    l = 0
-    for r in range(k - 1, len(nums)):
-        output.append(min(l_max[r], r_max[l]))
-        l += 1
+        l = 0
+        for r in range(k - 1, len(nums)):
+            output.append(min(l_max[r], r_max[l]))
+            l += 1
 
-    return output
-    
-    # Solution 1 Bruteforce (TC: O(k * (n - k)) / SC: O(n)) 
-    output = []
-    l = 0
+        return output
 
-    for r in range(k, len(nums) + 1): # O(n - k)
-        output.append(max(nums[l:r])) # O(k) + O(k)
-        l+=1
+class Solution1:
+    def maxSlidingWindow(self, nums: List[int], k: int) -> List[int]:
+        # Solution 1 Bruteforce (TC: O(k * (n - k)) / SC: O(n)) 
+        output = []
+        l = 0
 
-    return output
+        for r in range(k, len(nums) + 1): # O(n - k)
+            output.append(max(nums[l:r])) # O(k) + O(k)
+            l+=1
+
+        return output
 
 
+solution = Solution4()
 start_time = time.time()
-print(maxSlidingWindow([1,3,1,2,0,5], 3))
+print(solution.maxSlidingWindow([1,3,1,2,0,5], 3))
 print("--- %s seconds ---" % (time.time() - start_time))
