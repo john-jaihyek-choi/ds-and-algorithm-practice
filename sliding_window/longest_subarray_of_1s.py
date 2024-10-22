@@ -34,17 +34,18 @@ class Solution:
                     # increment l by 1
             # retun r - l
         
-        l, zero_count = 0, 0
-        for r, n in enumerate(nums):
-            if n == 0:
+        # TC: O(n) / SC: O(1)
+        l, zero_count = 0, 0 # O(1)
+        for r, n in enumerate(nums): # O(n)
+            if n == 0: # O(1)
                 zero_count += 1
             
-            if zero_count > 1:
+            if zero_count > 1: # O(1)
                 if nums[l] == 0:
                     zero_count -= 1
                 l += 1
             
-        return r - l
+        return r - l # O(1)
 
 solution = Solution()
 start_time = time.time()
