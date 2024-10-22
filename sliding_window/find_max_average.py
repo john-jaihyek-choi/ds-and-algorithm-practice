@@ -2,6 +2,7 @@ from collections import defaultdict, deque
 from typing import List, Dict, DefaultDict, Set
 import time
 
+# Leetcode 643:
 class Solution:
     def findMaxAverage(self, nums: List[int], k: int) -> float:
         # input:
