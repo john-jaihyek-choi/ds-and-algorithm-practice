@@ -2,8 +2,40 @@ import math, time
 from collections import defaultdict, deque
 from typing import List, Dict, DefaultDict, Set
 
-# Leetcode 392:
-class Solution:
+# Leetcode 1679:
+class Solution2:
+    def maxOperations(self, nums: List[int], k: int) -> int:
+        # TC: O(n) / SC: O(n)
+        # Assuming sorting is not allowed:
+        # Use of hash map for storing nums number count
+        # Variable to track:
+            # count: dict
+            # operations: int
+        count = {}
+        operations = 0
+
+        # Count occurrences of each number
+        for num in nums:
+            count[num] = count.get(num, 0) + 1
+
+        # Find pairs
+        for num in list(count.keys()):
+            complement = k - num
+            if complement in count:
+                if num == complement:
+                    # If both numbers are the same
+                    operations += count[num] // 2
+                else:
+                    # Minimum pairs we can form
+                    pairs = min(count[num], count[complement])
+                    operations += pairs
+                    # Remove counted pairs
+                    count[num] = 0
+                    count[complement] = 0
+
+        return operations
+
+class Solution1:
     def maxOperations(self, nums: List[int], k: int) -> int:
         # input:
             # nums: List[int]
@@ -47,7 +79,7 @@ class Solution:
                     # r -= 1
             # return operations
         
-        # TC: O(n) + O(n log(n)) / SC: O(1)
+        # TC: O(n) + O(n log(n)) / SC: O(1) - if mutating input array is not allowed, the SC will be O(n)
         nums.sort() # O(n lon(n))
         operations = 0 # O(1)
         l, r = 0, len(nums) - 1 # O(1)
@@ -65,7 +97,7 @@ class Solution:
             
         return operations # O(1)
 
-solution = Solution()
+solution = Solution2()
 start_time = time.time()
 print(solution.maxOperations([3,1,3,4,3], 6))
 print("--- %s seconds ---" % (time.time() - start_time))
