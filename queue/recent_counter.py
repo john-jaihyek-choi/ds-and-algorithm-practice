@@ -27,11 +27,11 @@ class RecentCounter1:
     def ping(self, t: int) -> int:
         self.requests.append(t)
         
-        self.latest = self.search(t)
+        self.latest = self.search(self.latest, t)
 
         return len(self.requests) - self.latest
 
-    def search(self, t):
+    def search(self, latest, t):
         l = latest - 1 if latest > 0 else 0
         r = len(self.requests) - 1
 
