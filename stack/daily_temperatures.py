@@ -3,25 +3,60 @@ from typing import List, Dict, DefaultDict, Set
 from operator import add, sub, mul, truediv
 import time
 
-# Valid Solution 1:
-    # Brainstorm:
-        # instead of popping all of the items in the temp:
-            # I can pop the temp_index only as long as the top of the stack temperature is less than currently visiting temperature
-                # This way, I can compute and eliminate the indicies that are smaller than the current value while retaining the values in the past that are great
-                    # if there's item left over in the temp_index, it would indicate that those items never had future temperature greater than itself
-    # Pseudocode:
-        # initialize a res stack to store the results
-            # initialize each index with a value of 0 expanding to length of the temperatures
-                # for easy access to the specific index of the past and current temperature
-        # initialize an empty temp_index stack to store the indicies of the temperatures
-        # iterate the temperatures array
-            # while temp_index has value AND the value off the last item in the temp_index stack is less than value of temperatures at i
-                # calculate the difference of days by subtracting i (current day) by last item in the temp_index
-                # set res at the value of last item in the temp_index to days
-                # pop the item from the temp_index stack
-            # append i to temp_index
-        # return res stack
+# Retried 10/24/2024: Leetcode 739
+class Solution3:
+    def dailyTemperatures(self, temperatures: List[int]) -> List[int]:
+        # input:
+            # temperatures: List[int]
+                # temperatures[i] = temperature on i'th day
+        # goal:
+            # return an array, answer, where answer[i] is the number of days needed to wait until the weather gets warmer
+                # ex)  [32, 31, 30, 38]
+                # then [ 3,  2,  1,  0]
+        # Brainstorm:
+            # Bruteforce:
+                # iterate the temperatures array where i = index
+                    # iterates teperatures array where j = i + j
+                        # if temperature[j] > temperatures[i], then j - i = days
+            # Optimal Solution:
+                # Monotonic Decreasing stack:
+                    # ex) stack = [ 73, ]
+                        # instead of storing the temperature directly, store the index to the temperature
+                            # ex) stack = [ 0, ]
+                            # In order for us to use the index and store the ith day, I'll have concept similar to array hashing
+                                # initialize a stack with an empty 0 where the length, n, is equal to the length of the temperatures
+        # Variable:
+            # answer: List[int]
+                # answer[i] = number of days
+            # temp_stack: List[int]
+                # temp_stack[i] = temperatures's index
+        # Pseudocode:
+            # initialize an empty stack
+                # initialize with a default value of 0 and extend the array to the length of the temperatures array
+                    # ex) n = 3; [ 0, 0, 0 ]
+            # for i, temp in enumerate(temperatures):
+                # while temp_stack and temperatures[stack[-1]] < temp:
+                    # compute days between temperature at stack[-1] index:
+                        # previous_day = stack.pop()
+                        # days = i - previous_day
+                        # answer[previous_day] = days
+                # answer.append(i)
+            # return stack
 
+        # Overall TC: O(n) / SC: O(n)
+        answer = [0] * len(temperatures)
+        temp_stack = []
+
+        for i, temp in enumerate(temperatures): # O(n)
+
+            while temp_stack and temperatures[temp_stack[-1]] < temp: # O(1)
+                previous_day = temp_stack.pop()
+                days = i - previous_day
+                answer[previous_day] = days
+
+            temp_stack.append(i) # O(1)
+
+        return answer
 
 class Solution2: # TC: O(n) SC: O(n)
     def dailyTemperatures(self, temperatures: List[int]) -> List[int]:
