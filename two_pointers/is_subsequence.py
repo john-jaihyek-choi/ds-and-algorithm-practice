@@ -3,6 +3,44 @@ from collections import defaultdict, deque
 from typing import List, Dict, DefaultDict, Set
 
 # Leetcode 392:
+class Solution2:
+    def isSubsequence(self, s: str, t: str) -> bool:
+        # Create a list to store the positions of each character in t
+        positions = defaultdict(list)
+        
+        for i, c in enumerate(t):
+            positions[c].append(i)
+        
+        current_position = -1  # Start before the first index
+        
+        for char in s:
+            if char not in positions:  # If char from s is not in t, return False
+                return False
+            
+            # Use the binary search to find the right position
+            pos_list = positions[char]
+            current_position = self.binary_search(pos_list, current_position)
+            
+            if current_position == len(pos_list):  # No valid position found
+                return False
+            
+            # Update current_position to the index of the found position
+            current_position = pos_list[current_position]
+
+        return True
+    
+    def binary_search(self, pos_list, current_position):
+        left, right = 0, len(pos_list)
+        
+        while left < right:
+            mid = (left + right) // 2
+            if pos_list[mid] <= current_position:
+                left = mid + 1  # Move right to find the rightmost position
+            else:
+                right = mid  # Move left since mid is too high
+
+        return left  # This is the insertion point (rightmost index + 1)
+    
 class Solution1:
     def isSubsequence(self, s: str, t: str) -> bool:
         # input:
