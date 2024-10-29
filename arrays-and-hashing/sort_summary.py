@@ -5,7 +5,7 @@ from collections import defaultdict, OrderedDict
 
 # Optimal:
 class Solution1:
-    def groupSort(self, arr):
+    def groupSort(self, s):
         # TC: O(n log n) / SC: O(n)
         freq_map = defaultdict(int)
         for c in s:
