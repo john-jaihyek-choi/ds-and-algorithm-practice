@@ -2,6 +2,7 @@ from collections import defaultdict, deque
 from typing import List
 from helper.functions import TreeNode
 from typing import Optional
+from binarytree import build
 import time
 
 # class TreeNode:
@@ -23,8 +24,8 @@ class Solution3:
             node, new_layer = stack.pop()
             if node:
                 layer = max(layer, new_layer)
-                stack.append([node.left, new_layer + 1])
                 stack.append([node.right, new_layer + 1])
+                stack.append([node.left, new_layer + 1])
         
         return layer
 
@@ -73,8 +74,9 @@ class Solution1:
 
         return max(left, right)
 
-
-solution = Solution1()
+root = build([1,2,2,3,None,None,3,4,None,None,4])
+print(root)
+solution = Solution3()
 start_time = time.time()
-print(solution.invertTree(["mobile", "mouse", "moneypot", "monitor", "mousepad"], "mouse"))
+print(solution.maxDepth(root))
 print("--- %s seconds ---" % (time.time() - start_time))
