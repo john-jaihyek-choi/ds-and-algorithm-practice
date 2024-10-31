@@ -12,6 +12,20 @@ import time
 #         self.right = right
 
 class Solution:
+    # Pseudocode:
+    # General idea:
+        # recurse the tree, then compare the depth and the diameter at each recursion state
+    # base case:
+        # if root is None:
+            # return 0
+    # recurse:
+        # recurse left 
+        # recurse right
+    # compute the longer of the two:
+        # max_diameter
+        # height
+    # return height
+    # in the outer function, return max_diameter
     def __init__(self):
         self.max_diameter = 0
 
