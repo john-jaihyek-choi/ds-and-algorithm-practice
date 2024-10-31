@@ -3,6 +3,7 @@ from typing import List
 from helper.functions import TreeNode
 from typing import Optional
 import time
+from binarytree import build
 
 # class TreeNode:
 #     def __init__(self, val=0, left=None, right=None):
@@ -34,7 +35,9 @@ class Solution:
         return root
 
 
+root = build([1,2,3,4,5,6,7])
+print(root)
 solution = Solution()
 start_time = time.time()
-print(solution.invertTree(["mobile", "mouse", "moneypot", "monitor", "mousepad"], "mouse"))
+print(solution.invertTree(root))
 print("--- %s seconds ---" % (time.time() - start_time))
