@@ -14,6 +14,19 @@ import time
 # Iterative DFS Approach: use of stack per layer
 class Solution3:
     def maxDepth(self, root: Optional[TreeNode]) -> int:
+        # Iterative DFS - use own stack:
+        # Pseudocode:
+            # set empty stack with an initial item of [root, depth] pair
+                # root = root
+                # depth = 0
+            # while stack is non-empty:
+                # pop the stack and retrieve the root and the depth
+                # if node is non empty:
+                    # append the left and the right node to the stack
+                        # right first, then left
+                        # compute the new depth when appending to stack
+                # compute the max_depth 
+            # return the max_depth
         if not root:
             return 0
 
@@ -23,9 +36,9 @@ class Solution3:
         while stack:
             node, new_layer = stack.pop()
             if node:
-                layer = max(layer, new_layer)
                 stack.append([node.right, new_layer + 1])
                 stack.append([node.left, new_layer + 1])
+                layer = max(layer, new_layer)
         
         return layer
 
@@ -57,15 +70,18 @@ class Solution2:
 # recursive DFS:
 class Solution1:
     def maxDepth(self, root: Optional[TreeNode]) -> int:
-        # base case:
-            # if root is None:
-                # return 0
-        # else:
-            # set left depth
-            # set right depth
-            # return bigger of the two depths
+        # Recursive DFS:
+        # Pseudocode:
+            # base case:
+                # if root is not valid:
+                    # return 0
+            # traverse the left of the tree
+                # left = maxDepth(root.left) + 1
+            # traverse the right of the tree
+                # right = maxDepth(root.right) + 1
+            # return max(left, right)
 
-        # TC: O(n) / SC: O(1) but O(h) for implicit call stack
+        # TC: O(n) / SC: O(h) h for the height of the tree for the callstack
         if not root:
             return 0
         
