@@ -12,6 +12,7 @@ import time
 #         self.left = left
 #         self.right = right
 
+# Leetcode #700
 # idea:
             # traverse DFS with the condition:
                 # if node.val == val:
@@ -54,9 +55,9 @@ class Solution:
             return self.searchBST(root.left, val)
         
 
-root = build([1,2,2,3,None,None,3,4,None,None,4])
+root = build([4,2,7,1,3])
 print(root)
 solution = Solution()
 start_time = time.time()
-print(solution.diameterOfBinaryTree(root))
+print(solution.searchBST(root, 2))
 print("--- %s seconds ---" % (time.time() - start_time))
