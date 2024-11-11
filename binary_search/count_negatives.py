@@ -2,7 +2,25 @@ from collections import defaultdict, deque
 from typing import List, Dict, DefaultDict, Set
 import time
 
-class Solution:
+class Solution2:
+    def countNegatives(self, grid: List[List[int]]) -> int:
+        # O(n + m) solution:
+        # Idea:
+            # counting from the end of the column, cell-by-cell
+            # due to the sorted nature of the array, I can traverse the matrix without visiting the rows individually
+        output = 0
+        i, j = len(grid) - 1, 0
+
+        while i >= 0 and j < len(grid[0]):
+            if grid[i][j] < 0:
+                output += len(grid[0]) - j
+                i -= 1
+            else:
+                j += 1
+        
+        return output
+        
+class Solution1:
     def countNegatives(self, grid: List[List[int]]) -> int:
         # Note:
             # grid is sorted in decreasing order both row and column
@@ -55,10 +73,7 @@ class Solution:
             
         return output
 
-
-                        
-
-solution = Solution()
+solution = Solution1()
 start_time = time.time()
-print(solution.searchInsert(10))
+print(solution.countNegatives([[4,3,2,-1],[3,2,1,-1],[1,1,-1,-2],[-1,-1,-2,-3]]))
 print("--- %s seconds ---" % (time.time() - start_time))
