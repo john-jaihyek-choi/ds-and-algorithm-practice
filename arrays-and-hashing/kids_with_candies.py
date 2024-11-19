@@ -4,7 +4,45 @@ from typing import List, Dict, DefaultDict, Set
 
 # Leetcode 1431:
 
-class Solution:
+class Solution2:
+    def kidsWithCandies(self, candies: List[int], extraCandies: int) -> List[bool]:
+        # Note:
+            # input:
+                # candies: List[int]
+                # extraCandies: int
+            # output:
+                # output: List[bool]
+            # goal:
+                # given candies list and an integer extraCandies, return a List of booleans that indicates the i'th kid's possibility of having the greatest number of candies
+        # general approach:
+            # compute max candies a kid in the list has
+                # any number of candies greater than this num essentially has potential to have greatest num of candies
+            # iterate on candies
+                # check if sum of extraCandies and candies[i] exceeds the max
+                    # if true, true for ith kid
+                    # else, false
+        # Psuedocode:
+            # max_candies = max(candies)
+            # output = []
+            # for n in candies:
+                # if extraCandies + candies[i] >= max_candies:
+                    # output.append(True)
+                    # continue
+                # output.append(False)
+            # return output
+
+        # TC: O(n) / SC: O(n)
+        max_candies = max(candies) # O(n)
+        output = []
+        for n in candies: # O(n)
+            if extraCandies + n >= max_candies: # O(1)
+                output.append(True)
+                continue
+            output.append(False) 
+        return output # O(1)
+        
+
+class Solution1:
     def kidsWithCandies(self, candies: List[int], extraCandies: int) -> List[bool]:
         # input:
             # candies: List[int]
