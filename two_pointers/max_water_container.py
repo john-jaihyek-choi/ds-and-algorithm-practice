@@ -2,8 +2,76 @@ from collections import defaultdict
 from typing import List, Dict, DefaultDict, Set
 import time
 
-# Retried 10/22/2024 - Leetcode 11
-class Solution:
+# Leetcode 11
+# Retried 11/19/2024 
+class Solution3:
+    def maxArea(self, height: List[int]) -> int:
+        # Note:
+            # input:
+                # height: List[int]
+            # output:
+                # output: int
+            # goal:
+                # given list of integer heights, where height represents a graph
+                    # height[i] represents the height of the bar at i (y-axis)
+                    # i represents the width (x-axis) where each i is 1 width
+            #  the water cannot be slanted within its container
+                # means min(bar_left, bar_right) is the threshold height for the given area
+        # Ideas:
+            # Brute-force (TC: O(n^2) / SC: O(1)):
+                # 2 nested loops (i and j as indicies)
+                    # i starts at 0
+                    # j = i + 1
+            # Two-pointer approach (TC: O(n) / SC: O(1)):
+                # use two pointers, l and r
+                # compute area each iteration and update the output
+                    # h = min(height[l], height[r])
+                    # w = r - l
+                    # area = h * w
+                # if height[l] <= height[r]:
+                    # l += 1
+                    # continue
+                # r -= 1
+
+        # Brute-force
+        # output = float('-inf')
+        
+        # for i in range(len(height)):
+        #     for j in range(i + 1, len(height)):
+        #         h = min(height[i], height[j])
+        #         w = j - i
+
+        #         output = max(output, h * w)
+        
+        # return output
+
+
+        # Pseudocode:
+        # l, r = 0, len(height) - 1
+        # output = float('-inf')
+        # while l < r:
+            # h = min(height[l], height[r])
+            # w = r - l
+            # output = max(output, h * w)
+        # return output
+
+        # TC: O(n) / SC: O(1)
+        l, r = 0, len(height) - 1
+        output = float('-inf')
+        while l < r:
+            h = min(height[l], height[r])
+            w = r - l
+            output = max(output, h * w)
+
+            if height[l] <= height[r]:
+                l += 1
+                continue
+            r -= 1
+            
+        return output
+
+# Retried 10/22/2024 
+class Solution2:
     def maxArea(self, height: List[int]) -> int:
         # input:
             # height: List[int]
@@ -63,7 +131,7 @@ class Solution:
 
         return max_area
 
-class Solution:
+class Solution1:
     def maxArea(heights: List[int]) -> int:
         # Note:
             # input, heights, is an array of integers where heights[i] represents the height of the bar in a 2d bar graph
