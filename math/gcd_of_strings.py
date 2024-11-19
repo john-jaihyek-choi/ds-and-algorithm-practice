@@ -1,8 +1,35 @@
 import math
 
 # Leetcode 1071:
+class Solution2:
+    def gcdOfStrings(self, str1: str, str2: str) -> str:
+        # Note:
+            # input:
+                # str1: str
+                # str2: str
+            # output:
+                # output: str
+            # goal:
+                # given 2 strings, return the greater common divisor of strings
+        # General idea:
+            # if str1 + str2 == str2 + str1, it means the two strings could have a valid common divisor
+            # if I use the gcd on the combined string (str1 + str2), the result should return common divisor length that would contain the smallest block of substring the entire string could be divided by
+        # Pseudocode:
+            # if str1 + str2 != str2 + str1:
+                # return ""
+            # find the greatest common divisor:
+                # math.gcd(len(str1), len(str2))
+        
+        # TC: O(n) / SC: O(n)
+        if str1 + str2 != str2 + str1: # O(n)
+            return ""
 
-class Solution:
+        divisor = math.gcd(len(str1), len(str2)) # O(log( min(n1, n2))) but approximates to O(1) since string operation dominates
+
+        return str1[0:divisor] # O(k) where k = length of substring
+    
+
+class Solution1:
     def gcdOfStrings(self, str1: str, str2: str) -> str:
         # input:
             # str1: str
