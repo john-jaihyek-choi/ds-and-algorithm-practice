@@ -1,6 +1,71 @@
 from typing import List
 import time
 
+class Solution1:
+    def productExceptSelf(self, nums: List[int]) -> List[int]:
+        # Note:
+            # input:
+                # nums: List[int]
+            # output:
+                # output: List[int]
+            # goal:
+                # givien a list of integers nums, return a list of integers output where output[i] is the product of the values except itself
+        # edge-case:
+            # empty input
+                # len(nums) > 2
+            # non digit nums[i]
+                # nums[i] is an integer
+        # General approach:
+            # brute-force O(n^2) nested loop:
+                # iterate the nums (i = index)
+                    # iterate the nums (j = index)
+                        # compute product except for nums[j] except when j == i
+            # optimal solution (static array and 2 pass):
+                # initialize an array with length of nums with default value 1
+                # iterate nums from 0
+                    # compute product to the left of i
+                    # update the product to the initialized array
+                # iterate the initialized arr from the end of the list
+                    # compute the right product
+                    # compute the product of left and right
+        
+        # 1. brute-force:
+        output = []
+        product = 1
+        for i in range(len(nums)):
+            for j in range(len(nums)):
+                if i != j:
+                    product *= nums[j]
+            output.append(product)
+            product = 1
+
+        return output
+
+        # 2. static array with 2 pass:
+        # Pseudocode:
+            # output = []
+            # l_product = 1
+            # for n in nums:
+                # output.append(l_product)
+                # l_product *= n
+            # r_product = 1
+            # for i in range(len(output) - 1, -1, -1):
+                # output[i] *= r_product
+                # r_product *= nums[i]
+            # return output
+
+        output = []
+        l_product = r_product = 1
+        for n in nums:
+            output.append(l_product)
+            l_product *= n
+        
+        for i in range(len(output) - 1, -1, -1):
+            output[i] *= r_product
+            r_product *= nums[i]
+
+        return output
+
 def productExceptSelf(nums: List[int]) -> List[int]:
     # initialize an empty array to store the right (or the left) product of the item at nth index (right_products)
     # iterate the nums array (from the end of the array if getting right product, starting from 0 if left sum) and append the product to the right (or left) product of the item at current index
