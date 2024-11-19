@@ -3,6 +3,54 @@ from collections import defaultdict, deque
 from typing import List, Dict, DefaultDict, Set
 
 # Leetcode 605:
+class Solution3:
+    def canPlaceFlowers(self, flowerbed: List[int], n: int) -> bool:
+        # Note:
+            # input:
+                # flowerbed: List[int]
+                # n: int
+            # output:
+                # output: bool
+            # goal:
+                # given list flowerbed with integer n, return the boolean true/false whether n number of flowers can be planted adhering to the no-adjacent-flowers-rule
+            # no-adjacent-flowers-rule:
+                # flower can only be planted if the adjacent flowerbed is empty (0's)
+        # General approach:
+            # iterate the flowerbed
+                # check if adjacent sides are both empty (0s)
+                    # ** treat list index out of range with if else
+                    # If plantable:
+                        # update the flowerbed[i] with 1
+                            # assumes input update is fine
+                        # then decrement n
+                            # assumes input update is fine
+        
+        # Pseudocode:
+        # for i in flowerbed:
+            # left_bed = flowerbed[i - 1] if i - 1 >= 0 else 0
+            # right_bed = flowerbed[i + 1] if i + 1 < len(flowerbed) else 0
+            # if left_bed == right_bed == 0:
+                # flower_bed[i] = 1
+                # n -= 1
+            # if n <= 0:
+                # return True
+        
+        # return False
+
+        # TC: O(n) / SC: O(1)
+        for i in range(len(flowerbed)):
+            left_bed = flowerbed[i - 1] if i - 1 >= 0 else 0
+            right_bed = flowerbed[i + 1] if i + 1 < len(flowerbed) else 0
+
+            if flowerbed[i] == left_bed == right_bed == 0:
+                flowerbed[i] = 1
+                n -= 1
+            if n <= 0:
+                return True
+        
+        return False
+
+
 class Solution2:
     def canPlaceFlowers(self, flowerbed: List[int], n: int) -> bool:
         # Solution without direct modification of flowerbed
