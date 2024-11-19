@@ -3,7 +3,67 @@ from collections import defaultdict, deque
 from typing import List, Dict, DefaultDict, Set
 
 # Leetcode 345:
-class Solution:
+class Solution2:
+    def reverseVowels(self, s: str) -> str:
+        # Note:
+            # input:
+                # s: str
+            # output:
+                # output: str
+            # goal:
+                # given string s, return an output string where orders of the vowel letters are reversed
+        # edge-case scenarios:
+            # empty string:
+                # s.length will be atleast 1 char long
+            # no vowels in string:
+                # return string as it is
+            # non alphabetic char:
+                # leave the char in its position
+            # upper or lower case:
+                # leave the casing the same
+        # general approach:
+            # Two-pointer:
+                # keep list of valid vowels in a set
+                # left and right pointer 
+                    # left from 0
+                    # right from len(s) - 1
+                # while l < r:
+                    # if s[l] and s[r] is valid vowel:
+                        # set s[l], s[r] = s[r], s[l]
+                    # if s[r] not valid:
+                        # r -= 1
+                    # if s[l] not valid
+                        # l += 1
+        # Pseudocode:
+            # output = list(s)
+            # vowels = {'a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U'}
+            # l, r = 0, len(output) - 1
+            # while l < r:
+                # if output[l] in vowels and output[r] in vowels:
+                    # output[l], output[r] = output[r], output[l]
+                # if output[r] not vowels:
+                    # r -= 1
+                # if output[l] not in vowels:
+                    # l += 1
+            # return "".join(output)
+
+        # TC: O(n) / SC: O(n)
+        output = list(s) # O(n)
+        vowels = set({'a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U'}) # O(k) = O(1)
+        l, r = 0, len(output) - 1 # O(1)
+        while l < r: # O(n)
+            if output[l] in vowels and output[r] in vowels: # O(1)
+                output[l], output[r] = output[r], output[l]
+                l += 1
+                r -= 1
+            if output[r] not in vowels: # O(1)
+                r -= 1
+            if output[l] not in vowels: # O(1)
+                l += 1
+        
+        return "".join(output) # O(n)
+    
+class Solution1:
     def reverseVowels(self, s: str) -> str:
         # input:
             # s: str
@@ -68,7 +128,7 @@ class Solution:
             
             return ''.join(s_arr)
 
-solution = Solution()
+solution = Solution2()
 start_time = time.time()
 print(solution.reverseVowels('IceCreAm'))
 print("--- %s seconds ---" % (time.time() - start_time))
