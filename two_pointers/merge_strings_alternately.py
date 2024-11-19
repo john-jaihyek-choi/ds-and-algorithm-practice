@@ -1,6 +1,66 @@
 # Leetcode 1768:
 
-class Solution:
+class Solution3:
+    def mergeAlternately(self, word1: str, word2: str) -> str:
+        # TC: O(n) / SC: O(n + m)
+        output = []
+        n = max(len(word1), len(word2))
+
+        for i in range(n):
+            c1 = word1[i] if i < len(word1) else ""
+            c2 = word2[i] if i < len(word2) else ""
+
+            output.extend([c1, c2])
+        
+        return "".join(output)
+
+class Solution2:
+    def mergeAlternately(self, word1: str, word2: str) -> str:
+        # note:
+            # input:
+                # word1: str
+                # word2: str
+            # output:
+                # output: str
+            # goal:
+                # given 2 words, return the merged string that is merged alternately
+        # Edge-case:
+            # empty word1 or word2?
+                # ** contraint in the problem restricting empty word
+                # if either is empty:
+                    # return valid word
+                # if both are empty:
+                    # return nothing
+            # if one word is longer than another:
+                # append the remaining letters to the end of the output
+        # General approach:
+            # First-thought solution:
+                # initialize an empty string output
+                # iterate on longer of the two words
+                    # alternately append word1[i] and word2[i] to the output
+                        # handle the string out of index edge-case gracefully with if else
+                # return the output
+
+        # Pseudocode:
+            # output = ""
+            # n = max(len(word1), len(word2))
+            # for i in range(n):
+                # c1 = word1[i] if i < len(word1) else ""
+                # c2 = word2[i] if i < len(word2) else ""
+                # output.extend([c1, c2])
+            # return output
+        
+        # TC: O(n^2) / SC: O(n + m)
+        output = ""
+        n = max(len(word1), len(word2))
+        for i in range(n): # O(n)
+            c1 = word1[i] if i < len(word1) else ""
+            c2 = word2[i] if i < len(word2) else ""
+            output += c1 + c2 # O(n) due to string concatenation
+        return output
+    
+
+class Solution1:
     def mergeAlternately(self, word1: str, word2: str) -> str:
         # input:
             # word1: str
@@ -31,7 +91,7 @@ class Solution:
                 # increment w1p and w2p by 1
             # return the output
 
-        # TC: O(m) where m is length of the longer word / SC: O(n + m)
+        # TC: O(n^2) / SC: O(n + m)
         output = ""
         w1p, w2p = 0, 0
         while w1p < len(word1) or w2p < len(word2):
