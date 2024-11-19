@@ -3,7 +3,115 @@ from collections import defaultdict, deque
 from typing import List, Dict, DefaultDict, Set
 
 # Leetcode 334:
-class Solution:
+class Solution2:
+    def increasingTriplet(self, nums: List[int]) -> bool:
+        # Note:
+            # input:
+                # nums: List[int]
+            # output:
+                # output: bool
+            # goal:
+                # given a list of integers, nums, return boolean true if nums contain triple of indicies such that i < j < k
+        # Potential cases:
+            # [1, 2, 3, 4, 5]
+                # True
+            # [5, 4, 3, 2, 1]
+                # False
+            # [2, 1, 5, 0, 4, 6]
+                # n: 0 < 4 < 6
+                # i: 3 < 4 < 5
+        # Edge-case:
+            # [5, 2, 2, 1, 6, 0, 8]
+                # True
+                # because:
+                    # n: 1 < 6 < 8
+                    # i: 3 < 4 < 6
+        # Takeaway:
+            # triplets don't necessarily have to be consecutive triplets both in terms of index or the value
+        # Approach:
+            # Brute-force (TC: O(n^3) / SC: O(1)):
+                # 3 nested loops with indicies i, j, and k
+                    # where i starts from 0
+                    # where j = i + 1
+                    # where k = j + 1
+                    # all three indicies iterate til the end ofthe nums array
+                # In each iteration, check if nums[i] < nums[j] < nums[k]
+            # 1 pass if condition blocks (TC: O(n) / SC: O(1)):
+                # min1
+                # min2
+                # else
+                # min1 starts at inf
+                # if nums[i] < min1:
+                    # min1 = nums[i]
+                # elif nums[i] < min2:
+                    # min2 = nums[i]
+                # else:
+                    # return True
+                # return False
+            # track left min and track right max (TC: O(n) / SC: O(n)):
+                # initialize left_min []
+                # iterate on nums from 0
+                    # append min n in nums up to ith index
+                # initialized right_max []
+                # iterate on nums from len(nums) - 1 to 0
+                    # append max num in nums upto ith index
+                # iterate on nums last time
+                    # if left_min[i] < nums[i] < right_max[i]:
+                        # return True
+                # return False
+
+        # Brute-force:
+        for i in range(len(nums)):
+            for j in range(i + 1, len(nums)):
+                for k in range(j + 1, len(nums)):
+                    if nums[i] < nums[j] < nums[k]:
+                        return True
+        
+        return False
+
+        # 1 pass if condition blocks:
+            # Pseudcode:
+                # min1 = min2 = float('inf')
+                # for i in range(len(nums))
+                    # if nums[i] <= min1:
+                        # min1 = nums[i]
+                    # elif nums[i] <= min2:
+                        # min2 = nums[i]
+                    # else:
+                        # return True
+                # return False
+        
+        min1 = min2 = float('inf')
+        for i in range(len(nums)):
+            if nums[i] <= min1:
+                min1 = nums[i]
+            elif nums[i] <= min2:
+                min2 = nums[i]
+            else:
+                return True
+        
+        return False
+        
+        # track left min and track right max (TC: O(n) / SC: O(n)):
+        left_mins = []
+        l_min = float('inf')
+        for i in range(len(nums)):
+            prev = nums[i - 1] if i > 0 else float('inf')
+            l_min = min(prev, l_min)
+
+            left_mins.append(l_min)
+
+        r_max = float('-inf')
+        for i in range(len(nums) - 1, -1, -1):
+            prev = nums[i + 1] if i < len(nums) - 1 else float('-inf')
+            r_max = max(prev, r_max)
+
+            if left_mins[i] < nums[i] < r_max:
+                return True
+
+        return False
+
+class Solution1:
     def increasingTriplet(self, nums: List[int]) -> bool:
         # input:
             # nums: List[int]
