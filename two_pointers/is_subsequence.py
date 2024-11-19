@@ -3,6 +3,63 @@ from collections import defaultdict, deque
 from typing import List, Dict, DefaultDict, Set
 
 # Leetcode 392:
+class Solution3:
+    def isSubsequence(self, s: str, t: str) -> bool:
+        # Note:
+            # input:
+                # s: str
+                # t: str
+            # output:
+                # output: bool
+            # goal:
+                # given string s and t, return boolean
+                    # True if s is subsequence of t
+                    # False otherwise
+                # Checking if s is subsequence of t
+                    # len(s) < t
+        # potential scenarios:
+            # len(s) > t:
+                # return False
+        # Idea:
+            # Brute-force (TC: O(n^3) / SC: O(1)):
+                # 3 nested loops (i, j, k)
+                    # where i starts 0
+                    # j = i + 1
+                    # k = j + 1
+            # Two-pointer approach:
+                # iterate on t while tracking the "checked" index of s
+                    # checked_idx will start 0
+                    # if t[i] == s[checked_idx]:
+                        # increment checked_idx
+
+        # Two-pointer approach (TC: O(n) where n = len(t) / SC: O(1)):
+        if len(s) > len(t):
+            return False
+
+        s_idx = 0
+
+        for t_idx in range(len(t)):
+            if s_idx >= len(s):
+                return True
+
+            if t[t_idx] == s[s_idx]:
+                s_idx += 1
+
+        return s_idx >= len(s)
+    
+        # Brute-force:
+        if len(s) > len(t):
+            return False
+
+        for i in range(len(t)):
+            for j in range(i + 1, len(t)):
+                for k in range(j + 1, len(t)):
+                    sequence = [t[i], t[j], t[k]]
+                    if "".join(sequence) == s:
+                        return True
+        
+        return False
+
 class Solution2:
     def isSubsequence(self, s: str, t: str) -> bool:
         # Create a list to store the positions of each character in t
