@@ -3,7 +3,89 @@ from collections import defaultdict, deque
 from typing import List, Dict, DefaultDict, Set
 
 # Leetcode 151:
-class Solution:
+class Solution2:
+    def reverseWords(self, s: str) -> str:
+        # Note:
+            # input:
+                # s: str
+            # output:
+                # output: str
+            # goal:
+                # given string s, reverse the words in a string
+        # edge-case scenarios:
+            # multiple spaces between words
+                # should ignore empty spaces
+            # empty string s
+                # s guaranteed to be longer than len 1
+            # non alphabet in s?
+                # digit allowed
+                    # ignore digit
+        # General approach:
+            # 1. Assuming built-in reverse and split is allowed:
+                # split s, then reverse
+                # TC: O(n) / SC: O(n)
+            # 2. Assuming built-in split is allowed but no reverse:
+                # split s, iterate the splited s from the end of the list, append each word to output arr
+                # TC: O(n) / SC: O(n)
+            # 3. Assuming no built-in method is allowed:
+                # stack-approach
+                    # initialize a stack []
+                    # initialize a word_arr []
+                    # iterate the s 
+                        # when s[i] == space and word_arr is non-empty
+                            # append "".join(word_arr) to stack
+                            # set word_arr back to empty arr
+                            # continue
+                        # append s[i] to word_arr
+                    # while stack is non-empty:
+                        # append stack[-1] to output
+
+        # 1. split s, then reverse
+        output = s.split()
+        output.reverse()
+        return " ".join(output)
+
+        # 2. split s, iterate the splited s from the end of the list, append each word to output arr
+        output = s.split()
+        res = []
+        for i in range(len(output) - 1, -1, -1):
+            res.append(output[i])
+        
+        return " ".join(res)
+
+        # 3. stack approach:
+        stack = []
+        word_arr = []
+        for i, c in enumerate(s):
+            if c == " " and word_arr:
+                stack.append("".join(word_arr))
+                word_arr = []
+                continue
+            else:
+                if c != " ":
+                    word_arr.append(c)
+
+        output = ["".join(word_arr)] if word_arr else []
+        while stack:
+            word = stack.pop()
+            if word and word != "":
+                output.append(word)
+
+        return " ".join(output)
+
+        # 4. split s, use two-pointers:
+        s_arr = s.split()
+        l, r = 0, len(s_arr) - 1
+        while l < r:
+            s_arr[l], s_arr[r] = s_arr[r], s_arr[l]
+
+            l += 1
+            r -= 1
+        
+        return " ".join(s_arr)
+                        
+
+class Solution1:
     def reverseWords(self, s: str) -> str:
         # input:
             # s: str
@@ -42,7 +124,7 @@ class Solution:
             # return output
 
         # Stack Solution
-        # TC: O(n) / SC: O(n)
+        # TC: O(n^2) / SC: O(n)
         stack = []
         word = ""
         for c in s:
