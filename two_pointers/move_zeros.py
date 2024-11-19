@@ -3,7 +3,51 @@ from collections import defaultdict, deque
 from typing import List, Dict, DefaultDict, Set
 
 # Leetcode 283:
-class Solution:
+class Solution3:
+    def moveZeroes(self, nums: List[int]) -> None:
+        """
+        Do not return anything, modify nums in-place instead.
+        """
+        # Note:
+            # input:
+                # nums: List[int]
+            # output:
+                # output: None
+            # goal:
+                # modify nums input in-place so that all 0's in the array are moved to the end of the list
+        # potential scenarios:
+            # empty list
+                # nums arr will have atleast 1 item
+            # no 0s
+                # no changes to be made
+        # Approach:
+            # two-pointer:
+                # l and r starts at 0
+                # if nums[r] > 0
+                    # switch nums[l] with nums[r]
+                    # increment l
+                # increment r
+        
+        # Pseudocode:
+            # l = r = 0
+            # while r < len(nums):
+                # if nums[r] != 0:
+                    # nums[l], nums[r] = nums[r], nums[l]
+                    # l += 1
+                # r += 1
+        
+        l = r = 0
+        while r < len(nums):
+            if nums[r] != 0:
+                nums[l], nums[r] = nums[r], nums[l]
+                l += 1
+            r += 1
+
+        
+
+
+
+class Solution2:
     def moveZeroes(self, nums: List[int]) -> None:
         """
         Do not return anything, modify nums in-place instead.
@@ -84,7 +128,7 @@ class Solution1:
         
         
 
-solution = Solution()
+solution = Solution3()
 start_time = time.time()
 print(solution.moveZeroes([1,0]))
 print("--- %s seconds ---" % (time.time() - start_time))
