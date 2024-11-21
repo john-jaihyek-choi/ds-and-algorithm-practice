@@ -3,7 +3,92 @@ from typing import List, Dict, DefaultDict, Set
 import time
 
 # Leetcode 1456:
-class Solution:
+class Solution2:
+    def maxVowels(self, s: str, k: int) -> int:
+        # Note:
+            # input:
+                # s: str
+                # k: int
+            # output:
+                # output: int
+            # goal:
+                # given str and int, s and k, return the maximum number of vowel letters in any substring of s with length k
+        # Edgecases?
+            # empty s:
+                # s will have atleast 1 character and up to 100,000
+            # k > len(s)
+                # k is guaranteed to be greater than 1 and less than len(s)
+            # no vowel in s:
+                # return 0 since no vowels found
+            # non alpha char in s:
+                # s will consist only lowercase english letters
+        # Ideas:
+            # Brute-force:
+                # 2 nested loops (i and j)
+                    # i starts at 0 and ends at len(s) - k + 1
+                    # j starts at i and ends at i + k
+                    # in each iteration, increment count if s[j] is vowel
+            # Sliding window:
+                # use 2 pointers l and r for window
+                # r advances each loop
+                    # if s[r] is vowel, increment count
+                    # when r >= k - 1:
+                        # increment l by 1
+                            # before incrementing, decrement the count if s[l] is vowel
+        
+        # Brute-force (TC: O(n^2) / SC: O(1)):
+        # max_vowel_count = 0
+        # vowels = set({'a', 'e', 'i', 'o', 'u'})
+
+        for i in range(0, len(s) - k + 1):
+            count = 0
+            for j in range(k):
+                if s[i + j] in vowels:
+                    count += 1
+            max_vowel_count = max(max_vowel_count, count)
+
+        return max_vowel_count
+
+        # sliding window:
+        # l = count = max_count = 0
+        # vowels = set({'a', 'e', 'i', 'o', 'u'})
+        # for r in range(len(s)):
+            # if s[r] in vowels:
+                # count += 1
+            # compute max_count
+            # if r >= k - 1:
+            #     if s[l] in vowels:
+            #         count -= 1
+            #     l += 1
+        # return 0
+
+        l = count = max_count = 0
+        vowels = set({'a', 'e', 'i', 'o', 'u'})
+        for r in range(len(s)):
+            if s[r] in vowels:
+                count += 1
+
+            max_count = max(max_count, count)
+
+            if r >= k - 1:
+                if s[l] in vowels:
+                    count -= 1
+                l += 1
+
+        return max_count
+
+        # Cleaner code w/ better readability:
+        vowels = set({'a', 'e', 'i', 'o', 'u'})
+        count = max_count = sum(s[i] in vowels for i in range(k))
+        
+        for i in range(k, len(s)):
+            count += (s[i] in vowels) - (s[i-k] in vowels)
+            max_count = max(max_count, count)
+
+        return max_count
+
+
+class Solution1:
     def maxVowels(self, s: str, k: int) -> int:
         # input:
             # s: str
