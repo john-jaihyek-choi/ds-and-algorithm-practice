@@ -3,6 +3,69 @@ from collections import defaultdict, deque
 from typing import List, Dict, DefaultDict, Set
 
 # Leetcode 2215:
+class Solution3:
+    def findDifference(self, nums1: List[int], nums2: List[int]) -> List[List[int]]:
+        # Note:
+            # input:
+                # nums1: List[int]
+                # nums2: List[int]
+            # output:
+                # answer: List[List[int]]
+            # goal:
+                # given 2 lists of integers, nums1 and nums2, return answer with size 2 where:
+                    # answer[0] contains list of all distinct integer in nums1
+                    # answer[1] contains list of all distinct integer in nums2
+        # Edgecase:
+            # nums1 and nums2 empty:
+                # 1 <= nums1.length, nums2.length <= 1000
+            # nums1 or nums2 empty:
+                # 1 <= nums1.length, nums2.length <= 1000
+        # Ideas:
+            # initial thought:
+                # 2-pass (n + m) and 2 sets solution:
+                    # initialize n1_set, n2_set = {}, {}
+                    # iterate on nums1 and add nums1[i] to set
+                    # iterate on nums2 and add nums2[i] to set
+                    # iterate on nums1:
+                        # if nums1[i] not in n2_set:
+                            # answer[0].append(nums1[i])
+                    # iterate on nums2:
+                        # if nums2[i] not in n1_set:
+                            # answer[1].append(nums2[i])
+            # bruteforce:
+                # 2 nested loops:
+                    # nest loops and check each possibility
+                        # and also need to check for duplicates within output
+
+
+        # Pseudocoe:
+            # n1_set, n2_set = set([n for n in nums1]), {[n for n in nums2]}
+            # for n in n1_set:
+                # if n not in n2_set:
+                    # answer[0].append(n)
+            # for n in n2_set:
+                # if n not in n1_set:
+                    # answer[1].append(n)
+        
+        # TC: O(n + m) / SC: O(n + m)
+        n1_set, n2_set = set(nums1), set(nums2)
+        answer = [[],[]]
+        for n in n1_set:
+            if n not in n2_set:
+                answer[0].append(n)
+        for n in n2_set:
+            if n not in n1_set:
+                answer[1].append(n)
+
+        # return answer
+            
+        # Python native set comparison:
+        n1_set, n2_set = set(nums1), set(nums2)
+        n1_unique = list(n1_set - n2_set)
+        n2_unique = list(n2_set - n1_set)
+        
+        return [n1_unique, n2_unique]
+
 class Solution2:
     def findDifference(self, nums1: List[int], nums2: List[int]) -> List[List[int]]:
         # Concise way using native set comparisons
