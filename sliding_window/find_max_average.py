@@ -3,7 +3,88 @@ from typing import List, Dict, DefaultDict, Set
 import time
 
 # Leetcode 643:
-class Solution:
+class Solution2:
+    def findMaxAverage(self, nums: List[int], k: int) -> float:
+        # Note:
+            # input:
+                # nums: List[int]
+                # k: int
+            # output:
+                # output: float
+            # goal:
+                # given a list of integer and integer, nums and k, return the maximum average value of a contiguous subarray whose length is equal to k
+                    # error less than 10^-5 is accepted
+        # Edgecase:
+            # k > len(nums):
+                # constraint is in place for 1 <= k <= n <= 100,000
+            # k == 0
+                # 1 <= k <= n <= 10^5
+        # Idea:
+            # Brute-force:
+                # 2 nested loops (i and j)
+                    # i starts at 0 and loops the entire nums arr
+                    # j starts at i + 1 and loops to i + k 
+                # compute average for the elements within the size of the window
+                # return the max average
+            # sliding-window:
+                # 2 pointers, l and r
+                # iterate the nums while r < len(nums)
+                    # r moves each iteration
+                    # compute sum of number at each iteration
+                    # if r >= k-1:
+                        # calculate max average of the sum
+                        # increment l
+                            # before incrementing, subtract nums[l] from sum
+
+        
+        # Brute-force:
+        max_avg = float('-inf')
+        for i in range(0, len(nums) - k + 1):
+            avg = nums[i]
+            for j in range(i+1, i + k):
+                avg += nums[j]
+            max_avg = max(max_avg, round(avg / k, 5))
+        
+        return max_avg
+
+        # sliding-window:
+        # l = 0
+        # max_avg = float('-inf')
+        # sum = 0
+        # for r in range(len(nums)):
+            # compute sum of number at each iteration
+                # sum += nums[r]
+            # if r >= k - 1:
+                # max_avg = max(max_avg, round(sum / k, 5))
+                # sum -= nums[l]
+                # l += 1
+
+        # TC: O(n) / SC: O(1)
+        l = sum_val = 0
+        max_avg = float('-inf')
+
+        for r in range(len(nums)):
+            sum_val += nums[r]
+
+            if r >= k - 1:
+                max_avg = max(max_avg, round(sum_val / k, 5))
+                sum_val -= nums[l]
+                l += 1
+        
+        return max_avg
+
+        # Optimized cleaner code (TC: O(n) / SC: O(1)):
+        sum_val = max_sum = sum(nums[:k])
+
+        for i in range(k, len(nums)):
+            sum_val += nums[i] - nums[i - k]
+
+            max_sum = max(max_sum, sum_val)
+
+        return max_sum / k
+    
+
+class Solution1:
     def findMaxAverage(self, nums: List[int], k: int) -> float:
         # input:
             # nums: List[int]
