@@ -3,6 +3,118 @@ from collections import defaultdict, deque, Counter
 from typing import List, Dict, DefaultDict, Set
 
 # Leetcode 1657:
+class Solution5:
+    def closeStrings(self, word1: str, word2: str) -> bool:
+        # Note:
+            # input:
+                # word1: str
+                # word2: str
+            # output:
+                # output: bool
+            # goal:
+                # given a set of string, word1 and word2, return the boolean:
+                    # True, if the two strings are "close"
+                    # False otherwise
+        # Operation (Rule):
+            # 1.
+                # I can swap any 2 existing characters
+            # 2.
+                # I can transform every occurrence of 1 existing character into another existing character
+                    # ** a character can be transformed to another char that EXISTS in the word
+                        # ex)
+                            # valid:
+                                # aacabb -> bbcbaa
+                                    # all a's turn to b
+                                    # all b's turn to a
+                            # invalid:
+                                # aacabb -> ddcbdd
+                                    # This is invalid because d doesn't exist in the original word
+        # What defines "Close":
+            # total count of unique characters is identical between 2 words
+                # OR
+            # the two words are formed with identical character, and the frequency pattern matches that of another word
+                # ex)
+                    # word1 = cabbba
+                        # c: 1
+                        # a: 2
+                        # b: 3
+                    # word2 = abbccc
+                        # c: 3
+                        # a: 1
+                        # b: 2
+                    # The 2 words are considered "close" because it comprised of the identical unique letters, AND the pattern of the frequency matches
+                        # ex) 1 char, 2 char, then 3 char
+        # Idea:
+            # get a count of unique letters
+            # compare the two arrays if the two are equal
+            # visualization:
+                # word1_count ={
+                #   c: 1
+                #   a: 2
+                #   b: 3
+                # }
+                # word2_count ={
+                #   c: 3
+                #   a: 1
+                #   b: 2
+                # }
+                # word1_keys = set([c, a, b])
+                # word2_keys = set([a, b, c])
+                # word1_freq = set([1, 2, 3])
+                # word2_freq = set([3, 2, 1])
+
+        # conditions:
+            # 1. Does word1 and all letters in word2?
+            # 2. Does the frequency of these letters match?
+
+        # Pseudocode:
+        # intialize an empty dictionary for word1 and word2 count
+        # iterate on both words and collect counts
+        # set word1_keys and word2_keys
+        # set word1_freq and word2_freq
+        # return word1_keys == word2_keys and word1_freq and word2_freq
+
+        # TC: O(n + m) / SC: O(n + m)
+        if len(word1) != len(word2):
+            return False
+
+        word1_count, word2_count = {}, {}
+
+        for i in range(len(word1)):
+            word1_count[word1[i]] = word1_count.get(word1[i], 0) + 1
+            word2_count[word2[i]] = word2_count.get(word2[i], 0) + 1
+
+        word1_keys, word2_keys = set(word1_count.keys()), set(word2_count.keys())
+        word1_freq_counts, word2_freq_counts = {}, {}
+
+        for freq in word1_count.values():
+            word1_freq_counts[freq] = word1_freq_counts.get(freq, 0) + 1
+        
+        for freq in word2_count.values():
+            word2_freq_counts[freq] = word2_freq_counts.get(freq, 0) + 1
+
+        return word1_keys == word2_keys and word1_freq_counts == word2_freq_counts
+
+        # Optimization:
+        if len(word1) != len(word2):
+            return False
+
+        word1_count, word2_count = Counter(word1), Counter(word2)
+        word1_keys, word2_keys = set(word1_count.keys()), set(word2_count.keys())
+        word1_freq_counts, word2_freq_counts = Counter(word1_count.values()), Counter(word2_count.values())
+
+        return word1_keys == word2_keys and word1_freq_counts == word2_freq_counts
+
+        # Another way of using sort:
+        if len(word1) != len(word2):
+            return False
+
+        word1_count, word2_count = Counter(word1), Counter(word2)
+        word1_keys, word2_keys = set(word1_count.keys()), set(word2_count.keys())
+        word1_freq_counts, word2_freq_counts = sorted(word1_count.values()), sorted(word2_count.values())
+
+        return word1_keys == word2_keys and word1_freq_counts == word2_freq_counts
+
 class Solution4:
     def closeStrings(self, word1: str, word2: str) -> bool:
         # 4th try:
