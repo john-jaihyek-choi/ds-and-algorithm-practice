@@ -3,6 +3,101 @@ from collections import defaultdict, deque
 from typing import List, Dict, DefaultDict, Set
 
 # Leetcode 724:
+class Solution3:
+    def pivotIndex(self, nums: List[int]) -> int:
+        # Note:
+            # input:
+                # nums: List[int]
+            # output:
+                # output: int
+            # goal:
+                # given a list of integers, nums, return the pivot index
+                    # must return the index of the leftmost pivot index (first appearing pivot when going from left)
+                    # return - 1 if pivot index does not exist
+                    # left sum of nums[0] = 0
+                    # right sum of nums[len(nums)-1] = 0
+        # Edgecases:
+            # empty array:
+                # 1 <= nums.length <= 104
+            # no pivot:
+                # return -1
+            # single item in array:
+                # return 0
+            # multiple pivots:
+                # return first appearing pivot (from left)
+        # Ideas:
+            # initial thought:
+                # 2-pass solution:
+                    # iterate nums from left, then store the sum to the left of the index in a separate array (left_sum_arr)
+                        # ex)
+                        #    [1,7,3,6,5,6]
+                        #    [0,1,8,11,17,22,28] 
+                    # then iterate the nums from the end of the list while maintaining the right sum
+                        # if right sum == left_sum_arr[i]:
+                            # set pivot = i
+        
+        # 2-pass solution:
+        # Pseudocode:
+            # initialize an empty arr, left_sum_arr = []
+            # initialize output = -1
+            # initialize l_sum = 0
+            # iterate the nums array (i = index)
+                # left_sum_arr.append(l_sum)
+                # l_sum += nums[i]
+            # r_sum = 0
+            # iterate the nums array from the end of the list (i = index)
+                # if r_sum == left_sum_arr[i]:
+                    # output = i
+                # r_sum += nums[i]
+            # return output
+
+        # TC: O(n) / SC: O(n)
+        left_sum_arr = []
+        output = -1
+        l_sum = r_sum = 0
+        for n in nums:
+            left_sum_arr.append(l_sum)
+            l_sum += n
+        
+        for i in range(len(nums) - 1, -1, -1):
+            if r_sum == left_sum_arr[i]:
+                output = i
+            r_sum += nums[i]
+        
+        return output
+
+        # Possibility for optimization:
+            # any way to do this without n space?
+                # is it possible to know the left and right sum without a memory?
+                    # Yes, if I have total sum calculated in advance, I can compute right sum with left sum
+        
+        # idea:
+            # calculate the total sum of nums (O(n))
+            # keep a variable for l_sum
+            # iterate the nums array (i = index, n = nums[i])
+                # if (total_sum - nums[i]) / 2 == l_sum:
+                    # return i
+            # return -1
+        
+        # TC: O(n) / SC: O(1)
+        total_sum, l_sum = sum(nums), 0
+        for i, n in enumerate(nums):
+            if (total_sum - n) / 2 == l_sum:
+                return i
+            l_sum += n
+        
+        return -1
+
+        # no division solution:
+        total_sum, l_sum = sum(nums), 0
+        for i, n in enumerate(nums):
+            if (total_sum - l_sum - n) == l_sum:
+                return i
+            l_sum += n
+        
+        return -1
+
+
 class Solution2:
     def pivotIndex(self, nums: List[int]) -> int:
         # Getting the right sum at the beginning and updating the right sum as iterating the array
