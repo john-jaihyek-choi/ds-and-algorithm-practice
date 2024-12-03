@@ -3,7 +3,97 @@ from collections import defaultdict, deque
 from typing import List, Dict, DefaultDict, Set
 
 # Leetcode 2352:
-class Solution:
+class Solution2:
+    def equalPairs(self, grid: List[List[int]]) -> int:
+        # Input:
+            # grid: List[List[int]]
+        # Output:
+            # pairs: int
+                # where pair = the number of pairs such that (r_i, c_j) are equal
+        # Goal:
+            # given a n x n grid, find the total number of row-column pair that are equal
+                # considered equal if...
+                    # row and column value are equal and the order in which it appears is equal
+        # Edgecase:
+            # if
+                # row = [3, 1, 2]
+                # column = [2, 1, 3]
+                # pairs = 0
+                # explanation: values are identical, the order is not
+            # not n x n
+                # constraint garantees row length and column length is identical
+            # big n
+                # 1 <= n <= 200
+            # big integer in each array
+                # 1 <= grid[i][j] <= 10^5
+            # Odd number pairs?
+                # example:
+                    # row = [3, 2, 1]
+                    # column = 2 * [3, 2, 1]
+                    # pairs = 3
+        # Ideas:
+            # Brute-force ():
+                # use a 3 nested loop to iterate on every possibility of the pair
+            # Optimal solution (TC: O(n^2) / SC: O(n))
+                # store every possible row variation in a form of array to dictionary (row_dict)
+                    # where:
+                        # key = row
+                        # value = count
+                # iterate each column to see if column exists in the dictionary
+                    # if exists, pairs *= row_dict[column]
+                # return the pairs
+        # Variables:
+            # row_dict: Dict[List[int], int]
+                # key = row
+                # val = int
+            # pairs: int
+                # starts at 0
+        # Pseudocode:
+            # initialize varaibles:
+                # row_dict = {}
+                # pairs = 0
+            # iterate the grid, grid's length many times
+                # row = grid[i]
+                # row_dict[row] = row_dict.get(row, 0) + 1
+            # iterate on grid (i = index)
+                # set an empty array to temporarily store columns (column)
+                # iterate on row (j = index)
+                    # append column
+                # if column in row_dict:
+                    # pairs += row_dict[column] * 1
+            # return pairs
+
+        # # TC: O(n^2) / SC: O(n^2)
+        row_dict = {}
+        pairs = 0
+        n = len(grid)
+
+        for row in grid:
+            row_dict[tuple(row)] = row_dict.get(tuple(row), 0) + 1
+        
+        for i in range(n): 
+            column = []
+            for j in range(n):
+                column.append(grid[j][i])
+
+            if tuple(column) in row_dict:
+                pairs += row_dict[tuple(column)] * 1
+        
+        return pairs
+
+        # cleaned and optimized:
+        row_dict = Counter(tuple(row) for row in grid)
+        pairs, n = 0, len(grid)
+
+        for i in range(n):
+            column = [grid[j][i] for j in range(n)]
+            pairs += row_dict[tuple(column)]
+
+        return pairs
+                
+
+
+class Solution1:
     def equalPairs(self, grid: List[List[int]]) -> int:
         # ex)
         # [[3,2,1],
@@ -71,7 +161,7 @@ class Solution:
 
 
 
-solution = Solution()
+solution = Solution2()
 start_time = time.time()
 print(solution.equalPairs([[3,2,1],[1,7,6],[2,7,7]]))
 print("--- %s seconds ---" % (time.time() - start_time))
