@@ -3,6 +3,56 @@ from typing import List, Dict, DefaultDict, Set
 import time
 
 # Leetcode 735:
+class Solution3:
+    def asteroidCollision(self, asteroids: List[int]) -> List[int]:
+        # Input:
+            # asteroids: List[int]
+                # asteroids[i] represents asteroid
+                    # abs(asteroids[i]) = size of the asteroid
+                    # positive/negative asteroids[i] = direction the asteroid is moving towards
+        # Output:
+            # output: List[int]
+                # output[i] is remaining asteroids
+        # Goal:
+            # given a list of integers, asteroids, return the output array that contains the remaining asteroids AFTER all possible collisions
+        # Collision Rule:
+            # 1. Collision occurs when asteroid[i] is + and asteroid[j] is - (or vice versa)
+            # 2. when collision occurs, bigger asteroid between abs(asteroid[i]) or abs(asteroid[j]) explodes
+            # 3. when collision occurs and abs(asteroid[i]) == abs(asteroid[j]), then both asteroids explode
+        # Ideas:
+            # Intuition (stack approach):
+                # use a stack to store the asteroid that survived the collision (or no collision) (remaining_asteroids)
+                # iterate on asteroids array:
+                    # incoming_asteroid = asteroids[i]
+                    # while remaining_asteroids is non-empty
+                        # AND remaining_asteroids[-1] is positive and incoming_asteroid is negative
+                            # assuming:
+                                # left = remaining_asteroid[-1]
+                                # right = abs(incoming_asteroid)
+                            # if left > right:
+                                #  break out of the loop
+                            # if left < right:
+                                # remaining_asteroids.pop()
+                            # if left == right:
+                                # remaining_asteroids.pop()
+                                # break
+
+        # TC: O(n) / SC: O(n)
+        remaining_asteroids = []
+        for incoming_asteroid in asteroids:
+            while remaining_asteroids and remaining_asteroids[-1] > 0 and incoming_asteroid < 0:
+                left, right = remaining_asteroids[-1], abs(incoming_asteroid)
+                if left > right:
+                    break
+                else:
+                    remaining_asteroids.pop()
+                    if left == right:
+                        break
+            else:
+                remaining_asteroids.append(incoming_asteroid)
+        
+        return remaining_asteroids
+
 class Solution2:
     def asteroidCollision(self, asteroids: List[int]) -> List[int]:
         # 2nd Try:
