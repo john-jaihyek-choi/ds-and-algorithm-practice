@@ -31,6 +31,7 @@ class Solution:
                     # moves += 1
             # return moves
 
+        # TC: O(n) / SC: O(1)
         moves = 0
 
         for i in range(len(nums)):
