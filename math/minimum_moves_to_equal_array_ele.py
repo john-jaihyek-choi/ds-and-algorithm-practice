@@ -39,6 +39,7 @@ class Solution:
                         # if i != max_idx:
                         #     nums[i] += 1
         
+        # TC: O(n^2 * k)
         moves = 0
         while True:
             min_idx = nums.index(min(nums))
@@ -52,11 +53,47 @@ class Solution:
                     nums[i] += 1
             
             moves += 1
-    
+
+        # More efficient approach:
+        # Sort then sum up the differences
+        # TC: O(nlogn) / SC: O(1)
+        moves = 0
+        nums.sort(reverse=True)
+        maximum, minimum = nums[0], nums[-1]
+
+        for n in nums:
+            moves += n - minimum
+        
+        return moves
+
+        # # better readability and performance:
+        # # sum and min using built-in function then calculating the minimum with formula
+        #     # Explanation:
+        #         # incrementing n - 1 is mathematically equivalent to decrementing MAX value by 1 in terms of relative gap between max and min (max - min) at each level
+        #             # ex) incrementing n - 1 elements by 1
+        #             # [1, 2, 3]
+        #                 # incrementing n - 1 elements by 1:
+        #                     #             [1, 2, 3] -> [2, 3, 3] -> [3, 3, 4] -> [4, 4, 4]
+        #                     # max - min                    1            1            0
+        #             # ex) decrementing max(nums) by 1
+        #             # [1, 2, 3]
+        #                 # decrementing max element by 1:
+        #                     #             [1, 2, 3] -> [1, 2, 2] -> [1, 2, 1] -> [1, 1, 1]
+        #                     # max - min                    1            1            0
+        #         # So, regardless of the length and the values in the nums array, the changes to the gap between max - min would ALWAYS equal to 1.
+        #         # And because above holds true, each operation == 1 move
+        #             # Therefore... nums_sum - (min * len(nums)) = minimum required moves
+
+        # TC: O(n) / SC: O(1)
+        moves = 0
+        nums_sum = sum(nums)
+        minimum = min(nums)
+
+        return nums_sum - (minimum * len(nums))
 
 
 solution = Solution()
 start_time = time.time()
-answer = solution.minMoves([1,2,3])
+answer = solution.minMoves([1,1000000000])
 print(answer)
 print("--- %s seconds ---" % (time.time() - start_time))
