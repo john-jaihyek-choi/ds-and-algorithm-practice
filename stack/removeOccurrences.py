@@ -53,5 +53,5 @@ class Solution:
     
 solution = Solution()
 start_time = time.time()
-print(solution.asteroidCollision([-2,-1,1,-2]))
+print(solution.removeOccurrences([-2,-1,1,-2]))
 print("--- %s seconds ---" % (time.time() - start_time))
