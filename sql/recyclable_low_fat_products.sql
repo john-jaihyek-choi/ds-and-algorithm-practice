@@ -1,3 +1,4 @@
+-- Leetcode #1757
 -- Write your PostgreSQL query statement below
 -- Input:
     -- product_id (pk): int
