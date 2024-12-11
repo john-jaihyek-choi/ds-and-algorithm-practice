@@ -3,6 +3,71 @@ from collections import defaultdict, deque
 from typing import List, Dict, DefaultDict, Set
 
 # Leetcode 933:
+# 12/11 retried
+class RecentCounter3:
+    # Goal:
+        # counts the number of recent request within a certain time frame
+    # Idea:
+        # use of deque:
+            # 1. initialize an empty deque for self.request
+            # 2. implement ping
+                # compute the t received - 3000ms (threshold)
+                # request.append(t)
+                # while self.requests and self.requests[0] < threshold
+                    # request.popleft()
+        # if use of deque is prohibited:
+            # 1. initialize key variables
+                # initialize an empty array on init of class
+                # initialize recent variable at 0
+            # 2. implement ping
+                # compute the t received - 3000ms (threshold)
+                # request.append(t)
+                # while self.requests[self.recent] < threshold:
+                    # self.recent += 1
+                # return len(self.requests) - self.recent
+
+    # Dequeue approach:
+    def __init__(self):
+        # initialize counter with 0 recent request
+        self.requests = deque()
+
+    def ping(self, t: int) -> int:
+        # Input:
+            # t: int
+        # Output:
+            # output: int
+                # returns number of request that has happend in the past 3000 ms (including new request)
+                    # t - 3000, t
+        # guarantess strictly larger t each call
+        # adds new request at time t
+            # t = time in ms
+
+        # TC: O(k) / SC: O(k)
+        # where k is number of requests past the threshold 
+        threshold = t - 3000
+        self.requests.append(t)
+
+        while self.requests and self.requests[0] < threshold:
+            self.requests.popleft()
+        
+        return len(self.requests)
+
+    # No Deque approach:
+    def __init__(self):
+        self.requests = []
+        self.recent = 0
+
+    def ping(self, t: int) -> int:
+        # TC: O(k) / SC: O(n)
+            # where k is number of requests past the threshold
+            # where n is number of total ping requets
+        threshold = t - 3000
+        self.requests.append(t)
+
+        while self.requests and self.requests[self.recent] < threshold:
+            self.recent += 1
+        
+        return len(self.requests) - self.recent
 
 # without deque:
 class RecentCounter2:
