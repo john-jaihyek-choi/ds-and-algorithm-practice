@@ -27,6 +27,8 @@
     -- filter by year 2022
   -- 2. get click count and impression counts from click_and_impression_counts and calculate CTR
 
+
+-- Initial Try
 WITH click_and_impression_counts AS (
   SELECT
     e.app_id,
@@ -41,3 +43,16 @@ SELECT
   app_id,
   ROUND((100.0 * click_count / impression_count), 2) as ctr
 FROM click_and_impression_counts
+
+
+-- 2nd Try
+SELECT
+  e.app_id,
+  ROUND(
+    100.0 *
+    COUNT(CASE WHEN e.event_type = 'click' THEN 1 END) /
+    COUNT(CASE WHEN e.event_type = 'impression' THEN 1 END),
+    2) AS ctr 
+FROM events e
+WHERE EXTRACT(YEAR FROM e.timestamp) = '2022'
+GROUP BY e.app_id
