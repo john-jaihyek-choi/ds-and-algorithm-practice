@@ -50,6 +50,17 @@ class Solution:
 
         return ''.join(stack)
     
+        # Bruteforce
+        output = s
+
+        while True:
+            after_replace = output.replace(part, "")
+
+            if after_replace == output:
+                return after_replace
+
+            output = after_replace
+    
     
 solution = Solution()
 start_time = time.time()
