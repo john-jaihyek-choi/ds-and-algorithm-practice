@@ -3,6 +3,73 @@ from collections import defaultdict, deque
 from typing import List, Dict, DefaultDict, Set
 
 # Leetcode 151:
+# 1/3/2025 recap
+class Solution3:
+    def reverseWords(self, s: str) -> str:
+        # input:
+            # s: str
+        # output:
+            # output: str
+        # goal: 
+            # given string, s, return the reversed string s as an output
+        # note:
+            # there could be leading and ending multi-spaces
+            # there could be multi-spaces in between words
+            # s contains uppercase and lowercase english letters, digits, and spaces
+            # s contains atleast 1 word
+        # ideas:
+            # intuition (TC: O(n) / SC: O(n)):
+                # split the string using built-in split method
+                # use two pointers to reverse the words
+                # repeat until l and the r pointer meets
+        
+        # Pseudocode:
+            # initialize output array with s.split()
+                # split should take care of the multi-spaces
+            # initialize l and r pointer
+                # l = 0
+                # r = len(s) - 1
+            # iterate until l and r meets
+                # output[l], output[r] = output[r], output[l]
+                # increment l
+                # decrement r
+            # join the output array and return the result
+        
+        # TC: O(n) / SC: O(n)
+        output = s.split()
+        l, r = 0, len(output) - 1
+        while l < r:
+            output[l], output[r] = output[r], output[l]
+            l += 1
+            r -= 1
+        
+        return ' '.join(output)
+
+        # Stack (Assuming built-in split is not allowed)
+        # TC: O(n * k) / SC: O(n)
+        l, r = 0, len(s) - 1
+        stack = []
+        word = []
+        for c in s:
+            if c.isalnum():
+                word.append(c)
+            else:
+                if word:
+                    stack.append("".join(word))
+                word.clear()
+        stack.append("".join(word))
+
+        output = []
+        while stack:
+            w = stack.pop()
+            if w and w != "":
+                output.append(w)
+
+        return " ".join(output)
+
+        
+        
+
 class Solution2:
     def reverseWords(self, s: str) -> str:
         # Note:
