@@ -1,5 +1,48 @@
 from typing import List
 import time
+# Leetcode 238:
+# 1/3/2025 recap
+class Solution2:
+    def productExceptSelf(self, nums: List[int]) -> List[int]:
+        # input:
+            # nums: List[int]
+        # output:
+            # output: List[int]
+        # goal:
+            # given a list of integer, nums, return an array if integers where output[i] is the product of the array except itself
+        # note:
+            # intuition:
+                # initialize an empty array for output (output)
+                # initialize left_product and right_product at 1
+                # iterate on nums and compute the left_product
+                    # left_product is the product of items to the left of nums[i] NOT including itself
+                # iterate nums from the end of the array
+                    # track the right_product
+                        # right_product is the product of items to the right of nums[i] NOT including itself
+                    # compute the product of the left and right products and update the output array in place
+        # Pseudocode:
+            # initialize an empty output array (output)
+            # initialize left and right product (l_product, r_product)
+            # iterate on nums (i = index, n = nums[i])
+                # output.append(left_product)
+                # set left_product = n * left_product
+            # iterate on nums in reverse order (i = index)
+                # output[i] = output[i] * right_product
+                # right_product = nums[i] * right_product
+            # return output
+        
+        # TC: O(n) / SC: O(1) assuming output doesn't count as an extra space
+        output = []
+        l_product = r_product = 1
+        for i, n in enumerate(nums):
+            output.append(l_product)
+            l_product *= n
+        
+        for i in range(len(output) - 1, -1, -1):
+            output[i] = output[i] * r_product
+            r_product = nums[i] * r_product
+
+        return output
 
 class Solution1:
     def productExceptSelf(self, nums: List[int]) -> List[int]:
