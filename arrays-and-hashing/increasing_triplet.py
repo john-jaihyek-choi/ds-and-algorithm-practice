@@ -3,6 +3,56 @@ from collections import defaultdict, deque
 from typing import List, Dict, DefaultDict, Set
 
 # Leetcode 334:
+
+# 1/3/2025 recap
+class Solution3:
+    def increasingTriplet(self, nums: List[int]) -> bool:
+        # input:
+            # nums: List[int]
+        # output:
+            # output: bool
+        # goal:
+            # given an list of integers, nums, return true of nums have valid increasing triplet subsequence false otherwise
+        # note:
+            # increasing triplet subsequence:
+                # indicies (i) must be in strictly increasing order
+                # values (nums[i]) must be in strinctly increasing order
+        # ideas:
+            # brute-force (TC: O(n^3) / SC: O(1)):
+                # use triple nested loop and compare all possibilities
+            # optimized approach:
+                # keep track of m1 and m2 min values
+                # iterate on nums:
+                    # condition:
+                        # if nums[i] < m1:
+                            # m1 = nums[i]
+                        # elif nums[i] < m2:
+                            # m2 = nums[i]
+                        # else:
+                            # return True
+                # return False
+        
+        # brute-force:
+        for i in range(len(nums)):
+            for j in range(i + 1, len(nums)):
+                for k in range(j + 1, len(nums)):
+                    if nums[i] < nums[j] < nums[k]:
+                        return True
+        return False
+
+        # optimal approach:
+        m1 = m2 = float('inf')
+        for i in range(len(nums)):
+            if nums[i] <= m1:
+                m1 = nums[i]
+            elif nums[i] <= m2:
+                m2 = nums[i]
+            else:
+                return True
+        
+        return False
+
+
 class Solution2:
     def increasingTriplet(self, nums: List[int]) -> bool:
         # Note:
