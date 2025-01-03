@@ -1,5 +1,40 @@
 # Leetcode 1768:
 
+
+# 1/2/2025 recap
+class Solution3:
+    def mergeAlternately(self, word1: str, word2: str) -> str:
+        # input:
+            # word1: str
+            # word2: str
+        # output:
+            # output: str
+        # note:
+            # len(word1) and len(word2) <= 100
+            # word1 and word2 consists of lowercase eng letter
+        # visualization:
+            # ex) word1 = 'abc' word2 = 'pqr'
+                # output = 'apbqcr'
+        # ideas:
+            # two-pointers:
+                # instantitate an empty arry to store the result string (output)
+                # iterate the length of the shorter word of the two (i=index)
+                    # set c1 to word1[i] if i < len(word1)
+                        # otherwise, set it to empty str
+                    # set c2 to word2[i] if i < len(word1)
+                        # otherwise, set it to empty str
+                    # extend c1 and c2 to the output array
+                # return the joined string of the output
+        output = []
+        for i in range(max(len(word1), len(word2))):
+            c1 = word1[i] if i < len(word1) else ""
+            c2 = word2[i] if i < len(word2) else ""
+            
+            output.extend([c1, c2])
+        
+        return ''.join(output)
+
+
 class Solution3:
     def mergeAlternately(self, word1: str, word2: str) -> str:
         # TC: O(n) / SC: O(n + m)
