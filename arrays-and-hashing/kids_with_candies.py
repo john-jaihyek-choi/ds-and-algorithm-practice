@@ -4,6 +4,58 @@ from typing import List, Dict, DefaultDict, Set
 
 # Leetcode 1431:
 
+# 1/2/2025 recap
+class Solution3:
+    def kidsWithCandies(self, candies: List[int], extraCandies: int) -> List[bool]:
+        # input:
+            # candies: List[int]
+            # extraCandies: int
+        # output:
+            # output: List[bool]
+        # visualization:
+            # ex) candies = [2, 3, 5, 1, 3], extraCandies = 3
+                # kid with the most candies before extraCandies = 5
+                # kid at 0th index with all extraCandies = 5 (5 >= 5)
+                # kid at 1st index with all extraCandies = 6 (6 >= 5)
+                # kid at 2nd index with all extraCandies = 8 (8 >= 5)
+                # kid at 3rd index with all extraCandies = 4 (4 < 5)
+                # kid at 4th index with all extraCandies = 6 (6 >= 5)
+                # output = [true, true, true, false, true]
+        # idea:
+            #  intuition:
+                # find max number of candies before extraCandies
+                    # then iterate on candies to find to see if sum of the candies[i] and extraCandies greater than or equal to max candies
+        # pseudocode:
+            # output = []
+            # max_candies = maX(candies)
+            # iterate on candies (c = candies)
+                # if c + max_candies >= extraCandies:
+                    # append true to output
+                # else:
+                    # append false
+
+        # TC: O(n) / SC: O(n)
+        output = []
+        max_candies = max(candies)
+        
+        for c in candies:
+            if c + extraCandies >= max_candies:
+                output.append(True)
+            else:
+                output.append(False)
+        
+        return output
+
+        # Cleaner code:
+        output = []
+        max_candies = max(candies)
+        
+        for c in candies:
+            output.append(c + extraCandies >= max_candies)
+        
+        return output
+
+
 class Solution2:
     def kidsWithCandies(self, candies: List[int], extraCandies: int) -> List[bool]:
         # Note:

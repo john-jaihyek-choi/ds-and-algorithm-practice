@@ -25,6 +25,8 @@ class Solution3:
                         # otherwise, set it to empty str
                     # extend c1 and c2 to the output array
                 # return the joined string of the output
+
+        # TC: O(n) where n is the length of the longer word / SC: O(n + m)
         output = []
         for i in range(max(len(word1), len(word2))):
             c1 = word1[i] if i < len(word1) else ""
