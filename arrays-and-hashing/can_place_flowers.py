@@ -3,6 +3,58 @@ from collections import defaultdict, deque
 from typing import List, Dict, DefaultDict, Set
 
 # Leetcode 605:
+
+# 1/2/2025 recap
+class Solution4:
+    def canPlaceFlowers(self, flowerbed: List[int], n: int) -> bool:
+        # input:
+            # flowerbed: List[int]
+            # n: int
+                # new flowers
+        # output:
+            # output: bool
+        # goal:
+            # given list of integer, flowerbed, and integer n
+                # return true if all n flowers can be planted without violating the no-adjacent-flower rule
+        # no-adjacent-flower rule:
+            # new flower can only be planted in an empty bed (0)
+            # new flower cannot be planted in empty bed when adjacent beds aren't empty (1)
+            # there are no 2 adjacent flowers in flowerbed
+            # bed left to flowerbed[0] and right to flowerbed[len(flowerbed)] can be considered empty?
+        # idea:
+            # intuition:
+                # iterate on flowerbed
+                # store the value to the left and right of the flowerbed[i]
+                    # use of if else to handle out of index error
+                # if left, flowerbed[i], and right are all 0:
+                    # set flowerbed[i] to 1
+                    # decrement n by 1
+        # pseudocode:
+            # iterate on flowerbed (i = index)
+                # left = flowerbed[i - 1] if i > 0 else 0
+                # right = flowerbed[i + 1] if i < len(flowerbed) - 1 else 0
+                # cur = flowerbed[i]
+                # if left + right + cur == 0:
+                    # n -= 1
+                    # 
+            # return n <= 0
+
+        # TC: O(n) / SC: O(1)
+        for i in range(len(flowerbed)):
+            left = flowerbed[i - 1] if i > 0 else 0
+            right = flowerbed[i + 1] if i < len(flowerbed) - 1 else 0
+            cur = flowerbed[i]
+
+            if not left and not right and not cur:
+                flowerbed[i] = 1
+                n -= 1
+
+            if n == 0: break
+        
+        return n <= 0
+
+
+
 class Solution3:
     def canPlaceFlowers(self, flowerbed: List[int], n: int) -> bool:
         # Note:
