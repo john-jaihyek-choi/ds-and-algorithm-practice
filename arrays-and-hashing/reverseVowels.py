@@ -3,6 +3,66 @@ from collections import defaultdict, deque
 from typing import List, Dict, DefaultDict, Set
 
 # Leetcode 345:
+
+# 1/2/2025 recap
+class Solution3:
+    def reverseVowels(self, s: str) -> str:
+        # input:
+            # s: str
+        # output:
+            # output: str
+        # goal:
+            # given a string, s, return an output string where all vowels are reversed
+        # note:
+            # vowels can be either lowercase or uppercase english letters
+        # ideas:
+            # intuition:
+                # two-pointer with vowel hashmap:
+                    # initialize a pre-defined vowel hashmap
+                    # initialize a left and the right pointer
+                    # iterate on s while l < r
+                        # if left character isn't vowel, increment left pointer by 1
+                        # if right character isn't vowel, decrement right pointer by 1
+                        # if left is vowel and right is vowel, increment left by 1 and decrement right by 1
+        # pseudocode:
+            # initialize vowels hashmap (vowels)
+            # split s to a list (output)
+            # initialize l and r:
+                # l = 0
+                # r = len(s) - 1
+            # iterate while l < r:
+                # left = output[l]
+                # right = output[r]
+                # if left in vowels and right in vowels:
+                    # output[l], output[r] = output[r], output[l]
+                    # l += 1
+                    # r -= 1
+                    # continue
+                # if left not in vowels:
+                    # l += 1
+                # if right not in vowels:
+                    # r -= 1
+
+        # TC: O(n) / SC: O(n)
+        vowels = {'a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U'}
+        output = list(s)
+        l, r = 0, len(s) - 1
+        while l < r:
+            left, right = output[l], output[r]
+
+            if left in vowels and right in vowels:
+                output[l], output[r] = output[r], output[l]
+                l += 1
+                r -= 1
+                continue
+
+            if left not in vowels:
+                l += 1
+            if right not in vowels:
+                r -= 1
+        
+        return ''.join(output)
+
 class Solution2:
     def reverseVowels(self, s: str) -> str:
         # Note:
