@@ -3,6 +3,67 @@ from typing import List, Dict, DefaultDict, Set
 import time
 
 # Leetcode 11
+# 1/7/2025 recap
+class Solution4:
+    def maxArea(self, height: List[int]) -> int:
+        # input:
+            # height: List[int]
+        # output:
+            # output: int
+                # output is the maximum area of the water
+        # goal:
+            # given a list of integers, height, return the max possible water a container can store
+        # ideas:
+            # brute-force:
+                # check every possible container
+                    # use a nested loop
+                        # i from 0
+                        # j from i + 1
+            # optimized solution: use two-pointer
+                # initialize l and r pointer
+                # initialize output to float("-inf")
+                # iterate while l < r
+                    # update the output with new area
+                        # width = r - l
+                        # height = min(height[l], height[r])
+                        # area = w * h
+                    # if height[l] <= height[r]
+                        # increment l
+                    # else:
+                        # decrement r
+        # Pseudocode:
+            # initialize l and r
+                # l = 0
+                # r = len(height) - 1
+            # initializes output 
+                # output = float('-inf')
+            # while l < r:
+                # width = r - l
+                # height = min(height[l], height[r])
+                # output = width * height
+                # if height[l] <= height[r]
+                    # l += 1
+                # else:
+                    # r -= 1
+            # return output
+        
+        # TC: O(n) / SC: O(1)
+        l, r = 0, len(height) - 1
+        output = float("-inf")
+        
+        while l < r:
+            w = r - l
+            h = min(height[l], height[r])
+            output = max(output, w * h)
+
+            if height[l] <= height[r]:
+                l += 1
+            else:
+                r -= 1
+        
+        return output
+
+
 # Retried 11/19/2024 
 class Solution3:
     def maxArea(self, height: List[int]) -> int:
