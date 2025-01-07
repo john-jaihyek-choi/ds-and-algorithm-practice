@@ -3,6 +3,60 @@ from collections import defaultdict, deque
 from typing import List, Dict, DefaultDict, Set
 
 # Leetcode 392:
+# 1/6/2025 recap
+class Solution4:
+    def isSubsequence(self, s: str, t: str) -> bool:
+        # input:
+            # s: str
+            # t: str
+        # output:
+            # output: bool
+        # goal:
+            # given strings, s and t
+                # return true if s is a subsequence of t
+                # false otherwise
+        # note:
+            # if len(s) > len(t):
+                # immediately False
+        # ideas:
+            # intuition: two-pointer approach 
+                # set a guard condition for len(s) > len(t)
+                    # return False if true
+                # initialize a pointer to track position at string s
+                # iterate on t
+                    # if s[x] == s[i]:
+                        # increment x
+                # return x >= len(s) - 1
+        # Pseudocode:
+            # if len(s) > len(t):
+                # return False
+            # if s == t:
+                # return True
+            # s = 0
+            # for i in t:
+                # if x >= len(s):
+                    # break
+                # if s[x] == s[i]:
+                    # x += 1
+            # return x >= len(s)
+        
+        # TC: O(n) / SC: O(1)
+        if len(s) > len(t):
+            return False
+        if s == t:
+            return True
+        
+        x = 0 
+        for c in t:
+            if x >= len(s):
+                break
+            if s[x] == c:
+                x += 1
+
+        return x >= len(s)
+
+
+
 class Solution3:
     def isSubsequence(self, s: str, t: str) -> bool:
         # Note:
