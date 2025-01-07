@@ -3,6 +3,40 @@ from collections import defaultdict, deque
 from typing import List, Dict, DefaultDict, Set
 
 # Leetcode 283:
+# 1/6/2025 recap
+class Solution4:
+    def moveZeroes(self, nums: List[int]) -> None:
+        """
+        Do not return anything, modify nums in-place instead.
+        """
+        # input:
+            # nums: List[int]
+        # output:
+            # output: None
+        # goal:
+            # given a list of integers, nums, return the modified nums where all 0's are moved to the end of the list
+        # ideas:
+            # intuition: two-pointer approach
+                # iterate while r < len(nums):
+                    # if nums[r] > nums[l]
+                        # switch nums[r] with nums[l]
+                        # increment l
+        
+        # Pseudocode:
+            # initialize l pointer
+                # l = 0
+            # for r in range(len(nums)):
+                # if nums[r] > 0:
+                    # nums[r], nums[l] = nums[l], nums[r]
+                    # l += 1
+        
+        l = 0
+        for r in range(len(nums)):
+            if nums[r] != 0:
+                nums[r], nums[l] = nums[l], nums[r]
+                l += 1
+        return nums
+
 class Solution3:
     def moveZeroes(self, nums: List[int]) -> None:
         """
