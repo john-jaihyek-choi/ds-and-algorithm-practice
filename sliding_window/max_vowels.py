@@ -3,6 +3,62 @@ from typing import List, Dict, DefaultDict, Set
 import time
 
 # Leetcode 1456:
+class Solution3:
+    def maxVowels(self, s: str, k: int) -> int:
+        # input:
+            # s: str
+            # k: str
+        # output:
+            # output: int
+        # goal:
+            # given string s and integer k, return the maximum number of vowel letters in any substring of s with length k
+        # notes:
+            # k is guaranteed to be <= len(s)
+            # since k is the window, output would never exceed k
+        # ideas:
+            # intuition: set for vowels, sliding window to increase or decrease vowel count
+                # create set for vowels
+                # initialize vowel_count
+                # count the vowels in the first k substring of s
+                # iterate s beginning k and add and remove vowel_count as sliding window shifts
+        # pseudocode:
+            # vowels = {'a','e','i','o','u'}
+            # output = 0
+            # for c in s[:k]:
+            #     if c in vowels:
+            #         output += 1
+            # for i in range(k, len(s)):
+                # prev = 1 if s[i - k] in vowel else 0
+                # nxt = 1 if s[i] in vowel else 0
+                # output += prev - nxt
+            # return output
+
+        # TC: O(n) / SC: O(1)
+        vowels = {'a', 'e', 'i', 'o', 'u'}
+        count = 0
+        for c in s[:k]:
+            if c in vowels:
+                count += 1
+
+        output = count
+        for i in range(k, len(s)):
+            prev = 1 if s[i - k] in vowels else 0
+            nxt = 1 if s[i] in vowels else 0
+            count += nxt - prev
+            output = max(output, count)
+        return output
+
+        # cleaner/less code:
+        vowels = {'a', 'e', 'i', 'o', 'u'}
+        count = output = sum(1 for c in s[:k] if c in vowels)
+
+        for i in range(k, len(s)):
+            prev = 1 if s[i - k] in vowels else 0
+            nxt = 1 if s[i] in vowels else 0
+            count += nxt - prev
+            output = max(output, count)
+        return output
+
 class Solution2:
     def maxVowels(self, s: str, k: int) -> int:
         # Note:
