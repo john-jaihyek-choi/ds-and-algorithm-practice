@@ -3,6 +3,59 @@ from typing import List, Dict, DefaultDict, Set
 import time
 
 # Leetcode 643:
+# 1/7/2025 retried
+class Solution3:
+    def findMaxAverage(self, nums: List[int], k: int) -> float:
+        # input:
+            # nums: List[int]
+        # output:
+            # k: int
+        # goal:
+            # given a list of integers nums and a integer k, return the maximum average where the subarray has length k
+        # notes:
+            # k is guaranteed to be smaller or equal to n
+        # ideas:
+            # intuition: sliding window with pre-defined k length
+                # initialize a left and right bound for the window
+                # slide window until the right bound reaches the end of nums
+                # return the average
+        # Pseudocode:
+            # initialize l and r bound
+                # l = 0
+                # r = k - 1
+            # pre-compute the sum of the first k - 1 items
+                # k_sum = nums[0:r]
+            # output = float('-inf')
+            # iterate while r < len(nums):
+                # k_sum += nums[r]
+                # output = max(output, k_sum / k)
+                # k_sum -= nums[l]
+                # r += 1
+                # l += 1
+
+        # TC: O(n) / SC: O(1)
+        l, r = 0, k - 1
+        k_sum = sum(nums[0:r])
+        output = float('-inf')
+        while r < len(nums):
+            k_sum += nums[r]
+            output = max(output, k_sum / k)
+            k_sum -= nums[l]
+            r += 1
+            l += 1
+        
+        return output
+
+        # cleaner code
+        k_sum = output = sum(nums[:k])
+        for r in range(k, len(nums)):
+            k_sum += nums[r] - nums[r - k]
+
+            output = max(output, k_sum)
+        
+        return output / k
+
+
 class Solution2:
     def findMaxAverage(self, nums: List[int], k: int) -> float:
         # Note:
@@ -37,41 +90,41 @@ class Solution2:
                             # before incrementing, subtract nums[l] from sum
 
         
-        # Brute-force:
-        max_avg = float('-inf')
-        for i in range(0, len(nums) - k + 1):
-            avg = nums[i]
-            for j in range(i+1, i + k):
-                avg += nums[j]
-            max_avg = max(max_avg, round(avg / k, 5))
-        
-        return max_avg
-
-        # sliding-window:
-        # l = 0
+        # # Brute-force:
         # max_avg = float('-inf')
-        # sum = 0
-        # for r in range(len(nums)):
-            # compute sum of number at each iteration
-                # sum += nums[r]
-            # if r >= k - 1:
-                # max_avg = max(max_avg, round(sum / k, 5))
-                # sum -= nums[l]
-                # l += 1
-
-        # TC: O(n) / SC: O(1)
-        l = sum_val = 0
-        max_avg = float('-inf')
-
-        for r in range(len(nums)):
-            sum_val += nums[r]
-
-            if r >= k - 1:
-                max_avg = max(max_avg, round(sum_val / k, 5))
-                sum_val -= nums[l]
-                l += 1
+        # for i in range(0, len(nums) - k + 1):
+        #     avg = nums[i]
+        #     for j in range(i+1, i + k):
+        #         avg += nums[j]
+        #     max_avg = max(max_avg, round(avg / k, 5))
         
-        return max_avg
+        # return max_avg
+
+        # # sliding-window:
+        # # l = 0
+        # # max_avg = float('-inf')
+        # # sum = 0
+        # # for r in range(len(nums)):
+        #     # compute sum of number at each iteration
+        #         # sum += nums[r]
+        #     # if r >= k - 1:
+        #         # max_avg = max(max_avg, round(sum / k, 5))
+        #         # sum -= nums[l]
+        #         # l += 1
+
+        # # TC: O(n) / SC: O(1)
+        # l = sum_val = 0
+        # max_avg = float('-inf')
+
+        # for r in range(len(nums)):
+        #     sum_val += nums[r]
+
+        #     if r >= k - 1:
+        #         max_avg = max(max_avg, round(sum_val / k, 5))
+        #         sum_val -= nums[l]
+        #         l += 1
+        
+        # return max_avg
 
         # Optimized cleaner code (TC: O(n) / SC: O(1)):
         sum_val = max_sum = sum(nums[:k])
@@ -148,7 +201,7 @@ class Solution1:
 
 
 
-solution = Solution()
+solution = Solution2()
 start_time = time.time()
-print(solution.findMaxAverage([1,3,1,2,0,5], 3))
+print(solution.findMaxAverage([1,12,-5,-6,50,3], 4))
 print("--- %s seconds ---" % (time.time() - start_time))
