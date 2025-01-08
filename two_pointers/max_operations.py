@@ -3,6 +3,71 @@ from collections import defaultdict, deque
 from typing import List, Dict, DefaultDict, Set
 
 # Leetcode 1679:
+# 1/7/2025 recap
+class Solution4:
+    def maxOperations(self, nums: List[int], k: int) -> int:
+        # input:
+            # nums: List[int]
+            # k: int
+                # sum of the 2 pairs
+        # output:
+            # output: int
+                # maximum number of operation I can perform on the array
+        # note:
+            #  if nums[i] and nums[j] (i != j) equals k - valid operation
+            # nums[i] and nums[j] cannot use the previously used i and j
+        # ideas:
+            # intuition/bruteforce (TC: O(n^2) / SC: O(n)): nested loops with a set
+                # create an empty set to store the indicies of nums that was used already
+                # iterate on nums
+                    # iterate on nums starting i + 1
+                        # if i not in visited and j not in visited and nums[i] + nums[j] == k:
+                            # increment counter
+                            # update the visited set
+            # alternative (TC: O(nlogn) / SC: O(1)): sort then two-pointers
+                # sort the nums array
+                # initialize l and r pointers
+                # iterate while l < r:
+                    # if nums[l] + nums[r] == k:
+                        # l += 1
+                        # r -= 1
+                    # elif nums[l] + nums[r] > k:
+                        # r -= 1
+                    # elif nums[l] + nums[r] < k:
+                        # l += 1
+        # pseudocode:
+        # nums.sort()
+        # output = 0
+        # l, r = 0, len(nums) - 1
+        # while l < r:
+            # summed_val = nums[l] + nums[r]
+            # if summed_val == k:
+                # output += 1
+                # l += 1
+                # r -= 1
+            # elif summed_val > k:
+                # r -= 1
+            # elif nums[l] + nums[r] < k:
+                # l += 1
+        # return output
+
+        # TC: O(n logn) / SC: O(1)
+        nums.sort()
+        output = 0
+        l, r = 0, len(nums) - 1
+        while l < r:
+            summed_val = nums[l] + nums[r]
+            if summed_val == k:
+                output += 1
+                l += 1
+                r -= 1
+            elif summed_val > k:
+                r -= 1
+            elif summed_val < k:
+                l += 1
+        
+        return output
+
 class Solution3:
     def maxOperations(self, nums: List[int], k: int) -> int:
         # Note:
