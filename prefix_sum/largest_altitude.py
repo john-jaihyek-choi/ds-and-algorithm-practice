@@ -3,6 +3,39 @@ from collections import defaultdict, deque
 from typing import List, Dict, DefaultDict, Set
 
 # Leetcode 1732:
+class Solution3:
+    def largestAltitude(self, gain: List[int]) -> int:
+        # input:
+            # gain: List[int]
+        # output:
+            # output: int
+        # goal: 
+            # given a list of integers, gains, return the highest altitude of a point
+        # notes:
+            # biker starts at altitude of 0
+            # nums[i] represents the net gain/loss in altitude
+        # ideas:
+            # intuition: simple iteration while tracking max altitude
+                # initialize altitude and output at 0
+                # iterate on gain (net_change = gain[i])
+                    # update output = max(output, output + net_change)
+        # Pseudocode:
+            # initialize an altitude and output at 0
+            # iterate on gain (net_change = gain[i])
+                # altitude += net_change
+                # output = max(output, altitude)
+            # return output
+        
+        # TC: O(n) / SC: O(1)
+        altitude = output = 0
+        for net_change in gain:
+            altitude += net_change
+            output = max(output, altitude)
+        
+        return output
+
+
+
 class Solution2:
     def largestAltitude(self, gain: List[int]) -> int:
         # Note:
