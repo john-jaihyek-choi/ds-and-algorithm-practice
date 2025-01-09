@@ -3,6 +3,42 @@ from collections import defaultdict, deque
 from typing import List, Dict, DefaultDict, Set
 
 # Leetcode 2215:
+# 1/8/2025 retried
+class Solution4:
+    def findDifference(self, nums1: List[int], nums2: List[int]) -> List[List[int]]:
+        # input:
+            # nums1: List[int]
+            # nums2: List[int]
+        # output:
+            # otuput: List[List[int]]
+        # goal: 
+            # given a 2 lists of integers, nums1 and nums2, return a list of list of integers with size 2 where
+                # output[0] == list of distinct numbers in nums1 that's not present in nums2
+                # output[1] == list of distinct numbers in nums2 that's not present in nums1
+        # ideas:
+            # intuition: 2 sets for nums1 and nums2
+                # initialize 2 sets - each for nums1 and nums2
+                # initialize output array with 2 empty arrays
+                # iterate nums1 (n = nums[i])
+                    # if n not in nums2:
+                        # output[0].append(n)
+                # iterate nums2 (n = nums[i])
+                    # if n not in nums1:
+                        # output[1].append(n)
+                # return output
+            # pythonic solution: 2 sets then set difference
+                # initialize 2 sets - each for nums1 and nums2
+                # return [for n in (set1 - set2)], [for n in (set2 - set1)]]
+        
+        # TC: O(n + m) / SC: O(n + m)
+        set1, set2 = set(nums1), set(nums2)
+        return [n for n in (set1 - set2)], [n for n in (set2 - set1)]
+
+        # better readability:
+        set1, set2 = set(nums1), set(nums2)
+        return [list(set1 - set2), list(set2 - set1)]
+
+
 class Solution3:
     def findDifference(self, nums1: List[int], nums2: List[int]) -> List[List[int]]:
         # Note:
@@ -57,7 +93,7 @@ class Solution3:
             if n not in n1_set:
                 answer[1].append(n)
 
-        # return answer
+        return answer
             
         # Python native set comparison:
         n1_set, n2_set = set(nums1), set(nums2)
