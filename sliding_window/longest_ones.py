@@ -3,6 +3,51 @@ from typing import List, Dict, DefaultDict, Set
 import time
 
 # Leetcode 1004:
+
+class Solution3:
+    def longestOnes(self, nums: List[int], k: int) -> int:
+        # input:
+            # nums: List[int]
+            # k: int
+                # total number of available flips
+                    # 0 -> 1
+        # output:    
+            # output: int
+                # maximum number of consecutive 1s
+                    # in other words, maximum length of the consecutive substring
+        # goal:
+            # given a list of 0s and 1s, nums, return the maximum number of consecutive 1's in the nums array
+        # notes:
+            # k = number of available flips from 0 to 1
+            # find the longest consecutive 1s and return the length of the substring
+        # ideas:
+            # intuition: sliding window approach
+                # initialize a l and r boundary
+                    # both beginning at 0
+                # expand r boundary each iteration
+                # move l boundary if subarray length - ones >= k
+                    # update ones before shifting l
+        # pseudocode:
+            # initialize l boundary
+                # l = 0
+            # ones = 0
+            # iterate the nums (r = index):
+                # ones += nums[r]
+                # if r - l - ones >= k:
+                    # ones -= nums[l]
+                    # l += 1
+
+        l, ones = 0, 0
+        for r in range(len(nums)):
+            ones += nums[r]
+            window_size = r - l
+
+            if window_size - ones >= k:
+                ones -= nums[l]
+                l += 1
+        
+        return r - l + 1
+
 class Solution2:
     def longestOnes(self, nums: List[int], k: int) -> int:
         # Note:
@@ -139,7 +184,7 @@ class Solution1:
         return r - l + 1 # O(1)
 
 
-solution = Solution2()
+solution = Solution3()
 start_time = time.time()
-print(solution.longestOnes([0,0,0,1], 4))
+print(solution.longestOnes([1,1,1,0,0,0,1,1,1,1,0], 2))
 print("--- %s seconds ---" % (time.time() - start_time))
