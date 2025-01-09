@@ -3,7 +3,56 @@ from typing import List, Dict, DefaultDict, Set
 import time
 
 # Leetcode 1493:
-class Solution:
+class Solution3:
+    def longestSubarray(self, nums: List[int]) -> int:
+        # input:
+            # nums: List[int]
+        # output:
+            # output: int
+        # goal:
+            # given a binary array, nums, return the longest non-empty subarry containing only 1's in the resulting array
+                # return 0 if there is no such array
+        # notes:
+            # size of the longest non-empty subarray == longest subarray where all elements are 1 AFTER DELETING 1 ELEMENT FROM IT
+            # will need to keep track of the longest subarray length when...
+                # length of the subarray - sum of 1's in subarray > 1
+        # ideas:
+            # intuition: sliding window approach
+                # initialize a left and right bound
+                # initialize a ones counter (ones)
+                # initialize an output (output)
+                # iterate on nums:
+                    # update ones counter
+                    # while length of the subarray (r - l + 1) - sum of 1's in subarray (ones) > 1:
+                        # l += 1
+                    # else update output
+                        # output = max(output, r - l)
+                # return output
+        # Pseudocode:
+            # l = ones = 0
+            # output = 0
+            # iterate on nums (r = index)
+                # ones += nums[r]
+                # while (r - l + 1) - ones > 1:
+                    # l += 1
+                # else:
+                    # output = max(output, r- l)
+            # return output
+        
+        # TC: O(n) / SC: O(1)
+        l = ones = output = 0
+        for r in range(len(nums)):
+            ones += nums[r]
+            if (r - l + 1) - ones > 1:
+                ones -= nums[l]
+                l += 1
+            else:
+                output = max(output, r - l)
+        return output
+
+
+
+class Solution2:
     def longestSubarray(self, nums: List[int]) -> int:
         # Note:
             # input:
