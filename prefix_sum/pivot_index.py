@@ -3,6 +3,66 @@ from collections import defaultdict, deque
 from typing import List, Dict, DefaultDict, Set
 
 # Leetcode 724:
+class Solution4:
+    def pivotIndex(self, nums: List[int]) -> int:
+        # input:
+            # nums: List[int]
+        # output:
+            # output: int
+        # goal:
+            # given a list of integers, nums, return a pivot index
+                # pivot index:
+                    # index where left prefix sum == right prefix sum
+        # notes:
+            # return -1 if no pivot index is found
+        # ideas:
+            # initial intuition: compute and store prefix sum from left then go backwards
+                # initialize an array to store left prefix sum
+                # iterate nums from the end of the list
+                    # keep right prefix sum
+                    # if right prefix sum == left prefix sum, return the index
+                # return -1
+            # better solution: take a sum of nums ahead of time
+                # initialize a sum of nums (right_sum)
+                # initialize a left_sum at 0
+                # iterate the nums from left
+                    # if right_sum - nums[i] == left_sum:
+                        # return i
+                    # else:
+                        # left_sum += nums[i]
+                # return -1
+        
+        # pseudocode:
+            # initialize right_sum
+                # right_sum = sum(nums)
+            # initialize left_sum = 0
+            # iterate nums (i = index)
+                # if right_sum - nums[i] == left_sum:
+                    # return i
+                # else:
+                    # left_sum += nums[i]
+            # return -1
+        
+        # TC: O(n) / SC: O(1)
+        left_sum, right_sum = 0, sum(nums)
+        for i in range(len(nums)):
+            if right_sum - nums[i] == left_sum:
+                return i
+            else:
+                right_sum -= nums[i]
+                left_sum += nums[i]
+        return -1
+    
+        # Less code:
+        l_sum, total_sum = 0, sum(nums)
+        for i, n in enumerate(nums):
+            if total_sum - l_sum - n == l_sum:
+                return i
+            else:
+                l_sum += n
+        return -1
+            
+
 class Solution3:
     def pivotIndex(self, nums: List[int]) -> int:
         # Note:
