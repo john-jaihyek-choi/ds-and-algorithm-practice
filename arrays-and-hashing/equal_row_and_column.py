@@ -3,6 +3,70 @@ from collections import defaultdict, deque
 from typing import List, Dict, DefaultDict, Set
 
 # Leetcode 2352:
+# retried 1/9/2025
+class Solution3:
+    def equalPairs(self, grid: List[List[int]]) -> int:
+        # input:
+            # grid: List[List[int]]
+        # output:
+            # output: int
+                # number of matching row/col pair
+        # goal:
+            # given n x n matrix, grid, return the number of matching row/col pair
+        # note:
+            # row and col is pair when ri and cj are equal
+                # equal values
+                # same order
+        # ideas:
+            # intuition: check the row first, use set and tuple to register rows, iterate columns
+                # iterate the grid
+                    # register each row as a tuple to set
+                # iterate the columns
+                    # if column in row_counter, increment counter
+        
+        # pseudocode:
+            # initialize empty set for row
+                # row_counter = set()
+            # iterate grid (row = grid[i])
+                # row_counter.add(tuple(row))
+            # iterate n many times (i = index)
+                # col = []
+                # iterate n many times (j = index)
+                    # col.append(grid[j][i])
+                # if tuple(col) in row_counter:
+                    # output += 1
+            # return output
+
+        # TC: O(n^2) / SC: O(n^2)
+        row_counter, col_counter = {}, {}
+
+        output, n = 0, len(grid)
+        for x in range(n):
+            r = tuple(grid[x])
+            row_counter[r] = row_counter.get(r, 0) + 1
+
+            col = []
+            for y in range(n):
+                col.append(grid[y][x])
+
+            c = tuple(col)
+            col_counter[c] = col_counter.get(c, 0) + 1
+
+        for row, ct in row_counter.items():
+            output +=  (ct * col_counter.get(row, 0))
+
+        return output
+
+        # optimized pythonic solution with better readability:
+        row_count = Counter(tuple(row) for row in grid)
+        output, n = 0, len(grid)
+
+        for x in range(n):
+            col = [grid[y][x] for y in range(n)]
+            output += row_count[tuple(col)]
+
+        return output
+
 class Solution2:
     def equalPairs(self, grid: List[List[int]]) -> int:
         # Input:
