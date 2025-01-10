@@ -3,6 +3,76 @@ from collections import defaultdict, deque, Counter
 from typing import List, Dict, DefaultDict, Set
 
 # Leetcode 1657:
+# retried 1/9/2025
+class Solution6:
+    def closeStrings(self, word1: str, word2: str) -> bool:
+        # input:
+            # word1: str
+            # word2: str
+        # output:
+            # output: boolean
+        # goal:
+            # given 2 strings, word1 and word2, return true if 2 strings are close AFTER operations and false otherwise
+        # note:
+            # operations:
+                # 1. swap 2 existing characters
+                # 2. transform every occurrences of 1 existing character to another existing character
+            # what does "close" mean in this case?
+                # both strings have same length
+                # both strings have same occurences of characters
+                    # ex) word1 = "xxyyzz" word2 = "bbccdd"
+                        # xx -> bb
+                        # yy -> cc
+                        # zz -> dd
+            # I need to...
+                # check if word1 and word2 are the same length
+                # find out unique occurences of characters in word1 and word2
+                # check if unique letters in word1 and word2 are identical
+                    # ex) word1 = "xyyzzz" word2 = "xxxzzy"
+        # ideas:    
+            # intuition: array indexing
+                # check if word1 and word2 are of same length
+                    # return False if not the same length
+                # count the unique occurences of two words (ocur1, ocur2)
+                # create 2 arrays to store the counts (w1, w2)
+                    # initialize with 0 with len of word1 (or word2)
+                        # each index will represent unique occurence
+                # iterate ocur1 (n = ocur1[i])
+                    # increment w1[n] by 1
+                # iterate ocur2 (n = ocur2[i])
+                    # increment w2[n] by 1
+                # return w1 == w2
+        
+        # pseudocode:
+            # if len(word1) != len(word2):
+                # return False
+            # count unique occurences for word1 and word2
+                # ocur1 = Counter(word1)
+                # ocur2 = Counter(word2)
+            # w1 = w2 = [0] * len(word1)
+            # iterate ocur1 (n = ocur1[i])
+                # w1[n] += 1
+            # iterate ocur2 (n = ocur2[i])
+                # w2[n] += 1
+            # return w1 == w2
+
+        # TC: O(n + m) / SC: O(n + m)
+        if len(word1) != len(word2):
+            return False
+        
+        ocur1 = Counter(word1)
+        ocur2 = Counter(word2)
+
+        w1 = [0] * (len(word1) + 1)
+        w2 = [0] * (len(word2) + 1)
+
+        for n in ocur1.values():
+            w1[n] += 1
+        for n in ocur2.values():
+            w2[n] += 1
+        
+        return w1 == w2 and set(ocur1.keys()) == set(ocur2.keys())
+
 class Solution5:
     def closeStrings(self, word1: str, word2: str) -> bool:
         # Note:
