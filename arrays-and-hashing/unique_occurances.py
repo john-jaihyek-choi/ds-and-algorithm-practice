@@ -3,6 +3,56 @@ from collections import defaultdict, deque
 from typing import List, Dict, DefaultDict, Set
 
 # Leetcode 1207:
+class Solution3:
+    def uniqueOccurrences(self, arr: List[int]) -> bool:
+        # input:
+            # arr: List[int]
+        # output:
+            # output: bool
+        # goal:
+            # given list of integers, arr, return true if occurances of each value in the array is unique, false otherwise.
+        # ideas:
+            # intuition: hashmap for counter, set for unique freq, iterate on hashmap values (2 pass)
+                # TC: O(n) / SC: O(n)
+                # iterate on arr first time to collect unique number's counts
+                # create a set from hashmap values
+                # iterate on hashmap values
+                    # if occurance in freq set, return false
+                    # else add number to the set
+        
+        # pseudocode:
+            # initialize empty hashmap for occurances (occurances)
+            # initialize empty set for frequency of occurances (freq)
+            # iterate on arr (n = arr[i])
+                # occurances[n] = occurances.get(n, 0) + 1
+            # iterate on occurances values (n = occurances.values()[i])
+                # if n in freq:
+                    # return false
+                # else:
+                    # freq.add(n)
+            # return true
+
+        occurance, freq = {}, set()
+        for n in arr:
+            occurance[n] = occurance.get(n, 0) + 1
+        
+        for n in occurance.values():
+            if n in freq:
+                return False
+            freq.add(n)
+
+        return True
+
+        # pythonic solution:
+        occurance = Counter(arr)
+        freq = set(occurance.values())
+
+        return len(occurance) == len(freq)
+
+        
+
+        
+
 class Solution2:
     def uniqueOccurrences(self, arr: List[int]) -> bool:
         # Note:
