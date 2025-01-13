@@ -3,7 +3,53 @@ from typing import List, Dict, DefaultDict, Set
 import time
 
 # Leetcode 2390:
-class Solution:
+# retried 1/13/2025
+class Solution2:
+    def removeStars(self, s: str) -> str:
+        # input:
+            # s: str
+                # s consists of english lowercase letters and a *
+        # output:
+            # output: str
+        # goal: 
+            # given string, s, return the string after all stars have been removed
+        # star removal rules:
+            # choose a star and remove itself and the non-star character to its left
+                # if 2 stars in a row, remove 2 stars and 1 non-star char to the left of it
+        # ideas:    
+            # intuitions: stack approach
+                # initialize an empty stack (last in first out)
+                # iterate the string s (i = index)
+                    # check if s[i] is a star
+                        # if true,
+                            # remove the character at the top of the stack
+                        # if false,
+                            # add the character to the top of the stack
+        
+        # Pseudocode:
+            # initialize an empty stack (output)
+            # iterate on s (c = s[i]) 
+                # if c == "*":
+                    # if output:
+                        # output.pop()
+                    # continue
+                # output.append(c)
+            # return "".join(output)
+
+        # TC: O(n) / SC: O(n)
+        output = []
+        for c in s:
+            if c == "*":
+                if output:
+                    output.pop()
+                continue
+            output.append(c)
+
+        return "".join(output)
+    
+                    
+
+class Solution1:
     def removeStars(self, s: str) -> str:
         # input:
             # s: str
@@ -41,7 +87,7 @@ class Solution:
         return ''.join(stack) # O(n)
 
 
-solution = Solution()
+solution = Solution2()
 start_time = time.time()
 # Example:
     # Input: target = 10, position = [1,4], speed = [3,2]
