@@ -3,6 +3,60 @@ from typing import List, Dict, DefaultDict, Set
 import time
 
 # Leetcode 735:
+
+# retried 1/13/2025
+class Solution4:
+    def asteroidCollision(self, asteroids: List[int]) -> List[int]:
+        # intput:
+            # asteroids: List[int]
+                # asteroids[i] represents an asteroid
+                    # - / + represents the direction of the asteroid
+                    # value at asteroid[i] represents the size of the asteroid
+        # output:
+            # output: List[int]
+                # output consists of remaining asteroids AFTER collision
+        # goal:
+            # given a list of integer, asteroids, return the remaining asteroids after the collision
+        # rule:
+            # asteroids heading same direction NEVER collides
+            # when asteroid collides, the asteroid with smaller value min(abs(asteroid[i]), abs(asteroid[j])) will explode
+            # when asteroid collides and the abs values are identical, both asteroids explode
+        # ideas:
+            # intuition: stack approach
+                # initialize an output stack
+                # iterate on asteroids array
+                    # left = output[-1]
+                    # right = asteroids[i]
+                    # while output and left is positive and right is negative:
+                        # if left > right:
+                            # break
+                        # else:
+                            # pop left from output
+                            # if left == right:
+                                # break
+                    # else:
+                        # append right asteroid to output
+        
+        output = []
+        for right in asteroids:
+            while output and output[-1] > 0 and right < 0:
+                left = output[-1]
+                if abs(left) > abs(right):
+                    break
+                else:
+                    output.pop()
+                    if abs(left) == abs(right):
+                        break
+            else:
+                output.append(right)
+
+        return output
+                    
+            
+
+            
+        
+
 class Solution3:
     def asteroidCollision(self, asteroids: List[int]) -> List[int]:
         # Input:
