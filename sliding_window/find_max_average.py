@@ -2,48 +2,125 @@ from collections import defaultdict, deque
 from typing import List, Dict, DefaultDict, Set
 import time
 
+
 # Leetcode 643:
+# 3/10/2025 retried
+class Solution:
+    def findMaxAverage(self, nums: List[int], k: int) -> float:
+        # input:
+        # nums: List[int]
+        # k: int
+        # output:
+        # output: float
+        # represents the maximum average of a contiguous subarray with length of k
+        # goal:
+        # given a list of integers, nums, and an integer, k, return the contiguous subarray with length of k
+        # definition:
+        # contiguous subarray:
+        # subarray of the given array nums, where each index is contiguous
+        # no skips or gaps in the subarray
+        # idea:
+        # bruteforce:
+        # iterate the nums with a nested loop
+        # i = index
+        # j = i + 1
+        # for inner loop, only iterate k as many times
+        # update max_avg value after completion of each inner loop
+        # pseudocode:
+        # max_avg = float(-inf)
+        # iterate on nums (i = index, len(nums) - k +1)
+        # initialize sum = nums[i]
+        # iterate on nums (j = i + 1, i + k)
+        # sum += nums[j]
+        # max_avg = max(max_avg, sum / k)
+        # return max_avg
+        # sliding window:
+        # note:
+        # k = window size
+        # initialize left and right boundary
+        # intialize sum_value at 0
+        # iterate on nums while r < len(nums)
+        # add nums[r] to sum_value
+        # if r > k:
+        # subtract nums[l] from sum_val
+        # increment l
+        # pseudocode:
+        # initialize l and r
+        # l = 0
+        # intitialize sum_value = 0
+        # for r in range(0, len(nums)):
+        # sum_value += nums[r]
+        # if r >= k:
+        # max_avg = sum_value / k
+        # sum_val -= nums[l]
+        # l += 1
+
+        # Bruteforce:
+        # TC: O(n^2) / SC: O(1)
+        max_avg = float("-inf")
+        for i in range(0, len(nums) - k + 1):
+            sum_val = nums[i]
+            for j in range(i + 1, i + k):
+                sum_val += nums[j]
+
+            max_avg = max(max_avg, sum_val / k)
+
+        return max_avg
+
+        # Optimized:
+        # TC: O(n) / SC: O(1)
+        max_avg = float("-inf")
+        l = sum_val = 0
+        for r in range(0, len(nums)):
+            sum_val += nums[r]
+            if r >= k - 1:
+                max_avg = max(max_avg, sum_val / k)
+                sum_val -= nums[l]
+                l += 1
+        return max_avg
+
+
 # 1/7/2025 retried
 class Solution3:
     def findMaxAverage(self, nums: List[int], k: int) -> float:
         # input:
-            # nums: List[int]
+        # nums: List[int]
         # output:
-            # k: int
+        # k: int
         # goal:
-            # given a list of integers nums and a integer k, return the maximum average where the subarray has length k
+        # given a list of integers nums and a integer k, return the maximum average where the subarray has length k
         # notes:
-            # k is guaranteed to be smaller or equal to n
+        # k is guaranteed to be smaller or equal to n
         # ideas:
-            # intuition: sliding window with pre-defined k length
-                # initialize a left and right bound for the window
-                # slide window until the right bound reaches the end of nums
-                # return the average
+        # intuition: sliding window with pre-defined k length
+        # initialize a left and right bound for the window
+        # slide window until the right bound reaches the end of nums
+        # return the average
         # Pseudocode:
-            # initialize l and r bound
-                # l = 0
-                # r = k - 1
-            # pre-compute the sum of the first k - 1 items
-                # k_sum = nums[0:r]
-            # output = float('-inf')
-            # iterate while r < len(nums):
-                # k_sum += nums[r]
-                # output = max(output, k_sum / k)
-                # k_sum -= nums[l]
-                # r += 1
-                # l += 1
+        # initialize l and r bound
+        # l = 0
+        # r = k - 1
+        # pre-compute the sum of the first k - 1 items
+        # k_sum = nums[0:r]
+        # output = float('-inf')
+        # iterate while r < len(nums):
+        # k_sum += nums[r]
+        # output = max(output, k_sum / k)
+        # k_sum -= nums[l]
+        # r += 1
+        # l += 1
 
         # TC: O(n) / SC: O(1)
         l, r = 0, k - 1
         k_sum = sum(nums[0:r])
-        output = float('-inf')
+        output = float("-inf")
         while r < len(nums):
             k_sum += nums[r]
             output = max(output, k_sum / k)
             k_sum -= nums[l]
             r += 1
             l += 1
-        
+
         return output
 
         # cleaner code
@@ -52,44 +129,43 @@ class Solution3:
             k_sum += nums[r] - nums[r - k]
 
             output = max(output, k_sum)
-        
+
         return output / k
 
 
 class Solution2:
     def findMaxAverage(self, nums: List[int], k: int) -> float:
         # Note:
-            # input:
-                # nums: List[int]
-                # k: int
-            # output:
-                # output: float
-            # goal:
-                # given a list of integer and integer, nums and k, return the maximum average value of a contiguous subarray whose length is equal to k
-                    # error less than 10^-5 is accepted
+        # input:
+        # nums: List[int]
+        # k: int
+        # output:
+        # output: float
+        # goal:
+        # given a list of integer and integer, nums and k, return the maximum average value of a contiguous subarray whose length is equal to k
+        # error less than 10^-5 is accepted
         # Edgecase:
-            # k > len(nums):
-                # constraint is in place for 1 <= k <= n <= 100,000
-            # k == 0
-                # 1 <= k <= n <= 10^5
+        # k > len(nums):
+        # constraint is in place for 1 <= k <= n <= 100,000
+        # k == 0
+        # 1 <= k <= n <= 10^5
         # Idea:
-            # Brute-force:
-                # 2 nested loops (i and j)
-                    # i starts at 0 and loops the entire nums arr
-                    # j starts at i + 1 and loops to i + k 
-                # compute average for the elements within the size of the window
-                # return the max average
-            # sliding-window:
-                # 2 pointers, l and r
-                # iterate the nums while r < len(nums)
-                    # r moves each iteration
-                    # compute sum of number at each iteration
-                    # if r >= k-1:
-                        # calculate max average of the sum
-                        # increment l
-                            # before incrementing, subtract nums[l] from sum
+        # Brute-force:
+        # 2 nested loops (i and j)
+        # i starts at 0 and loops the entire nums arr
+        # j starts at i + 1 and loops to i + k
+        # compute average for the elements within the size of the window
+        # return the max average
+        # sliding-window:
+        # 2 pointers, l and r
+        # iterate the nums while r < len(nums)
+        # r moves each iteration
+        # compute sum of number at each iteration
+        # if r >= k-1:
+        # calculate max average of the sum
+        # increment l
+        # before incrementing, subtract nums[l] from sum
 
-        
         # # Brute-force:
         # max_avg = float('-inf')
         # for i in range(0, len(nums) - k + 1):
@@ -97,7 +173,7 @@ class Solution2:
         #     for j in range(i+1, i + k):
         #         avg += nums[j]
         #     max_avg = max(max_avg, round(avg / k, 5))
-        
+
         # return max_avg
 
         # # sliding-window:
@@ -123,7 +199,7 @@ class Solution2:
         #         max_avg = max(max_avg, round(sum_val / k, 5))
         #         sum_val -= nums[l]
         #         l += 1
-        
+
         # return max_avg
 
         # Optimized cleaner code (TC: O(n) / SC: O(1)):
@@ -135,47 +211,47 @@ class Solution2:
             max_sum = max(max_sum, sum_val)
 
         return max_sum / k
-    
+
 
 class Solution1:
     def findMaxAverage(self, nums: List[int], k: int) -> float:
         # input:
-            # nums: List[int]
-            # k: int
-                # k can only be as big as n where n = len(nums)
+        # nums: List[int]
+        # k: int
+        # k can only be as big as n where n = len(nums)
         # goal: find the contiguous subarray where len of the subarry == k, and return the maximum average value
         # Note:
-            # k == window of the subarray
-            # window will slide once the size of the window reaches k
-            # round the avaerage to 10^-5 
+        # k == window of the subarray
+        # window will slide once the size of the window reaches k
+        # round the avaerage to 10^-5
         # Variable to track:
-            # max_average: int
-                # starts at 0
-            # l: int
-            # r: int
-            # sum: int
-                # starts at 0
+        # max_average: int
+        # starts at 0
+        # l: int
+        # r: int
+        # sum: int
+        # starts at 0
         # Pseudocode:
-            # if length of nums == 1, return the first item in the array
-            # initialize max_average variable to store the max average at negative inf (max_average)
-            # initialize a variable to keep a current sum up to r
-            # initialize a left pointer at 0 (l)
-            # iterate on nums array (r = index, n = nums[r])
-                # sum += n
-                # if r >= k - 1:
-                    # compute the average:
-                        # sum / k
-                    # set the new max_average
-                        # max_average = max(max_average, average)
-                    # sum -= nums[l]
-                    # increment l += 1
-            # return max_average
+        # if length of nums == 1, return the first item in the array
+        # initialize max_average variable to store the max average at negative inf (max_average)
+        # initialize a variable to keep a current sum up to r
+        # initialize a left pointer at 0 (l)
+        # iterate on nums array (r = index, n = nums[r])
+        # sum += n
+        # if r >= k - 1:
+        # compute the average:
+        # sum / k
+        # set the new max_average
+        # max_average = max(max_average, average)
+        # sum -= nums[l]
+        # increment l += 1
+        # return max_average
 
         # TC: O(n) / SC: O(1)
         if len(nums) == 1:
             return nums[0]
 
-        max_average, sum_val = float('-inf'), 0
+        max_average, sum_val = float("-inf"), 0
         l = 0
         for r, n in enumerate(nums):
             sum_val += n
@@ -199,9 +275,7 @@ class Solution1:
         return max_average
 
 
-
-
 solution = Solution2()
 start_time = time.time()
-print(solution.findMaxAverage([1,12,-5,-6,50,3], 4))
+print(solution.findMaxAverage([1, 12, -5, -6, 50, 3], 4))
 print("--- %s seconds ---" % (time.time() - start_time))
