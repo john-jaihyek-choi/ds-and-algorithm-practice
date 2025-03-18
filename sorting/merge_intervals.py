@@ -127,5 +127,5 @@ class Solution:
 
 start_time = time.time()
 solution = Solution()
-print(solution.merge([0, 30], [5, 10], [15, 20]))
+print(solution.merge([[0, 30], [5, 10], [15, 20]]))
 print("--- %s seconds ---" % (time.time() - start_time))
