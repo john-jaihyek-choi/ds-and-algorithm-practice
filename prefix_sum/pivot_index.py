@@ -2,9 +2,54 @@ import math, time
 from collections import defaultdict, deque
 from typing import List, Dict, DefaultDict, Set
 
+
 # Leetcode 724:
+class Solution5:
+    def pivotIndex(self, nums: List[int]) -> int:
+        """
+        # objective:
+            # given array of integers, nums, return the LEFT MOST pivot index of the array
+        # keywords:
+            # pivot index:
+                # index where the sum of all the numbers strictly to left of the index is EQUAL to the usm of all nubmers strictly to the right of the index
+                    # when summing, value of pivot index IS NOT added
+                # if pivot index is 0, then left sum = 0 since no elements are to the left of it
+        # brainstorm:
+            # in order to find pivot index, I need access to both left and right sum
+                # can I pre-process the left sum, then go iterate backwards from nums?
+                    # ex) [1, 7, 3, 6, 5, 6]
+                    # left-sum: [0, 1, 8, 11, 17, 22]
+                    # then going from the back of the original array:
+                        # keep track of right sum starting at 0
+                    # this would work, but I can't exit early since I need to return left most pivot index
+                # What if I calculate the entire sum first?
+                    # take sum(nums):
+                        # ex) [1, 7, 3, 6, 5, 6]
+                        # r_sum = 28
+                    # start l_sum at 0
+                    # iterate on nums array:
+                        # r_sum -= nums[i]
+                        # if r_sum == l_sum:
+                            # return i
+                        # l_sum += nums[i]
+        """
+
+        # TC: O(n) / SC: O(1)
+        r_sum = sum(nums)  # O(n)
+        l_sum = 0
+
+        for i, n in enumerate(nums):  # O(n)
+            r_sum -= n
+            if r_sum == l_sum:
+                return i
+            l_sum += nums[i]
+
+        return -1
+
+
 class Solution4:
     def pivotIndex(self, nums: List[int]) -> int:
+        """ "
         # input:
             # nums: List[int]
         # output:
@@ -31,7 +76,7 @@ class Solution4:
                     # else:
                         # left_sum += nums[i]
                 # return -1
-        
+
         # pseudocode:
             # initialize right_sum
                 # right_sum = sum(nums)
@@ -42,7 +87,8 @@ class Solution4:
                 # else:
                     # left_sum += nums[i]
             # return -1
-        
+        """
+
         # TC: O(n) / SC: O(1)
         left_sum, right_sum = 0, sum(nums)
         for i in range(len(nums)):
@@ -52,7 +98,7 @@ class Solution4:
                 right_sum -= nums[i]
                 left_sum += nums[i]
         return -1
-    
+
         # Less code:
         l_sum, total_sum = 0, sum(nums)
         for i, n in enumerate(nums):
@@ -61,10 +107,11 @@ class Solution4:
             else:
                 l_sum += n
         return -1
-            
+
 
 class Solution3:
     def pivotIndex(self, nums: List[int]) -> int:
+        """
         # Note:
             # input:
                 # nums: List[int]
@@ -91,11 +138,11 @@ class Solution3:
                     # iterate nums from left, then store the sum to the left of the index in a separate array (left_sum_arr)
                         # ex)
                         #    [1,7,3,6,5,6]
-                        #    [0,1,8,11,17,22,28] 
+                        #    [0,1,8,11,17,22,28]
                     # then iterate the nums from the end of the list while maintaining the right sum
                         # if right sum == left_sum_arr[i]:
                             # set pivot = i
-        
+
         # 2-pass solution:
         # Pseudocode:
             # initialize an empty arr, left_sum_arr = []
@@ -110,6 +157,7 @@ class Solution3:
                     # output = i
                 # r_sum += nums[i]
             # return output
+        """
 
         # TC: O(n) / SC: O(n)
         left_sum_arr = []
@@ -118,14 +166,15 @@ class Solution3:
         for n in nums:
             left_sum_arr.append(l_sum)
             l_sum += n
-        
+
         for i in range(len(nums) - 1, -1, -1):
             if r_sum == left_sum_arr[i]:
                 output = i
             r_sum += nums[i]
-        
+
         return output
 
+        """
         # Possibility for optimization:
             # any way to do this without n space?
                 # is it possible to know the left and right sum without a memory?
@@ -138,14 +187,15 @@ class Solution3:
                 # if (total_sum - nums[i]) / 2 == l_sum:
                     # return i
             # return -1
-        
+        """
+
         # TC: O(n) / SC: O(1)
         total_sum, l_sum = sum(nums), 0
         for i, n in enumerate(nums):
             if (total_sum - n) / 2 == l_sum:
                 return i
             l_sum += n
-        
+
         return -1
 
         # no division solution:
@@ -154,7 +204,7 @@ class Solution3:
             if (total_sum - l_sum - n) == l_sum:
                 return i
             l_sum += n
-        
+
         return -1
 
 
@@ -162,20 +212,22 @@ class Solution2:
     def pivotIndex(self, nums: List[int]) -> int:
         # Getting the right sum at the beginning and updating the right sum as iterating the array
         # TC: O(n) / SC: O(1)
-        l_sum, r_sum = 0, sum(nums) # TC O(n) / SC O(1)
+        l_sum, r_sum = 0, sum(nums)  # TC O(n) / SC O(1)
 
-        for i, n in enumerate(nums): # O(n)
-            r_sum -= n # O(1)
-            
-            if r_sum == l_sum: # O(1)
-                return i # O(1)
+        for i, n in enumerate(nums):  # O(n)
+            r_sum -= n  # O(1)
 
-            l_sum += n # O(1)
+            if r_sum == l_sum:  # O(1)
+                return i  # O(1)
 
-        return -1 # O(1)
-    
+            l_sum += n  # O(1)
+
+        return -1  # O(1)
+
+
 class Solution1:
     def pivotIndex(self, nums: List[int]) -> int:
+        """
         # input:
             # nums: List[int]
         # goal: return the INDEX of the array that's pivot index
@@ -205,23 +257,24 @@ class Solution1:
                     # return i
                 # add nums[i] to l_sum
             # return -1
+        """
 
         # TC: O(n) / SC: O(n)
-        l_sum, r_sum = 0, 0 # O(1)
-        r_sum_array = [0] * len(nums) # TC O(1) / SC O(n)
-        for i in range(len(nums) - 1, -1, -1): # O(n)
-            r_sum_array[i] = r_sum # O(1)
-            r_sum += nums[i] # O(1)
+        l_sum, r_sum = 0, 0  # O(1)
+        r_sum_array = [0] * len(nums)  # TC O(1) / SC O(n)
+        for i in range(len(nums) - 1, -1, -1):  # O(n)
+            r_sum_array[i] = r_sum  # O(1)
+            r_sum += nums[i]  # O(1)
 
-        for i, n in enumerate(r_sum_array): # O(n)
-            if l_sum == r_sum_array[i]: # O(1)
-                return i 
-            l_sum += nums[i] # O(1)
-        
-        return -1 # O(1)
+        for i, n in enumerate(r_sum_array):  # O(n)
+            if l_sum == r_sum_array[i]:  # O(1)
+                return i
+            l_sum += nums[i]  # O(1)
+
+        return -1  # O(1)
 
 
 solution = Solution1()
 start_time = time.time()
-print(solution.pivotIndex([1,7,3,6,5,6]))
+print(solution.pivotIndex([1, 7, 3, 6, 5, 6]))
 print("--- %s seconds ---" % (time.time() - start_time))
