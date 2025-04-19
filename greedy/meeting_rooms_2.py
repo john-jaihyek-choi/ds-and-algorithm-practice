@@ -1,6 +1,45 @@
 import time
 from typing import List
 
+# Leetcode 253
+
+
+# retried 4/19/2025
+class Solution2:
+    def minMeetingRooms(self, intervals: List[List[int]]) -> int:
+        """
+        # goal:
+            # given array of time intervals (start and end), return the minimum number of conference rooms required
+        # idea:
+            # iterate and collect each event type into a list:
+                # intervals[0] = meeting start = 1
+                # intervals[1] = meeting end = -1
+            # sort the events in chronological order
+            # iterate the sorted event timeline:
+                # if event type is 1 (start):
+                    # increment active by 1
+                # else (event type is end):
+                    # decrement active by 1
+                # update max active
+        """
+
+        # TC: O(N log N) / SC: O(2N) == O(N)
+        timeline = []
+        for interval in intervals:
+            start, end = [interval[0], 1], [interval[1], -1]
+
+            timeline.append(start)
+            timeline.append(end)
+
+        timeline.sort()
+        active = min_rooms = 0
+
+        for time, event_type in timeline:
+            active += event_type
+            min_rooms = max(active, min_rooms)
+
+        return min_rooms
+
 
 class Solution:
     def minMeetingRooms(self, intervals: List[List[int]]) -> int:
