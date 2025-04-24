@@ -22,15 +22,15 @@ class Solution1:
                         - reverted_number = reverted_number * 10 + x % 10
                             - x % 10 adds 10th place each time reverted_number changes
         """
-        # string approach:
-        if x < 0 or x % 10 == 0:
+        # TC: O(n) / SC: O(n)
+        if x < 0 or (x % 10 == 0 and x != 0):
             return False
 
-        num = str(x)
-        l, r = 0, len(num) - 1
+        string_num = str(x)
+        l, r = 0, len(string_num) - 1
 
         while l < r:
-            if num[l] != num[r]:
+            if string_num[l] != string_num[r]:
                 return False
             l += 1
             r -= 1
@@ -43,33 +43,29 @@ class Solution2:
         """
         Math approach: rever then compare
         """
-        # math approach (reverse then compare):
-        if x < 0 or (x % 10 == 0 and x != 0):
-            return False
+        # TC: O(n) / SC: O(1)
+        x_copy = x
+        reverted_number = 0
+        while x_copy > 0:
+            reverted_number = reverted_number * 10 + (x_copy % 10)
+            x_copy //= 10
 
-        original = x
-        reverted_num = 0
-
-        while original > 0:
-            reverted_num = (reverted_num * 10) + (original % 10)
-            original //= 10
-
-        return reverted_num == x
+        return reverted_number == x
 
 
 class Solution3:
     def isPalindrome(self, x: int) -> bool:
         """
-        Math approach: revert half then compare
+        Math approach: revert half then compare with original half
         """
-        # math approach (reverse half way then compare with another half):
+        # TC: O(n / 2) == O(n) / SC: O(1)
         if x < 0 or (x % 10 == 0 and x != 0):
             return False
 
-        reverted_num = 0
+        x_copy = x
+        reverted_number = 0
+        while x_copy > 0:
+            reverted_number = reverted_number * 10 + (x_copy % 10)
+            x_copy //= 10
 
-        while x > reverted_num:
-            reverted_num = (reverted_num * 10) + (x % 10)
-            x //= 10
-
-        return reverted_num == x or x == reverted_num // 10
+        return reverted_number == x or reverted_number // 10 == x_copy
