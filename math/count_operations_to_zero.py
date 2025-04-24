@@ -23,6 +23,8 @@ class Solution1:
                 - return operation counts when either number == 0
         """
 
+        # TC: O(max(num1, num2)) / SC: O(1)
+        # max(num1, num2) because in the worst case, each subtraction would be 1 which would essentially iterate num1/num2 many times
         ops = 0
         while True:
             if not num1 or not num2:
@@ -46,6 +48,8 @@ class Solution2:
         """
 
         # recursive v1:
+        # TC: O(max(num1, num2)) / SC: O(1)
+        # max(num1, num2) because in the worst case, each subtraction would be 1 which would essentially iterate num1/num2 many times
         def recurse(num1, num2, ops):
             if not num1 or not num2:
                 return ops
@@ -67,6 +71,8 @@ class Solution3:
             - no helper function
         """
         # recursive v2:
+        # TC: O(max(num1, num2)) / SC: O(1)
+        # max(num1, num2) because in the worst case, each subtraction would be 1 which would essentially iterate num1/num2 many times
         if not num1 or not num2:
             return 0
 
