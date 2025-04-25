@@ -1,4 +1,68 @@
-class Bank:
+from threading import RLock
+
+
+class Bank2:
+    def __init__(self, balance: List[int]):
+        self.accounts: List[Account] = [Account(amount) for amount in balance]
+
+    def transfer(self, account1: int, account2: int, money: int) -> bool:
+        acc1: Account = self.get_account(account1)
+        acc2: Account = self.get_account(account2)
+
+        if not acc1 or not acc2 or acc1.balance < money or money < 0:
+            return False
+
+        with acc1.lock and acc2.lock:
+            if acc1.withdraw(money):
+                acc2.deposit(money)
+            else:
+                return False
+
+        return True
+
+    def deposit(self, account: int, money: int) -> bool:
+        acc: Account = self.get_account(account)
+
+        if not acc or money < 0:
+            return False
+
+        acc.deposit(money)
+
+        return True
+
+    def withdraw(self, account: int, money: int) -> bool:
+        acc: Account = self.get_account(account)
+
+        if not acc or acc.balance < money:
+            return False
+
+        acc.withdraw(money)
+
+        return True
+
+    def get_account(self, account: int):
+        return self.accounts[account - 1] if account <= len(self.accounts) else None
+
+
+class Account:
+    def __init__(self, balance: int):
+        self.balance = balance
+        self.lock = RLock()
+
+    def deposit(self, amount: int) -> bool:
+        with self.lock:
+            self.balance += amount
+
+        return True
+
+    def withdraw(self, amount: int) -> bool:
+        with self.lock:
+            self.balance -= amount
+
+        return True
+
+
+class Bank1:
     """
     Note:
         - "Valid" transactions:
