@@ -89,5 +89,9 @@ class Solution:
 
 solution = Solution()
 start_time = time.time()
-print(solution.rotate([[5, 1, 9, 11], [2, 4, 8, 10], [13, 3, 6, 7], [15, 14, 12, 16]]))
+print(
+    solution.spiralOrder(
+        [[5, 1, 9, 11], [2, 4, 8, 10], [13, 3, 6, 7], [15, 14, 12, 16]]
+    )
+)
 print("--- %s seconds ---" % (time.time() - start_time))
