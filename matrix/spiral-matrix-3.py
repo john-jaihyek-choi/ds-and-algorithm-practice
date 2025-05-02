@@ -6,7 +6,50 @@ import time
 # Leetcode 885:
 
 
-class Solution:
+class Solution2:
+    def spiralMatrixIII(
+        self, rows: int, cols: int, rStart: int, cStart: int
+    ) -> List[List[int]]:
+        """
+        Faster due to no function call stack and slight optimization with eliminating coord updates
+        """
+
+        # TC: O(rows * cols) / SC: O(1) / O(rows * cols) for output array
+        steps = 1
+        r, c = rStart, cStart
+        output = [[rStart, cStart]]
+
+        while len(output) < (rows * cols):
+            # move left to right
+            for _ in range(steps):
+                c += 1
+                if 0 <= r < rows and 0 <= c < cols:
+                    output.append([r, c])
+
+            # move top to bottom
+            for _ in range(steps):
+                r += 1
+                if 0 <= r < rows and 0 <= c < cols:
+                    output.append([r, c])
+
+            # move right to left
+            for _ in range(steps + 1):
+                c -= 1
+                if 0 <= r < rows and 0 <= c < cols:
+                    output.append([r, c])
+
+            # left bottom to top
+            for _ in range(steps + 1):
+                r -= 1
+                if 0 <= r < rows and 0 <= c < cols:
+                    output.append([r, c])
+
+            steps += 2
+
+        return output
+
+
+class Solution1:
     def spiralMatrixIII(
         self, rows: int, cols: int, rStart: int, cStart: int
     ) -> List[List[int]]:
@@ -56,47 +99,47 @@ class Solution:
         """
 
         # TC: O(rows * cols) / SC: O(1) / O(rows * cols) for output array
-        x = 1
-        cur = [rStart, cStart]
-        output = [cur]
+        steps = 1
+        r, c = rStart, cStart
+        output = [[rStart, cStart]]
 
         while len(output) < (rows * cols):
             # move left to right
-            for _ in range(1, x + 1):
-                cur = [cur[0], cur[1] + 1]
-                if self.isWithinBoundary(cur, rows, cols):
-                    output.append(cur)
+            for _ in range(steps):
+                c += 1
+                if self.isWithinBoundary((r, c), rows, cols):
+                    output.append([r, c])
 
             # move top to bottom
-            for _ in range(1, x + 1):
-                cur = [cur[0] + 1, cur[1]]
-                if self.isWithinBoundary(cur, rows, cols):
-                    output.append(cur)
+            for _ in range(steps):
+                r += 1
+                if self.isWithinBoundary((r, c), rows, cols):
+                    output.append([r, c])
 
             # move right to left
-            for _ in range(1, x + 2):
-                cur = [cur[0], cur[1] - 1]
-                if self.isWithinBoundary(cur, rows, cols):
-                    output.append(cur)
+            for _ in range(steps + 1):
+                c -= 1
+                if self.isWithinBoundary((r, c), rows, cols):
+                    output.append([r, c])
 
             # left bottom to top
-            for _ in range(1, x + 2):
-                cur = [cur[0] - 1, cur[1]]
-                if self.isWithinBoundary(cur, rows, cols):
-                    output.append(cur)
+            for _ in range(steps + 1):
+                r -= 1
+                if self.isWithinBoundary((r, c), rows, cols):
+                    output.append([r, c])
 
-            x += 2
+            steps += 2
 
         return output
 
-    def isWithinBoundary(self, coord: [int, int], r, c) -> bool:
+    def isWithinBoundary(self, coord: (int, int), r, c) -> bool:
         if 0 <= coord[0] < r and 0 <= coord[1] < c:
             return True
 
         return False
 
 
-solution = Solution()
+solution = Solution2()
 start_time = time.time()
-print(solution.generateMatrix(9))
+print(solution.spiralMatrixIII(1, 4, 0, 0))
 print("--- %s seconds ---" % (time.time() - start_time))
