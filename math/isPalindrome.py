@@ -62,10 +62,12 @@ class Solution3:
         if x < 0 or (x % 10 == 0 and x != 0):
             return False
 
-        x_copy = x
-        reverted_number = 0
-        while x_copy > 0:
-            reverted_number = reverted_number * 10 + (x_copy % 10)
-            x_copy //= 10
+        copy = x
+        reversed_num = 0
+        while copy > reversed_num:
+            # compute the last place of the number
+            last_place = copy % 10
+            copy //= 10
+            reversed_num = (reversed_num * 10) + last_place
 
-        return reverted_number == x or reverted_number // 10 == x_copy
+        return reversed_num == copy or reversed_num // 10 == copy
