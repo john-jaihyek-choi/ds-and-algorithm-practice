@@ -4,6 +4,132 @@ import time
 
 
 # Leetcode 3071:
+
+
+class Solution3:
+    def minimumOperationsToWriteY(self, grid: List[List[int]]) -> int:
+        # TC: O(n^2 + (x + y)) / SC: O(1)
+        yCells, nonYCells = [0, 0, 0], [0, 0, 0]  # SC: O(3) -> O(1)
+        n = len(grid)
+
+        # O(n^2)
+        for row in range(n):  # O(n)
+            for col in range(n):  # O(n)
+                if self.isYcell(row, col, n):
+                    yCells[grid[row][col]] += 1
+                    continue
+                nonYCells[grid[row][col]] += 1
+
+        min_ops = float("inf")
+
+        # O(x + y)
+        for y in range(3):  # O(3) == O(1)
+            for nonY in range(3):  # O(3) == O(1)
+                if y == nonY:
+                    continue
+
+                ops = 0
+                ops += sum(yCells) - yCells[y]  # O(x)
+                ops += sum(nonYCells) - nonYCells[nonY]  # O(y)
+
+                min_ops = min(min_ops, ops)
+
+        return min_ops
+
+    def isYcell(self, row: int, col: int, n: int) -> bool:
+        return (
+            row == col
+            and row < (n // 2)
+            or (row + col + 1) == n
+            and row < (n // 2)
+            or row >= (n // 2)
+            and col == (n // 2)
+        )
+
+
+class Solution2:
+    def minimumOperationsToWriteY(self, grid: List[List[int]]) -> int:
+        """
+        Note:
+            Possible Cell values - 0, 1, 2
+            Y-Cell:
+                1. starting top left cell ending at center of the grid
+                2. starting top right cell ending at center of the grid
+                3. starting center of the grid ending at bottom center of the grid
+            Condition:
+                - All Y values must be equal
+                - All non-Y values bust be equal
+                - Y values MUST be different from non-Y values
+            Objective:
+                - Return minimum number of operations needed to write letter Y on grid
+        Intuition:
+            - Identify Y cells in an array
+                - ex) [1, 2, 1, 1]
+                - left diagonal
+                    - if a row == col
+                - right diagonals
+                    - if row + col == n AND row < (n // 2)
+                - bottom Y
+                    - if row >= (n // 2) and col == (n // 2)
+            - Identify non-Y cells in an array
+                - ex) [2, 1, 0, 0, 0]
+                - all non Y cells that falls under the "Y-cell" criteria
+            - iterate on Y cells (y-cell)
+                - iterate on non-Y cells (non-y-cell)
+                    - iterate on nested loop with each loop iterating 3 times (0, 1, then 2)
+                        - initialize operation count to 0
+                        - i = index of outer loop
+                        - j = index of inner loop
+                        - if i == j value:
+                            skip
+                        - if y-cell != i or non-cell == i:
+                            increment operation counter
+                        - after completion of each inner loop, update min ops
+        """
+
+        # TC: O(n^2 + (x + y)) / SC: SC: O(n^2)
+        yCells, nonYCells = [], []  # SC: O(n)
+        n = len(grid)
+
+        # O(n^2)
+        for row in range(n):  # O(n)
+            for col in range(n):  # O(n)
+                if self.isYcell(row, col, n):
+                    yCells.append(grid[row][col])
+                    continue
+                nonYCells.append(grid[row][col])
+
+        min_ops = float("inf")
+
+        # O(x + y)
+        for y in range(3):  # O(3) == O(1)
+            for nonY in range(3):  # O(3) == O(1)
+                if y == nonY:
+                    continue
+
+                ops = 0
+                ops += sum(
+                    1 for cell in yCells if cell != y
+                )  # O(x) where x == n - non-Y cells
+                ops += sum(
+                    1 for cell in nonYCells if cell != nonY
+                )  # O(y) where y == n - x
+
+                min_ops = min(min_ops, ops)
+
+        return min_ops
+
+    def isYcell(self, row: int, col: int, n: int) -> bool:
+        return (
+            row == col
+            and row < (n // 2)
+            or (row + col + 1) == n
+            and row < (n // 2)
+            or row >= (n // 2)
+            and col == (n // 2)
+        )
+
+
 class Solution1:
     def minimumOperationsToWriteY(self, grid: List[List[int]]) -> int:
         """
