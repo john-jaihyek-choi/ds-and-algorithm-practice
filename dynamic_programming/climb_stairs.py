@@ -3,6 +3,42 @@ from typing import List, Dict, DefaultDict, Set
 import time
 
 
+class Solution4:
+    def climbStairs(self, n: int) -> int:
+        """
+        Intuition:
+            1. Recursion (Bruteforce):
+                - starting at n = 0, take 2 paths - n + 1 and n + 2
+                - recursinon base case:
+                    - when > n:
+                        - return False
+                    - when == n:
+                        - return True
+            2. DP top-bottom:
+                - think fibonacci sequence:
+                    - all possible permutation of ways to climb to n is...
+                        - all possible permutations of n - 1
+                        - plus
+                        - all possible permutation of n - 2
+                - use an array to remember value at each place
+            3. DP top-bottom (optimized):
+                - use 2 variables to maintain first and second items before current
+        """
+
+        # DP top-bottom:
+        cache = [-1] * n
+
+        def dfs(num: int) -> int:
+            if num >= n:
+                return num == n
+            if cache[num] != -1:
+                return cache[num]
+            cache[num] = dfs(num + 1) + dfs(num + 2)
+            return cache[num]
+
+        return dfs(0)
+
+
 class Solution1:
     def climbStairs(self, n: int) -> int:
         """
