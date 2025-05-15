@@ -4,6 +4,62 @@ import time
 
 
 # Leetcode #88
+
+
+class Solution2:
+    def merge(self, nums1: List[int], m: int, nums2: List[int], n: int) -> None:
+        """
+        Do not return anything, modify nums1 in-place instead.
+        """
+        """
+        Note:
+            - nums1 and nums2 are both sorted
+            - return nums1 which contains sorted and merged result
+        Intuition:
+            - Bruteforce:
+                - TC: O(n log n) / SC: O(1)
+                - iterate nums1 with a pointer on nums2
+                    - if 0, switch nums[i] with nums[p]
+                    - sort at the end
+            - Two pointer iterate backwards:
+                - initialize p1 and p2 at the end of nums1 and nums2
+                - iterate nums1 from backwards
+                    - if p1 < 0 or p2 < 0:
+                        break out of loop
+                    - if nums1[p1] <= nums2[p2]:
+                        - set nums1[i] to nums2[p2]
+                    - else:
+                        - set nums1[i] to nums1[p1]
+
+        """
+
+        # TC: O(m + n) / SC: O(1)
+        p1, p2 = m - 1, n - 1
+        for i in range(m + n - 1, -1, -1):
+            if p2 < 0 or p1 < 0:
+                break
+            if nums1[p1] <= nums2[p2]:
+                nums1[i] = nums2[p2]
+                p2 -= 1
+            else:
+                nums1[i] = nums1[p1]
+                p1 -= 1
+
+        while p2 >= 0:
+            nums1[i] = nums2[p2]
+            i, p2 = i - 1, p2 - 1
+
+        return nums1
+
+        # TC: O(n log n) / SC: O(1)
+        p = 0
+        for i in range(m, m + n):
+            nums1[i], nums2[p] = nums2[p], nums1[i]
+            p += 1
+        nums1.sort()
+        return nums1
+
+
 class Solution1:
     def merge(self, nums1: List[int], m: int, nums2: List[int], n: int) -> None:
         """
