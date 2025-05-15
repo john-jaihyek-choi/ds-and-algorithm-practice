@@ -4,7 +4,45 @@ import time
 
 
 # Leetcode #56
-class Solution:
+class Solution2:
+    def merge(self, intervals: List[List[int]]) -> List[List[int]]:
+        """
+        Note:
+            - intervals[i] = [start, end]
+            - merge all overlapping intervals
+            - return non overlapping intervals
+            - What constitutes as merging interval?
+                - if start time falls between another interval
+                    - ex) [1,3] and [2,6]
+                - if end time falls between another interval
+                    - ex) [1,3] and [2,6]
+        Intuition:
+            - Sort then merge:
+                - initialize output array to store merged intervals
+                - sort the input array by intervals[0]
+                - iterate on intervals
+                    - if output is non-empty and output[-1] overlaps with intervals[i]
+                        - update output[-1][1] with max(output[-1][1], intervals[i][1])
+        """
+
+        # TC: O(n log n) / SC: O(1), O(n) for output array
+        intervals.sort()
+        merged = []
+
+        for interval in intervals:
+            start, end = interval
+            prev_end = merged[-1][1] if merged else None
+
+            if merged and (start <= prev_end or end <= prev_end):
+                merged[-1][1] = max(prev_end, end)
+                continue
+
+            merged.append(interval)
+
+        return merged
+
+
+class Solution1:
     def merge(self, intervals: List[List[int]]) -> List[List[int]]:
         """
         # objective:
