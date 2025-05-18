@@ -4,6 +4,45 @@ import time
 
 
 # retried 3/15/2025
+
+
+class Solution:
+    def lengthOfLongestSubstring(self, s: str) -> int:
+        """
+        Note:
+            - substring:
+                - CONTIGUOUS
+                - NON-EMPTY
+            - find length of longest substring WITHOUT duplicate characters
+        Intuition:
+            - Sliding Window:
+                - General Idea:
+                    - use set to store chars in the window
+                    - expand window as long as i + 1 char doensn't exist in set
+                - initialize l pointer to 0
+                - iniitalize a set (characters)
+                - iterate r from 1 to len(s) - 2:
+                    - while s[r] exists in characters set:
+                        - remove s[l] from set
+                        - increment l by 1
+                    - add s[r] to the characters set
+                    - update max window
+                - return max window
+        """
+
+        l = 0
+        characters = set()
+        max_substring = 0
+        for r in range(0, len(s)):
+            while s[r] in characters:
+                characters.remove(s[l])
+                l += 1
+            characters.add(s[r])
+            max_substring = max(max_substring, r - l + 1)
+
+        return max_substring
+
+
 class Solution2:
     def lengthOfLongestSubstring(self, s: str) -> int:
         # objective:
