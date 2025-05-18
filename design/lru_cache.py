@@ -8,115 +8,130 @@ from helper.functions import LinkedList, ListNode, Utility
 
 
 class ListNode:
-    def __init__(self, key: int = -1, val: int = -1):
-        self.next = None
-        self.prev = None
-        self.val = val
-        self.key = key
+    """ """
+
+    def __init__(self, key=None, val=None, prev=None, next=None):
+        self.key, self.val = key, val
+        self.prev = prev
+        self.next = next
 
 
 class LRUCache:
     """
-    Linked List Approach:
-        - General idea:
-            1. implement basic ListNode class
-            2. initialize left and right end - left being lru and right being mru
-            3. initialize a dictionary that points to the ListNode
-            3. implement get:
-                - if key in self.items:
-                    - update the pointer of the current node to new mru
-                    - return the value
-                - else return -1
-            4. implement put:
-                - if key in self.items:
-                    - update the pointer of the current node to new mru
-                - update the value of the existing key
-
+    Intuition:
+        - Use Linked List, head and tail, to track lru to mru
+            - implement ListNode
+                - vars:
+                    - val
+                    - prev
+                    - next
+            - initialize head and tail with an empty ListNode
+            - initialize cache dictionary to store references to each nodes
+            - initialize capacity at 0
+            - core functions:
+                - get:
+                    - if key exists in cache:
+                        - update the cache
+                            - unlink the node:
+                                - prev.next = next
+                                - next.prev = prev
+                            - add to the end of the node:
+                                - mru.prev.next = new_node
+                                - new_node.next = mru
+                                - new_node.prev = mru.prev
+                                - mru.prev = new_node
+                    - else:
+                        - return -1
+                - put:
+                    - if key exists in cache:
+                        - update the existing key
+                        - update position in the cache:
+                            -  unlink the node:
+                                - prev.next = next
+                                - next.prev = prev
+                            - add to the end of the node:
+                                - mru.prev.next = new_node
+                                - new_node.next = mru
+                                - new_node.prev = mru.prev
+                                - mru.prev = new_node
+                    - else:
+                        - create a new_node for the new key-value
+                        - add to the end of the node
+                    - if cache exceeds the capacity, remove the item closest to the head
     """
 
     def __init__(self, capacity: int):
-        self.capacity = capacity
         self.cache = {}
+        self.capacity = capacity
         self.head, self.tail = ListNode(), ListNode()
-        self.head.next = self.tail
-        self.tail.prev = self.head
+        self.head.next, self.tail.prev = self.tail, self.head
+
+    def remove_cache(self, node: ListNode) -> None:
+        node.prev.next, node.next.prev = node.next, node.prev
+
+    def add_cache(self, node: ListNode) -> None:
+        mru = self.tail.prev
+        mru.next, node.prev = node, mru
+        node.next = self.tail
+        self.tail.prev = node
 
     def get(self, key: int) -> int:
         if key not in self.cache:
             return -1
 
-        item = self.cache[key]
-        self.removeCache(item)
-        self.addCache(item)
-        return item.val
+        node = self.cache[key]
+        self.remove_cache(node)
+        self.add_cache(node)
+
+        return node.val
 
     def put(self, key: int, value: int) -> None:
         if key in self.cache:
-            self.removeCache(self.cache[key])
+            self.remove_cache(self.cache[key])
 
         self.cache[key] = ListNode(key, value)
-        self.addCache(self.cache[key])
+        self.add_cache(self.cache[key])
 
         if len(self.cache) > self.capacity:
             lru = self.head.next
-            self.removeCache(lru)
+            self.remove_cache(lru)
             del self.cache[lru.key]
-
-    def addCache(self, cache: ListNode) -> None:
-        old_mru, tail = self.tail.prev, self.tail
-        cache.next, cache.prev = tail, old_mru
-        old_mru.next = tail.prev = cache
-
-    def removeCache(self, cache: ListNode) -> None:
-        prev, nxt = cache.prev, cache.next
-        prev.next, nxt.prev = nxt, prev
 
 
 class LRUCache1:
     """
     Intuition:
-        1. use built-in data structure
-            - use OrderedDict to store cache in HashMap-like object
-            - General steps:
-                1. initialize construtor vars:
-                    - initialize self.cache with OrderedDict()
-                    - initialize self.capacity with capacity
-                2. Implement get
-                    - input: key
-                    - if key in self.cache:
-                        - return the value of the key
+        1. use built-in OrderdDict to store as a cache
+            - initialize OrderdDict as a member variable for the class
+            - core functions:
+                - get:
+                    - get value of the key if key exists in cache
                     - else return -1
-                    - every time get is called, remove then add the key-val pair to the OrderedDict
-                3. Implement put
-                    - input: key, value
-                    - if key in self.cache:
-                        - update the value
-                    - else:
-                        - add the key-val pair to the cache
-                    - if len(self.cache) exceeds self.capacity:
-                        - evict lru item
+                - put:
+                    - update the value of key if key exists in cache
+                    - else add key-valu pair to cache
+                    - evict key and if cache size exceeds capacity
     """
 
     def __init__(self, capacity: int):
+        self.cache = OrderedDict()
         self.capacity = capacity
-        self.cache = OrderedDict()  # SC: O(c) where c = capacity
 
-    # TC: O(1)
     def get(self, key: int) -> int:
-        if key in self.cache:
-            self.cache.move_to_end(key)
-            return self.cache[key]
+        if key not in self.cache:
+            return -1
 
-        return -1
+        self.cache.move_to_end(key)
 
-    # TC: O(1)
+        return self.cache[key]
+
     def put(self, key: int, value: int) -> None:
         if key in self.cache:
-            self.cache.move_to_end(key)
+            del self.cache[key]
 
         self.cache[key] = value
 
-        if len(self.cache) > self.capacity:
+        if self.capacity < len(self.cache):
             self.cache.popitem(last=False)
 
 
