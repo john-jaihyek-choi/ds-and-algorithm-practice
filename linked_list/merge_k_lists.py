@@ -5,6 +5,11 @@ from helper.functions import LinkedList, ListNode, Utility
 
 
 # Leetcode 23
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
 class Solution:
     def mergeKLists(self, lists: List[Optional[ListNode]]) -> Optional[ListNode]:
         """
@@ -21,13 +26,36 @@ class Solution:
                 - initialize dummy head for output list
                 - iterate on lists:
                     - for each list, merge two linked list
+            - Time optimization:
+                - Instead of merging lists one by one, I merge lists by 2
+                - General steps:
+                    - initialize an empty list to start at
+                    - while len(list) > 1:
+                        - iterate lists at an increment of 2
+                            - merge lists[i] and lists[i + 1]
+                            - append merged list to a temporary merged llist
+                            - set list to merged list
         """
 
-        # 1. Bruteforce:
-        # TC: O(n * k) / SC: O(1)
-        dummy = new = ListNode(float("-inf"))  # SC: O(1)
+        # 2. Optimal time:
+        # TC: O(n * log k) / SC: O(k)
+        if not lists:
+            return None
 
-        for lst in lists:  # TC: O(k) / SC: O(1)
+        while len(lists) > 1:
+            merged = []  # SC: O(k)
+            for i in range(0, len(lists), 2):  # TC: O(log k)
+                l1, l2 = lists[i], lists[i + 1] if i + 1 < len(lists) else None
+                merged.append(self.mergeTwoLists(l1, l2))  # TC: O(n1 + n2) -> O(n)
+
+            lists = merged
+
+        return lists[0]
+
+        # 1. Bruteforce:
+        dummy = new = ListNode(float("-inf"))  # SC: O(n)
+
+        for i, lst in enumerate(lists):  # TC: O(k) / SC: O(n)
             new = self.mergeTwoLists(new, lst)  # TC: O(n)
 
         return dummy.next
