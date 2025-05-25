@@ -6,9 +6,108 @@ import time
 # Leetcode 3071:
 
 
+class Solution4:
+    def minimumOperationsToWriteY(self, grid: List[List[int]]) -> int:
+        """
+        Note:
+            - grid is guaranteed to have odd number of rows and columns
+            - possible grid[row][col] values:
+                - 0
+                - 1
+                - 2
+            - Cells belong to Y if:
+                - diagonal starting from top-left ending at center
+                    - pattern:
+                        - given: [r, c]
+                        - if r == c:
+                        - r <= n // 2
+                - diagonal starting from top-right ending at center
+                    - pattern:
+                        - given: [r, c]
+                        - if r + c == n
+                            AND
+                        - r <= n // 2
+                - vertical starting from center to the bottom of the grid
+                    - pattern:
+                        - given: [r, c]
+                        - if c == n // 2
+                            AND
+                        - if r >= n // 2
+            - Y is written only if:
+                - All Y-cells are equal
+                    AND
+                - All Non-Y-cells are equal
+                    AND
+                - Y-cell values and Non-Y-cell values are NOT equal
+        Intuition:
+            - Use set to store (x, y) pair for Y-cells AND Non-Y-cells, then try every possible values 0, 1, and 2 comparison
+                - initialize y-cells and non-y-cells sets
+                - iterate on every cell (nested loop)
+                    - r = row, c = col
+                    - if left diagonal
+                        - add to y-cell
+                    - check right diagonal
+                        - add to y-cell
+                    - check center vertical
+                        - add to y-cell
+                    - else:
+                        - add to non-y-cell
+                - iterate 0 to 3 (nested loop)
+                    - i = outer_index, j = inneer_index
+                    - if i == j:
+                        - continue
+                    - if y-cell value is not i:
+                        - increment ops count
+                    - else:
+                        - skip
+                    - if non-y-cell value is i or non-y-cell value is NOT j:
+                        - increment ops count
+                    - else:
+                        - skip
+                    - update min ops after each entire iteration
+        """
+
+        # TC: O(r * c) / SC: O(r * c)
+        y_cells, non_y_cells = set(), set()  # SC: O(r * c)
+
+        rows, cols = len(grid), len(grid[0])
+
+        for r in range(rows):  # TC: O(r)
+            for c in range(cols):  # TC: O(c)
+                center = rows // 2
+                if ((r == c or r + c == rows - 1) and r <= center) or (
+                    c == center and r >= center
+                ):
+                    y_cells.add((r, c))
+                else:
+                    non_y_cells.add((r, c))
+
+        # TC: O(r * c)
+        min_ops = float("inf")
+        for y_val in range(3):  # TC: O(3)
+            for non_y_val in range(3):  # TC: O(3)
+                if y_val == non_y_val:
+                    continue
+
+                ops = 0
+                for y in y_cells:  # TC: O(y)
+                    r, c = y
+                    if grid[r][c] != y_val:
+                        ops += 1
+
+                for non_y in non_y_cells:  # TC: O(z)
+                    r, c = non_y
+                    if grid[r][c] == y_val or grid[r][c] != non_y_val:
+                        ops += 1
+
+                min_ops = min(min_ops, ops)
+
+        return min_ops
+
+
 class Solution3:
     def minimumOperationsToWriteY(self, grid: List[List[int]]) -> int:
-        # TC: O(n^2 + (x + y)) / SC: O(1)
+        # TC: O(n^2) / SC: O(1)
         yCells, nonYCells = [0, 0, 0], [0, 0, 0]  # SC: O(3) -> O(1)
         n = len(grid)
 
@@ -22,7 +121,7 @@ class Solution3:
 
         min_ops = float("inf")
 
-        # O(x + y)
+        # O(n^2)
         for y in range(3):  # O(3) == O(1)
             for nonY in range(3):  # O(3) == O(1)
                 if y == nonY:
