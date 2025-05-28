@@ -1,5 +1,69 @@
 from threading import RLock
 
+from threading import RLock
+
+
+class Account:
+    def __init__(self, balance: int):
+        self.balance = balance
+        self.lock = RLock()
+
+    def deposit(self, money: int) -> bool:
+        with self.lock:
+            self.balance += money
+            return True
+
+    def withdraw(self, money: int):
+        with self.lock:
+            if money < 0 or self.balance < money:
+                return False
+
+            self.balance -= money
+            return True
+
+
+class Bank3:
+    """ """
+
+    def __init__(self, balance: List[int]):
+        self.balance = [0] * (len(balance) + 1)
+        for i, bal in enumerate(balance):
+            self.balance[i + 1] = Account(bal)
+
+    def deposit(self, account: int, money: int) -> bool:
+        acct = self.get_account(account)
+
+        if not acct or money < 0:
+            return False
+
+        return acct.deposit(money)
+
+    def withdraw(self, account: int, money: int) -> bool:
+        acct = self.get_account(account)
+
+        if not acct or acct.balance < money or money < 0:
+            return False
+
+        return acct.withdraw(money)
+
+    def transfer(self, account1: int, account2: int, money: int) -> bool:
+        acct1, acct2 = self.get_account(account1), self.get_account(account2)
+
+        if not (acct1 and acct2) or acct1.balance < money or money < 0:
+            return False
+
+        with acct1.lock and acct2.lock:
+            if acct1.withdraw(money):
+                return acct2.deposit(money)
+
+        return False
+
+    def get_account(self, account: int):
+        if not 1 <= account <= len(self.balance) + 1:
+            return None
+
+        return self.balance[account]
+
 
 class Bank2:
     def __init__(self, balance: List[int]):
