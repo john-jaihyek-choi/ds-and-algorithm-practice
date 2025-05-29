@@ -11,23 +11,40 @@ from binarytree import build
 #         self.left = left
 #         self.right = right
 
+
 class Solution:
     def invertTree(self, root: Optional[TreeNode]) -> Optional[TreeNode]:
-        # recursive:
-        # base case:
-            # if root not valid:
-                # return head
-        # else:
-            # switch left with right:
-            # traverse the left and right of the tree
-        
-        # TC: O(n) / SC: O(1) but O(h) where h = max height of the tree for implicit call stack
-        if not root:
+        """
+        Note:
+            - for each node, switch left with right
+                - dfs to left
+                - dfs to right
+            - dfs function:
+                - base case: node is None
+        """
+        # BFS
+        if root is None:
             return None
-        
-        temp = root.left
-        root.left = root.right
-        root.right = temp
+
+        stack = [root]
+
+        while stack:
+            node = stack.pop()
+
+            if node.left:
+                stack.append(node.left)
+            if node.right:
+                stack.append(node.right)
+
+            node.left, node.right = node.right, node.left
+
+        return root
+
+        # DFS
+        if root is None:
+            return None
+
+        root.left, root.right = root.right, root.left
 
         self.invertTree(root.left)
         self.invertTree(root.right)
@@ -35,7 +52,7 @@ class Solution:
         return root
 
 
-root = build([1,2,3,4,5,6,7])
+root = build([1, 2, 3, 4, 5, 6, 7])
 print(root)
 solution = Solution()
 start_time = time.time()
