@@ -3,7 +3,88 @@ from typing import List, Dict, DefaultDict, Set
 import time
 
 
-class Solution:
+class Solution2:
+    def numIslands(self, grid: List[List[str]]) -> int:
+        """
+        Note:
+            - grid[m][n]:
+                - "1" == land
+                - "0" == water
+            - island:
+                - land surrounded by water
+            - edges (out of bound):
+                - considered water
+            - return number of islands
+        Intuition:
+            - Iterate every cell, dfs to 4 directions (right, bottom, left, up) for lands
+                - general steps:
+                    - iterate on every cells in the grid
+                        - if cell is a land:
+                            - increment island counter
+                            - dfs on adjacents cells
+                    - dfs function:
+                        - base case:
+                            - if cell == "0":
+                                - return
+                        - if cell == "1":
+                            - recurse again
+        """
+
+        rows, cols = len(grid), len(grid[0])
+
+        # DFS
+        def dfs(r: int, c: int):
+            grid[r][c] = "0"
+
+            # check right
+            if 0 <= c + 1 < cols and grid[r][c + 1] == "1":
+                dfs(r, c + 1)
+            # check bottom
+            if 0 <= r + 1 < rows and grid[r + 1][c] == "1":
+                dfs(r + 1, c)
+            # check left
+            if 0 <= c - 1 < cols and grid[r][c - 1] == "1":
+                dfs(r, c - 1)
+            # check up
+            if 0 <= r - 1 < rows and grid[r - 1][c] == "1":
+                dfs(r - 1, c)
+
+        # BFS
+        def bfs(row: int, col: int):
+            q = deque([(row, col)])
+
+            while q:
+                for _ in range(len(q)):
+                    r, c = q.popleft()
+                    # check right
+                    if 0 <= c + 1 < cols and grid[r][c + 1] == "1":
+                        q.append((r, c + 1))
+                        grid[r][c + 1] = "0"
+                    # check bottom
+                    if 0 <= r + 1 < rows and grid[r + 1][c] == "1":
+                        q.append((r + 1, c))
+                        grid[r + 1][c] = "0"
+                    # check left
+                    if 0 <= c - 1 < cols and grid[r][c - 1] == "1":
+                        q.append((r, c - 1))
+                        grid[r][c - 1] = "0"
+                    # check up
+                    if 0 <= r - 1 < rows and grid[r - 1][c] == "1":
+                        q.append((r - 1, c))
+                        grid[r - 1][c] = "0"
+
+        islands = 0
+        for r in range(rows):
+            for c in range(cols):
+                if grid[r][c] == "1":
+                    islands += 1
+                    # dfs(r, c)
+                    bfs(r, c)
+
+        return islands
+
+
+class Solution1:
     def numIslands(self, grid: List[List[str]]) -> int:
         """
         Note:
