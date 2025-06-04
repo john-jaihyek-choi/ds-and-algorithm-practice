@@ -14,45 +14,38 @@ import time
 #         self.right = right
 
 
-# Definition for a binary tree node.
-# class TreeNode:
-#     def __init__(self, val=0, left=None, right=None):
-#         self.val = val
-#         self.left = left
-#         self.right = right
 class Solution:
     def levelOrder(self, root: Optional[TreeNode]) -> List[List[int]]:
         """
         Note:
-            - Level order traversal:
-                - layer (horizontal) by layer
+            - Level order traversal
+                - top to bottom, left to right
         Intuition:
-            - BFS:
-                - queue to store each layer
-                - traverse starting from root node
-                    - iterate len(q)
-                        - store node val to the q
-                        - append node val to output array
+            - use BFS:
+                - traverse from the root node:
+                    - use q to store each level of a tree
+                    - append each node in the q's left and right nodes
         """
-
+        # BFS
         # TC: O(n) / SC: O(n)
         output = []
         if root is None:
             return output
 
         q = deque([root])
-
         while q:
-            layer = []
+            level = []
             for _ in range(len(q)):
                 node = q.popleft()
-                layer.append(node.val)
+
+                level.append(node.val)
 
                 if node.left:
                     q.append(node.left)
                 if node.right:
                     q.append(node.right)
-            output.append(layer)
+
+            output.append(level)
 
         return output
 
