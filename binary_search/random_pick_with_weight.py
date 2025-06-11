@@ -4,13 +4,14 @@ import random
 class Solution2:
 
     def __init__(self, w: List[int]):
-        self.prefix_sums = []
+        self.prefix_sums = []  # SC: O(n)
         prefix_sum = 0
         for weight in w:
             prefix_sum += weight
             self.prefix_sums.append(prefix_sum)
         self.weight_sum = prefix_sum
 
+    # TC: O(log n)
     def pickIndex(self) -> int:
         """
         Note:
@@ -38,13 +39,14 @@ class Solution2:
 class Solution1:
 
     def __init__(self, w: List[int]):
-        self.prefix_sums = []
+        self.prefix_sums = []  # SC: O(n)
         prefix_sum = 0
         for weight in w:
             prefix_sum += weight
             self.prefix_sums.append(prefix_sum)
         self.weight_sum = prefix_sum
 
+    # TC: O(n)
     def pickIndex(self) -> int:
         """
         Note:
@@ -54,7 +56,7 @@ class Solution1:
         """
         target = self.weight_sum * random.random()
 
-        for i, p_sum in enumerate(self.prefix_sums):
+        for i, p_sum in enumerate(self.prefix_sums):  # O(n)
             if target < p_sum:
                 return i
 
