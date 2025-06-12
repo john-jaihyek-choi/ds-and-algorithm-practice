@@ -4,6 +4,72 @@ import time
 
 
 # Leetcode 1249:
+
+
+class Solution3:
+    def minRemoveToMakeValid(self, s: str) -> str:
+        """
+        Note:
+            - s contains "(", ")", and english characters
+            - remove minimum number of parentheses to for a valid string
+        Intuition:
+            - array to store positions of invalid parentheses, stack to store parentheses
+                - initialize parentheses as array and invalid_positions as set
+                - iterate on s:
+                    - if s[i] is an open parentheses, push the parentheses to parentheses array
+                    - if s[i] is an closing parentheses and parentheses array is non-empty:
+                        - pop the parentheses stack
+                    - else:
+                        - push the position i to invalid_positions
+                - if parentheses is empty and invalid_positions is empty:
+                    - return s without any changes
+                - else:
+                    - initialize empty output string
+                    - iterate on s:
+                        - if i in invalid_position:
+                            - skip
+                        - else:
+                            - add to output string
+        Test:
+            Given:
+            - lee(t(c)o)de)
+            - parentheses = []
+            - invalid_positions = ()
+            Output:
+            - don't remove anything
+            Given:
+            - "a)b(c)d"
+            - parentheses = []
+            - invalid_positions = (1)
+            Output:
+                - ab(c)d
+        """
+
+        # TC: O(n) / SC: O(n)
+        parentheses = []
+        invalid_positions = set()
+
+        for i, c in enumerate(s):
+            if c is "(":
+                parentheses.append(i)
+
+            if c is ")":
+                if parentheses:
+                    parentheses.pop()
+                    continue
+                invalid_positions.add(i)
+
+        invalid_positions = invalid_positions.union(set(parentheses))
+
+        output = []
+
+        for i, c in enumerate(s):
+            if i not in invalid_positions:
+                output.append(c)
+
+        return "".join(output)
+
+
 class Solution2:
     def minRemoveToMakeValid(self, s: str) -> str:
         """
