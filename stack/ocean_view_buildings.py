@@ -5,6 +5,63 @@ import time
 
 
 # Leetcode 1762:
+class Solution4:
+    def findBuildings(self, heights: List[int]) -> List[int]:
+        """
+        Alternative solution:
+            - Monotonic stack, traversing backwards:
+                - initialize stack
+                    - maintain items in monotonic increasing order
+                - iterate heights from the end of the array:
+                    - while stack is non-empty and heights[stack[-1]] >= heights[i]:
+                        - pop from the stack
+                    - append current i to the stack
+                - return the stack
+        """
+
+        # TC: O(n) / SC: O(1) and O(n) if includes output res as extra space
+        max_right = 0
+        res = []
+        for i in range(len(heights) - 1, -1, -1):
+            if max_right < heights[i]:
+                res.append(i)
+
+                max_right = heights[i]
+
+        res.reverse()
+        return res
+
+
+class Solution3:
+    def findBuildings(self, heights: List[int]) -> List[int]:
+        """
+        Alternative solution:
+            - Monotonic stack, traversing backwards:
+                - initialize stack
+                    - maintain items in monotonic increasing order
+                - iterate heights from the end of the array:
+                    - while stack is non-empty and heights[stack[-1]] >= heights[i]:
+                        - pop from the stack
+                    - append current i to the stack
+                - return the stack
+        """
+
+        # TC: O(n) / SC: O(n)
+        stack = []
+        res = []
+        for i in range(len(heights) - 1, -1, -1):
+            while stack and heights[stack[-1]] < heights[i]:
+                stack.pop()
+
+            if not stack:
+                res.append(i)
+
+            stack.append(i)
+
+        res.reverse()
+        return res
+
+
 class Solution2:
     def findBuildings(self, heights: List[int]) -> List[int]:
         """
@@ -20,7 +77,7 @@ class Solution2:
                 - return the stack
         """
 
-        # TC: O(n) / SC: O(n) if includes output res as extra space
+        # TC: O(n) / SC: O(1) and O(n) if includes output res as extra space
         res = []
         for i, h in enumerate(heights):
             while res and heights[res[-1]] <= h:
